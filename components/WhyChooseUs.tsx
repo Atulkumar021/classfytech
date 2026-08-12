@@ -7,12 +7,12 @@ export default function WhyChooseUs() {
     <section className="section" id="why">
       <div className="container">
         <Reveal className="section__head center">
-          <span className="eyebrow">Why Choose Us</span>
+          <span className="eyebrow">Why Voice AI</span>
           <h2 className="section__title">
-            Built for <span className="gradient-text">speed, scale and trust</span>
+            Built for <span className="gradient-text">scale, speed and trust</span>
           </h2>
           <p className="section__subtitle">
-            The advantages that make partnering with Classify Technology a smart, low-risk decision.
+            Everything you need to put a reliable, natural-sounding voice agent to work — fast.
           </p>
         </Reveal>
 

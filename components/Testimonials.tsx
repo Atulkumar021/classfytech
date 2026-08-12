@@ -37,7 +37,7 @@ export default function Testimonials() {
         <Reveal className="section__head center">
           <span className="eyebrow">Testimonials</span>
           <h2 className="section__title">
-            What our <span className="gradient-text">clients say</span>
+            Loved by <span className="gradient-text">the teams using it</span>
           </h2>
         </Reveal>
 

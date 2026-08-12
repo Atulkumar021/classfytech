@@ -15,8 +15,8 @@ export default function SmoothScroll() {
     const lenis = new Lenis({
       // Slower, heavier glide per scroll tick — reads as buttery/cinematic
       // rather than snappy. Frame-rate smoothness itself comes from the rAF
-      // loop below staying unblocked (see HeroCanvas/TechCanvas visibility
-      // pausing and the throttled scroll listeners elsewhere in the app).
+      // loop below staying unblocked (see TechCanvas visibility pausing and
+      // the throttled scroll listeners elsewhere in the app).
       duration: 1.6,
       // easeOutExpo — quick start, gentle settle.
       easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),

@@ -14,7 +14,7 @@ export default function FAQ() {
         <Reveal className="section__head center">
           <span className="eyebrow">FAQ</span>
           <h2 className="section__title">
-            Questions, <span className="gradient-text">answered</span>
+            About <span className="gradient-text">Voice AI</span>
           </h2>
         </Reveal>
 

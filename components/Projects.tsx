@@ -6,13 +6,12 @@ export default function Projects() {
     <section className="section" id="work">
       <div className="container">
         <Reveal className="section__head center">
-          <span className="eyebrow">Featured Work</span>
+          <span className="eyebrow">Solutions</span>
           <h2 className="section__title">
-            Work that <span className="gradient-text">delivers results</span>
+            One platform, <span className="gradient-text">endless use cases</span>
           </h2>
           <p className="section__subtitle">
-            A selection of platforms we&apos;ve designed, built and scaled — with measurable
-            business results.
+            However your team uses the phone today, a Voice AI agent can do it around the clock.
           </p>
         </Reveal>
 

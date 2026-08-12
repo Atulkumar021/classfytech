@@ -60,11 +60,11 @@ export default function Header() {
       <div className="progress-bar" style={{ transform: `scaleX(${progress})` }} />
       <header className={`header ${scrolled ? 'is-scrolled' : ''}`}>
         <div className="container nav">
-          <a className="brand" href="#top" aria-label="Classify Technology home" onClick={close}>
+          <a className="brand" href="#top" aria-label="Voice AI home" onClick={close}>
             <span className="brand__mark" aria-hidden="true">
               <img src="/assets/logo.png" alt="" />
             </span>
-            Classify
+            Voice AI
           </a>
 
           <nav className="nav__menu" aria-label="Primary">
@@ -84,14 +84,14 @@ export default function Header() {
               onClick={close}
               style={{ marginTop: '1rem' }}
             >
-              Start Your Project
+              Book a Demo
             </a>
           </nav>
 
           <div className="nav__actions">
             <ThemeToggle />
             <a className="btn btn--primary btn--sm nav__cta-desktop" href="#contact">
-              Start Your Project
+              Book a Demo
             </a>
             <button
               className="nav__burger"

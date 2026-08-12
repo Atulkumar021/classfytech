@@ -72,309 +72,335 @@ export interface Stat {
 }
 
 export const navLinks = [
-  { href: '#services', label: 'Services' },
-  { href: '#process', label: 'Process' },
-  { href: '#work', label: 'Work' },
+  { href: '#services', label: 'Platform' },
+  { href: '#process', label: 'How It Works' },
+  { href: '#work', label: 'Solutions' },
   { href: '#pricing', label: 'Pricing' },
   { href: '#faq', label: 'FAQ' },
-  { href: '#contact', label: 'Contact' },
+  { href: '#contact', label: 'Book a Demo' },
 ];
 
 export const heroStats: Stat[] = [
-  { value: 250, suffix: '+', label: 'Projects Delivered' },
-  { value: 98, suffix: '%', label: 'Client Satisfaction' },
-  { value: 40, suffix: '+', label: 'Experts On Team' },
-  { value: 12, suffix: '+', label: 'Countries Served' },
+  { value: 2, suffix: 'M+', label: 'Calls Handled' },
+  { value: 99.9, suffix: '%', label: 'Platform Uptime' },
+  { value: 40, suffix: '+', label: 'Languages Supported' },
+  { value: 24, suffix: '/7', label: 'Always-On Agents' },
 ];
 
+// Integration partners shown in the marquee — not client logos.
 export const clients = [
-  '◈ Northwind',
-  '⬡ Quantech',
-  '✦ Lumina',
-  '◆ Vertex Labs',
-  '⬢ Corevo',
-  '✳ Skyforge',
+  '☎ Twilio',
+  '⬡ Salesforce',
+  '✦ HubSpot',
+  '◆ Google Calendar',
+  '⬢ Zoho CRM',
+  '✳ WhatsApp',
 ];
 
 export const services: Service[] = [
   {
-    icon: 'monitor',
-    title: 'Website Development',
+    icon: 'phone',
+    title: 'Outbound Voice Agents',
     items: [
-      'Business Websites',
-      'Landing Pages',
-      'Corporate Websites',
-      'E-commerce Stores',
-      'Portfolio Websites',
-      'Custom Web Applications',
+      'Automated Cold Calling',
+      'Lead Qualification',
+      'Appointment Booking',
+      'Follow-Up & Re-Engagement Campaigns',
+      'Survey & Feedback Calls',
+      'Automatic CRM Logging',
     ],
   },
   {
-    icon: 'phone',
-    title: 'Mobile App Development',
-    items: ['Android Apps', 'iOS Apps', 'Cross-Platform Apps', 'Enterprise Applications'],
+    icon: 'monitor',
+    title: 'Inbound Voice Agents',
+    items: [
+      '24/7 Call Answering',
+      'Customer Support Automation',
+      'FAQ & Order Status Lookup',
+      'Appointment Scheduling',
+      'Smart Call Routing & Escalation',
+      'Multi-Language Support',
+    ],
   },
   {
     icon: 'cpu',
-    title: 'AI Development',
+    title: 'Conversational AI Engine',
     items: [
-      'AI Chatbots',
-      'Voice AI Agents',
-      'AI Customer Support',
-      'AI Workflow Automation',
-      'AI Content Generation',
-      'AI Image & Video Generation',
-      'Integrations with OpenAI, Gemini & Claude',
+      'Human-Like, Natural Voice',
+      'Real-Time Interruption Handling',
+      'Context-Aware Conversations',
+      'Live Sentiment Detection',
+      'Custom Voice & Persona',
+      'Powered by GPT, Gemini & Claude',
     ],
   },
   {
     icon: 'fileCode',
-    title: 'Custom Software Development',
-    items: ['CRM', 'ERP', 'HRMS', 'SaaS Platforms', 'Admin Dashboards', 'Internal Business Tools'],
+    title: 'Analytics & Insights',
+    items: [
+      'Full Call Transcripts & Recordings',
+      'Live Performance Dashboards',
+      'Conversion & Outcome Tracking',
+      'Sentiment & QA Scoring',
+      'A/B Script Testing',
+      'Team Performance Reports',
+    ],
   },
   {
     icon: 'cloud',
-    title: 'Cloud & DevOps',
+    title: 'Integrations & Infrastructure',
     items: [
-      'AWS, Google Cloud & Azure',
-      'Docker & Kubernetes',
-      'CI/CD Pipelines',
-      'Server Deployment',
-      'Performance Optimization',
+      'CRM: Salesforce, HubSpot, Zoho',
+      'Telephony: Twilio & SIP Trunks',
+      'Calendar: Google & Outlook',
+      'REST API & Webhooks',
+      'Enterprise-Grade Security',
+      'Auto-Scaling Cloud Infrastructure',
     ],
   },
 ];
 
 export const features: Feature[] = [
-  { icon: 'braces', label: 'Expert Full-Stack Developers' },
-  { icon: 'cpu', label: 'AI Specialists' },
-  { icon: 'bolt', label: 'Fast Delivery' },
-  { icon: 'chart', label: 'Scalable Architecture' },
-  { icon: 'shield', label: 'Secure Applications' },
-  { icon: 'search', label: 'SEO-Friendly Development' },
-  { icon: 'code', label: 'Clean Code' },
-  { icon: 'layout', label: 'Modern UI/UX' },
-  { icon: 'clock', label: 'Ongoing Support' },
-  { icon: 'chat', label: 'Transparent Communication' },
+  { icon: 'cpu', label: 'Human-Like Voice AI' },
+  { icon: 'bolt', label: 'Sub-Second Response' },
+  { icon: 'chat', label: '40+ Languages' },
+  { icon: 'clock', label: '24/7 Availability' },
+  { icon: 'shield', label: 'Enterprise-Grade Security' },
+  { icon: 'layout', label: 'CRM & Calendar Sync' },
+  { icon: 'code', label: 'No-Code Script Builder' },
+  { icon: 'chart', label: 'Real-Time Analytics' },
+  { icon: 'search', label: 'Smart Call Routing' },
+  { icon: 'braces', label: 'Open API & Webhooks' },
 ];
 
 export const processSteps: ProcessStep[] = [
   {
-    title: 'Discovery & Strategy',
+    title: 'Design Your Agent',
     description:
-      'We dig into your goals, users and market to define a sharp product strategy and roadmap.',
+      'Define its goal, script and persona, and pick a natural voice in minutes with the no-code builder.',
   },
   {
-    title: 'UI/UX Design',
+    title: 'Connect Your Data',
     description:
-      'Wireframes and pixel-perfect, on-brand interfaces designed for clarity and conversion.',
+      'Sync your CRM, calendar and knowledge base so the agent always has the right context.',
   },
   {
-    title: 'Development',
-    description: 'Clean, modular, well-tested code built on modern, scalable architecture.',
+    title: 'Go Live',
+    description: 'Launch an outbound campaign or activate an inbound line — instantly, at any scale.',
   },
   {
-    title: 'AI Integration',
-    description: 'We embed chatbots, automation and generative AI where it drives real value.',
-  },
-  {
-    title: 'Testing & QA',
+    title: 'Real, Natural Conversations',
     description:
-      'Rigorous automated and manual testing for performance, security and reliability.',
+      'The agent listens, understands intent and responds in real time, handling interruptions like a human.',
   },
   {
-    title: 'Deployment',
-    description: 'Smooth, zero-downtime launches with CI/CD pipelines and cloud infrastructure.',
+    title: 'Qualify, Book & Resolve',
+    description:
+      'Leads are qualified, meetings booked, and support questions resolved — automatically, every call.',
   },
   {
-    title: 'Maintenance & Continuous Improvement',
-    description: 'Ongoing monitoring, updates and iteration to keep you ahead of the curve.',
+    title: 'Monitor & Optimize',
+    description:
+      'Transcripts, sentiment scoring and live dashboards show exactly what to improve next.',
+  },
+  {
+    title: 'Scale Without Limits',
+    description: 'Handle 10 calls or 10,000 concurrently, without adding a single person to your team.',
   },
 ];
 
 export const technologies = [
-  { abbr: 'Re', name: 'React' },
-  { abbr: 'N', name: 'Next.js' },
-  { abbr: 'No', name: 'Node.js' },
-  { abbr: 'TS', name: 'TypeScript' },
-  { abbr: 'Py', name: 'Python' },
-  { abbr: 'Ex', name: 'Express.js' },
-  { abbr: 'Mo', name: 'MongoDB' },
-  { abbr: 'Pg', name: 'PostgreSQL' },
-  { abbr: 'My', name: 'MySQL' },
-  { abbr: 'Tw', name: 'Tailwind CSS' },
-  { abbr: 'Dk', name: 'Docker' },
-  { abbr: 'Aw', name: 'AWS' },
-  { abbr: 'Gc', name: 'Google Cloud' },
+  { abbr: 'Tw', name: 'Twilio' },
   { abbr: 'Ai', name: 'OpenAI' },
   { abbr: 'Ge', name: 'Gemini' },
   { abbr: 'Cl', name: 'Claude' },
-  { abbr: 'Gh', name: 'GitHub' },
-  { abbr: 'Fb', name: 'Firebase' },
+  { abbr: 'Wh', name: 'Whisper' },
+  { abbr: 'El', name: 'ElevenLabs' },
+  { abbr: 'Dg', name: 'Deepgram' },
+  { abbr: 'Py', name: 'Python' },
+  { abbr: 'No', name: 'Node.js' },
   { abbr: 'Rd', name: 'Redis' },
+  { abbr: 'Pg', name: 'PostgreSQL' },
+  { abbr: 'Wr', name: 'WebRTC' },
+  { abbr: 'Aw', name: 'AWS' },
+  { abbr: 'Gc', name: 'Google Cloud' },
+  { abbr: 'Sf', name: 'Salesforce' },
+  { abbr: 'Hs', name: 'HubSpot' },
+  { abbr: 'Zo', name: 'Zoho' },
+  { abbr: 'Sl', name: 'Slack' },
+  { abbr: 'Wa', name: 'WhatsApp' },
   { abbr: 'K8', name: 'Kubernetes' },
   { abbr: 'Gq', name: 'GraphQL' },
-  { abbr: 'St', name: 'Stripe' },
-  { abbr: 'Rz', name: 'Razorpay' },
 ];
 
+// Illustrative use cases and figures — swap in real customer case studies and
+// metrics once available; not attributed to specific named clients.
 export const projects: Project[] = [
   {
-    glyph: 'AI',
-    title: 'AI Customer Support Platform',
+    glyph: '💼',
+    title: 'Sales & Lead Qualification',
     description:
-      'Autonomous support agent handling tier-1 tickets with human handoff and analytics.',
-    tags: ['Next.js', 'OpenAI', 'Postgres', 'Redis'],
+      'Outbound agents cold-call fresh leads, qualify intent on the spot, and book meetings directly on your reps’ calendars.',
+    tags: ['Outbound', 'CRM Sync', 'Lead Scoring'],
     results: [
-      { num: '68%', label: 'Tickets automated' },
-      { num: '3×', label: 'Faster replies' },
+      { num: '3x', label: 'Faster lead response' },
+      { num: '24/7', label: 'Outreach coverage' },
     ],
   },
   {
-    glyph: 'HR',
-    title: 'HRMS SaaS',
-    description: 'Multi-tenant HR suite: payroll, attendance, leave and performance in one place.',
-    tags: ['React', 'Node.js', 'MongoDB', 'AWS'],
+    glyph: '🎧',
+    title: 'Customer Support Hotline',
+    description:
+      'Inbound agents answer FAQs, check order status, and escalate complex issues to a human with full context.',
+    tags: ['Inbound', 'Ticketing', 'Escalation'],
     results: [
-      { num: '12k', label: 'Employees managed' },
-      { num: '40%', label: 'Less admin time' },
+      { num: '24/7', label: 'Live call coverage' },
+      { num: '<2s', label: 'Avg. answer time' },
     ],
   },
   {
-    glyph: 'Rx',
-    title: 'Healthcare App',
-    description: 'HIPAA-ready patient app with tele-consults, e-prescriptions and reminders.',
-    tags: ['Flutter', 'Firebase', 'Python'],
+    glyph: '📅',
+    title: 'Appointment Scheduling',
+    description:
+      'Automated booking, reminder and rescheduling calls for clinics, salons and service businesses.',
+    tags: ['Outbound', 'Calendar Sync', 'Reminders'],
     results: [
-      { num: '4.9★', label: 'App store rating' },
-      { num: '50k+', label: 'Active patients' },
+      { num: '40+', label: 'Languages supported' },
+      { num: '100%', label: 'Automated reminders' },
     ],
   },
   {
-    glyph: '🍔',
-    title: 'Food Delivery Platform',
-    description: 'Real-time ordering, live tracking and a rider app across three cities.',
-    tags: ['React Native', 'Node.js', 'GraphQL', 'Stripe'],
+    glyph: '💳',
+    title: 'Payment Reminders',
+    description:
+      'Polite, consistent payment reminder calls with promise-to-pay tracking and compliant scripting.',
+    tags: ['Outbound', 'Compliance', 'CRM Sync'],
     results: [
-      { num: '1.2M', label: 'Orders / year' },
-      { num: '99.9%', label: 'Uptime' },
+      { num: '24/7', label: 'Reminder coverage' },
+      { num: '100%', label: 'Consistent scripting' },
     ],
   },
   {
-    glyph: '🛒',
-    title: 'E-commerce Marketplace',
-    description: 'Multi-vendor marketplace with unified payments, search and seller dashboards.',
-    tags: ['Next.js', 'Postgres', 'Razorpay', 'Kubernetes'],
+    glyph: '📊',
+    title: 'Survey & Feedback Calls',
+    description:
+      'Post-service NPS/CSAT calls at scale, with every response transcribed and sentiment-scored automatically.',
+    tags: ['Outbound', 'Sentiment Analysis', 'Analytics'],
     results: [
-      { num: '2.5×', label: 'Revenue growth' },
-      { num: '120ms', label: 'Avg. page load' },
+      { num: '100%', label: 'Calls transcribed & scored' },
+      { num: 'Real-Time', label: 'Sentiment insights' },
     ],
   },
   {
-    glyph: 'CRM',
-    title: 'CRM Dashboard',
-    description: 'Sales pipeline, automation and forecasting with rich, real-time analytics.',
-    tags: ['React', 'TypeScript', 'Node.js'],
+    glyph: '🏠',
+    title: 'Real Estate Inquiries',
+    description:
+      'Qualifies buyer and renter interest around the clock and schedules site visits automatically.',
+    tags: ['Inbound', 'Outbound', 'Scheduling'],
     results: [
-      { num: '+31%', label: 'Close rate' },
-      { num: '6h', label: 'Saved / week' },
+      { num: '24/7', label: 'Instant inquiry response' },
+      { num: '3x', label: 'More site visits booked' },
     ],
   },
   {
-    glyph: '📞',
-    title: 'Voice AI Dialer',
-    description: 'Outbound voice agent that qualifies leads and books meetings automatically.',
-    tags: ['Python', 'OpenAI', 'Twilio', 'Redis'],
+    glyph: '🧑‍💻',
+    title: 'Recruitment Screening',
+    description:
+      'Pre-screens candidates against your criteria, answers FAQs, and schedules interviews with recruiters.',
+    tags: ['Outbound', 'Screening', 'Scheduling'],
     results: [
-      { num: '5k', label: 'Calls / day' },
-      { num: '22%', label: 'Conversion lift' },
+      { num: '10x', label: 'Faster candidate screening' },
+      { num: '24/7', label: 'Always-on screening' },
     ],
   },
   {
-    glyph: '✈',
-    title: 'Travel Booking App',
-    description: 'Flights, stays and itineraries with dynamic pricing and secure checkout.',
-    tags: ['Next.js', 'MySQL', 'Stripe', 'GCP'],
+    glyph: '📦',
+    title: 'Delivery & Logistics Updates',
+    description:
+      'Proactive calls for delivery confirmations, ETA updates and address verification at scale.',
+    tags: ['Outbound', 'Logistics', 'Automation'],
     results: [
-      { num: '300k', label: 'Bookings' },
-      { num: '4.8★', label: 'User rating' },
+      { num: '100%', label: 'Proactive delivery updates' },
+      { num: '24/7', label: 'Automated dispatch calls' },
     ],
   },
 ];
 
+// Placeholder testimonials — replace with real customer quotes before launch.
 export const testimonials: Testimonial[] = [
   {
     quote:
-      'Classify Technology shipped our AI support platform in weeks, not months. It now resolves two-thirds of our tickets automatically.',
+      'Our outbound agent runs 24/7 and never misses a follow-up — it books more meetings than our old dialer ever did.',
     name: 'Priya Sharma',
-    role: 'VP Customer Support, Zentra Retail',
+    role: 'Sales Lead, B2B SaaS company',
     initials: 'PS',
   },
   {
     quote:
-      "The most transparent, technically sharp team we've worked with. Our marketplace scaled to millions of orders without a hitch.",
+      "Callers genuinely can't tell it's AI. Response times are instant and it hands off to a human the moment it needs to.",
     name: 'Arjun Mehta',
-    role: 'CEO, Corevo Technologies',
+    role: 'Head of Support, D2C Retail brand',
     initials: 'AM',
   },
   {
     quote:
-      'Beautiful UI, rock-solid engineering and genuine AI expertise. Classify Technology feels like an extension of our own team.',
+      'We went live with an inbound line in days, not months. The dashboards make it obvious what to fix next.',
     name: 'Ananya Iyer',
-    role: 'Founder, CareWell Health',
+    role: 'Operations Manager, Healthcare clinic chain',
     initials: 'AI',
   },
   {
     quote:
-      'They redesigned our website and rebuilt our CRM — close rates are up 31% and the team actually enjoys using it.',
+      'The multi-language support let us launch outbound campaigns in three regions with one platform and one script.',
     name: 'Rohan Malhotra',
-    role: 'Sales Director, Meridian Enterprises',
+    role: 'Growth Lead, Real estate platform',
     initials: 'RM',
   },
 ];
 
+// Per-minute billing, tiered by monthly call volume. Enterprise stays custom.
 export const plans: Plan[] = [
   {
     name: 'Starter',
-    price: '₹2,500',
-    originalPrice: '₹5,000',
-    unit: '/project',
-    description: 'For landing pages and small business websites.',
+    price: '₹6.5',
+    unit: '/min',
+    description: 'For small teams launching their first voice agent — 1,000 to 10,000 calls per month.',
     features: [
-      'Up to 5 pages',
-      'Responsive design',
-      'Basic SEO setup',
-      '2 weeks delivery',
-      '30 days support',
+      '1 voice agent',
+      '1,000–10,000 calls / month',
+      'Inbound or outbound (choose one)',
+      'Calendar & WhatsApp integration',
+      'Call transcripts & basic analytics',
+      'Email support',
     ],
-    cta: 'Choose Starter',
+    cta: 'Get Started',
   },
   {
-    name: 'Professional',
-    price: '₹8,900',
-    originalPrice: '₹17,800',
-    unit: '/project',
-    description: 'For web apps, mobile apps and growing SaaS products.',
+    name: 'Growth',
+    price: '₹6',
+    unit: '/min',
+    description: 'For teams scaling outreach and support together — 10,000+ calls per month.',
     features: [
-      'Custom web or mobile app',
-      'UI/UX design included',
-      'One AI integration',
-      'Cloud deployment & CI/CD',
-      '90 days support',
+      'Up to 5 voice agents',
+      '10,000+ calls / month',
+      'Inbound + outbound',
+      'CRM integrations (Salesforce, HubSpot, Zoho)',
+      'Live dashboards & sentiment analysis',
+      'Priority support',
     ],
-    cta: 'Choose Professional',
+    cta: 'Choose Growth',
     featured: true,
   },
   {
     name: 'Enterprise',
     price: 'Custom',
-    description: 'For large-scale platforms and dedicated teams.',
+    description: 'For high-volume, mission-critical voice operations.',
     features: [
-      'Dedicated engineering team',
-      'Advanced AI & automation',
-      'Scalable cloud architecture',
-      'SLA & priority support',
-      'Security & compliance',
+      'Unlimited agents & minutes',
+      'Dedicated infrastructure & SLA',
+      'Custom LLM & voice tuning',
+      'Advanced compliance & data residency',
+      'Dedicated success manager',
     ],
     cta: 'Contact Sales',
   },
@@ -382,34 +408,44 @@ export const plans: Plan[] = [
 
 export const faqs: Faq[] = [
   {
-    question: 'How long does development take?',
+    question: 'What exactly is Voice AI?',
     answer:
-      'It depends on scope. A landing page can be ready in 1–2 weeks, while a full web or mobile app typically takes 6–12 weeks. After discovery we give you a clear, milestone-based timeline.',
+      'Voice AI is an AI-powered voice agent platform that makes and receives phone calls on your behalf — sounding natural, understanding context, and taking real actions like booking meetings, answering questions, or qualifying leads.',
   },
   {
-    question: 'Can you build custom software?',
+    question: 'How natural does the voice actually sound?',
     answer:
-      'Yes. We build tailored CRMs, ERPs, HRMS, SaaS platforms, dashboards and internal tools designed precisely around your workflows and business logic.',
+      'Our agents use state-of-the-art speech models for natural intonation, real-time interruption handling and sub-second response times — most callers can’t tell they’re speaking to an AI.',
   },
   {
-    question: 'Can you integrate AI into existing systems?',
+    question: 'Does it handle both inbound and outbound calls?',
     answer:
-      'Yes. We integrate chatbots, voice agents, automation and generative AI (OpenAI, Gemini, Claude and others) into your current stack via secure APIs — no full rebuild required.',
+      'Yes. The same platform powers outbound campaigns (cold calling, lead qualification, reminders) and inbound lines (support, bookings, FAQs) — configure either, or both together.',
   },
   {
-    question: 'Do you provide maintenance?',
+    question: 'What languages are supported?',
     answer:
-      'Yes. We offer ongoing maintenance, monitoring, performance tuning and feature iteration through flexible support plans so your product keeps improving after launch.',
+      '40+ languages and regional accents, with automatic language detection so an agent can even switch mid-conversation.',
   },
   {
-    question: 'Can you redesign my current website?',
+    question: 'Can it integrate with my CRM and calendar?',
     answer:
-      'Yes. We modernize existing websites and apps with fresh UI/UX, better performance, SEO and accessibility — while preserving what already works for your users.',
+      'Yes. Native integrations with Salesforce, HubSpot, Zoho, Google Calendar and Outlook, plus a REST API and webhooks for anything custom.',
   },
   {
-    question: 'What technologies do you use?',
+    question: 'Is call recording and consent handled compliantly?',
     answer:
-      'Our core stack includes React, Next.js, Node.js, TypeScript and Python, with Postgres, MongoDB and Redis for data, Docker, Kubernetes and AWS/GCP/Azure for infrastructure, and leading AI models for intelligence.',
+      'Yes. Configurable consent prompts, call-recording controls and data-residency options help you stay compliant with local telephony and privacy regulations.',
+  },
+  {
+    question: 'What happens when the AI can’t handle a call?',
+    answer:
+      'It escalates instantly to a live human with the full conversation context passed along — no dead air, no repeated questions.',
+  },
+  {
+    question: 'How do I get started?',
+    answer:
+      'Book a free demo. We’ll help you script your first agent, connect your data, and you can be live within days.',
   },
 ];
 

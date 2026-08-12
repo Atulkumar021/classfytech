@@ -13,70 +13,76 @@ import './globals.css';
 // the system stack gracefully if Google Fonts is unreachable. Font-family names
 // are wired to the CSS variables in globals.css.
 
-const siteUrl = 'https://classifytechnology.in';
+const siteUrl = 'https://voiceai.classifytechnology.in';
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   icons: { icon: '/assets/logo.png', apple: '/assets/logo.png' },
-  title: 'Classify Technology — Websites, Mobile Apps & AI Solutions That Grow Your Business',
+  title: 'Voice AI — Human-Like AI Voice Agents for Inbound & Outbound Calls',
   description:
-    'Classify Technology is a full-service software agency in New Delhi building stunning websites, scalable mobile apps, AI-powered automation, cloud infrastructure and custom software for startups and enterprises.',
+    'Voice AI by Classify Technology is an AI voice agent platform that makes and takes phone calls for you — qualifying leads, booking meetings and resolving support calls 24/7, in 40+ languages.',
   keywords: [
-    'web development',
-    'mobile app development',
-    'AI development',
-    'custom software',
-    'cloud',
-    'DevOps',
-    'SaaS',
-    'CRM',
-    'ERP',
-    'agency',
+    'voice AI',
+    'AI voice agent',
+    'AI calling software',
+    'outbound dialer',
+    'inbound call automation',
+    'conversational AI',
+    'AI phone agent',
+    'call center automation',
+    'AI receptionist',
+    'sales automation',
   ],
   authors: [{ name: 'Classify Technology' }],
   alternates: { canonical: '/' },
   openGraph: {
     type: 'website',
     url: siteUrl,
-    title: 'Classify Technology — We Build Websites, Mobile Apps & AI Solutions',
+    title: 'Voice AI — Human-Like AI Voice Agents for Inbound & Outbound Calls',
     description:
-      'From stunning websites and scalable mobile apps to AI automation and custom software, we help you build the future.',
-    siteName: 'Classify Technology',
+      'One platform, natural-sounding voice agents that qualify leads, book meetings and handle support calls around the clock.',
+    siteName: 'Voice AI',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Classify Technology — We Build Websites, Mobile Apps & AI Solutions',
+    title: 'Voice AI — Human-Like AI Voice Agents for Inbound & Outbound Calls',
     description:
-      'From stunning websites and scalable mobile apps to AI automation and custom software, we help you build the future.',
+      'One platform, natural-sounding voice agents that qualify leads, book meetings and handle support calls around the clock.',
   },
 };
 
 export const viewport: Viewport = {
-  themeColor: '#070914',
+  themeColor: '#0a0a0a',
   width: 'device-width',
   initialScale: 1,
 };
 
 const organizationJsonLd = {
   '@context': 'https://schema.org',
-  '@type': 'Organization',
-  name: 'Classify Technology',
+  '@type': 'SoftwareApplication',
+  name: 'Voice AI',
+  applicationCategory: 'BusinessApplication',
+  operatingSystem: 'Web',
   description:
-    'Software agency building websites, mobile apps, AI solutions, cloud infrastructure and custom software.',
+    'AI voice agent platform for inbound and outbound phone calls — lead qualification, appointment booking, customer support and more, in 40+ languages.',
   url: siteUrl,
-  email: 'hello@classifytechnology.in',
-  telephone: '+91-7017672081',
-  address: {
-    '@type': 'PostalAddress',
-    addressLocality: 'New Delhi',
-    addressRegion: 'Delhi',
-    addressCountry: 'IN',
+  provider: {
+    '@type': 'Organization',
+    name: 'Classify Technology',
+    email: 'hello@classifytechnology.in',
+    telephone: '+91-7017672081',
+    address: {
+      '@type': 'PostalAddress',
+      addressLocality: 'New Delhi',
+      addressRegion: 'Delhi',
+      addressCountry: 'IN',
+    },
+    sameAs: [
+      'https://twitter.com/classifytechin',
+      'https://www.linkedin.com/company/classify-technology',
+      'https://github.com/classifytechnology',
+    ],
   },
-  sameAs: [
-    'https://twitter.com/classifytechin',
-    'https://www.linkedin.com/company/classify-technology',
-    'https://github.com/classifytechnology',
-  ],
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -86,7 +92,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link
-          href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap"
+          href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700;800&display=swap"
           rel="stylesheet"
         />
       </head>

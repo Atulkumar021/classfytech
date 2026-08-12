@@ -6,7 +6,7 @@ import { Html, OrbitControls } from '@react-three/drei';
 import * as THREE from 'three';
 import { technologies } from '@/lib/content';
 
-const RADIUS = 3.6;
+const RADIUS = 3.3;
 const _vec = new THREE.Vector3();
 
 /** Even point distribution on a sphere (Fibonacci lattice). */
@@ -44,10 +44,10 @@ function TechNode({
     if (!group.current || !el.current) return;
     group.current.getWorldPosition(_vec);
     const dist = camera.position.distanceTo(_vec);
-    // Map camera distance to opacity: near ≈ 1, far ≈ 0.14.
-    const o = THREE.MathUtils.clamp(1 - (dist - 5.2) / 6.5, 0.14, 1);
+    // Depth cue via opacity only (near ≈ 1, far ≈ 0.55) — no blur, so every
+    // label stays sharp and readable regardless of how far back it sits.
+    const o = THREE.MathUtils.clamp(1 - (dist - 5.2) / 9, 0.55, 1);
     el.current.style.opacity = o.toFixed(3);
-    el.current.style.filter = `blur(${((1 - o) * 2).toFixed(2)}px)`;
   });
 
   return (
@@ -84,7 +84,7 @@ export default function TechSphere({ reduced = false }: { reduced?: boolean }) {
         {/* Faint structural shell */}
         <mesh>
           <icosahedronGeometry args={[RADIUS, 1]} />
-          <meshBasicMaterial color="#8b5cf6" wireframe transparent opacity={0.06} />
+          <meshBasicMaterial color="#5a8bff" wireframe transparent opacity={0.06} />
         </mesh>
         {technologies.map((tech, i) => (
           <TechNode key={tech.name} position={positions[i]} abbr={tech.abbr} name={tech.name} />

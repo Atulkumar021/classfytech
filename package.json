@@ -2,7 +2,7 @@
   "name": "nova-nextjs",
   "version": "1.0.0",
   "private": true,
-  "description": "Classify Technology — software agency website built with Next.js and React Three Fiber",
+  "description": "Voice AI — AI voice agent platform website built with Next.js and React Three Fiber",
   "scripts": {
     "dev": "next dev",
     "build": "next build",

@@ -6,13 +6,13 @@ export default function Technologies() {
     <section className="section" id="tech">
       <div className="container">
         <Reveal className="section__head center">
-          <span className="eyebrow">Technologies</span>
+          <span className="eyebrow">Under the Hood</span>
           <h2 className="section__title">
             A <span className="gradient-text">modern, battle-tested</span> stack
           </h2>
           <p className="section__subtitle">
-            We choose the right tools for the job — proven, performant and future-proof. Drag the
-            sphere to explore our stack.
+            Best-in-class speech, language and infrastructure providers, wired together into one
+            reliable platform. Drag the sphere to explore the stack.
           </p>
         </Reveal>
 

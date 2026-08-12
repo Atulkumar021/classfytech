@@ -19,7 +19,7 @@ export default function Marquee() {
             marginBottom: '1.5rem',
           }}
         >
-          Trusted by ambitious teams worldwide
+          Works with the tools your team already uses
         </p>
         <div className="marquee">
           <div className="marquee__track">

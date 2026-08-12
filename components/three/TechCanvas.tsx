@@ -16,7 +16,7 @@ export default function TechCanvas() {
     <div ref={ref} style={{ position: 'absolute', inset: 0 }}>
       <Canvas
         style={{ position: 'absolute', inset: 0 }}
-        camera={{ position: [0, 0, 9], fov: 45 }}
+        camera={{ position: [0, 0, 10.5], fov: 42 }}
         dpr={[1, 2]}
         gl={{ alpha: true, antialias: true, powerPreference: 'high-performance' }}
         frameloop={reduced ? 'demand' : visible ? 'always' : 'never'}

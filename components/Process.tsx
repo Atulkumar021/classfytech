@@ -6,12 +6,12 @@ export default function Process() {
     <section className="section" id="process">
       <div className="container">
         <Reveal className="section__head center">
-          <span className="eyebrow">Our Process</span>
+          <span className="eyebrow">How It Works</span>
           <h2 className="section__title">
-            A clear path from <span className="gradient-text">idea to impact</span>
+            From script to <span className="gradient-text">live agent</span>
           </h2>
           <p className="section__subtitle">
-            A proven, transparent workflow that keeps you in the loop at every stage.
+            No code, no call center to hire — just a clear path from idea to a live voice agent.
           </p>
         </Reveal>
 

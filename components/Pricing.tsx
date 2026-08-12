@@ -9,10 +9,11 @@ export default function Pricing() {
         <Reveal className="section__head center">
           <span className="eyebrow">Pricing</span>
           <h2 className="section__title">
-            Simple, <span className="gradient-text">transparent</span> plans
+            Simple, <span className="gradient-text">usage-based</span> plans
           </h2>
           <p className="section__subtitle">
-            Flexible engagement models that scale with your ambition.
+            Pay for the minutes you use — plans that scale from your first agent to your whole
+            call center.
           </p>
         </Reveal>
 
@@ -52,7 +53,7 @@ export default function Pricing() {
         </div>
 
         <Reveal as="p" className="pricing__note">
-          Working on something large-scale or unique?{' '}
+          Need more minutes, agents or a dedicated setup?{' '}
           <a href="#contact">Request a custom quote →</a>
         </Reveal>
       </div>

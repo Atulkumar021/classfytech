@@ -10,13 +10,13 @@ export default function Services() {
     <section className="section" id="services">
       <div className="container">
         <Reveal className="section__head center">
-          <span className="eyebrow">What We Do</span>
+          <span className="eyebrow">The Platform</span>
           <h2 className="section__title">
-            End-to-end <span className="gradient-text">product engineering</span>
+            One agent, <span className="gradient-text">every conversation</span>
           </h2>
           <p className="section__subtitle">
-            One partner for design, development, AI and infrastructure — so you can ship faster and
-            scale with confidence.
+            Outbound calling, inbound support, the conversational AI engine, analytics and every
+            integration you need — all in one voice AI platform.
           </p>
         </Reveal>
 
@@ -45,8 +45,8 @@ export default function Services() {
 
           <Reveal delay={services.length * 40} as="article" className="card svc-cta col-6">
             <div className="svc-cta__text">
-              <h3>Need something more specific?</h3>
-              <p>Share your requirements and we&apos;ll put together the right team to deliver it.</p>
+              <h3>Need a custom workflow?</h3>
+              <p>Tell us about your call flow and we&apos;ll help you design the right agent for it.</p>
             </div>
             <a className="btn btn--primary" href="#contact">
               Let&apos;s talk

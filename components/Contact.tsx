@@ -47,10 +47,11 @@ export default function Contact() {
         <Reveal className="section__head center">
           <span className="eyebrow">Contact</span>
           <h2 className="section__title">
-            Let&apos;s Discuss <span className="gradient-text">Your Project</span>
+            Book Your <span className="gradient-text">Free Demo</span>
           </h2>
           <p className="section__subtitle">
-            Tell us about your project and we&apos;ll get back to you within one business day.
+            Tell us about your use case and we&apos;ll show you a live voice agent within one
+            business day.
           </p>
         </Reveal>
 
@@ -66,19 +67,18 @@ export default function Contact() {
                 <input id="c-email" name="email" type="email" autoComplete="email" placeholder="jane@company.com" required />
               </div>
               <div className="field">
-                <label htmlFor="c-service">Service</label>
-                <select id="c-service" name="service" defaultValue="Website Development">
-                  <option>Website Development</option>
-                  <option>Mobile App Development</option>
-                  <option>AI Development</option>
-                  <option>Custom Software</option>
-                  <option>Cloud &amp; DevOps</option>
+                <label htmlFor="c-service">I need</label>
+                <select id="c-service" name="service" defaultValue="Outbound Voice Agent">
+                  <option>Outbound Voice Agent</option>
+                  <option>Inbound Voice Agent</option>
+                  <option>Both Inbound &amp; Outbound</option>
+                  <option>Custom Integration</option>
                   <option>Something else</option>
                 </select>
               </div>
               <div className="field">
-                <label htmlFor="c-message">Project details</label>
-                <textarea id="c-message" name="message" placeholder="Tell us what you'd like to build…" required />
+                <label htmlFor="c-message">Tell us about your use case</label>
+                <textarea id="c-message" name="message" placeholder="e.g. call volume, use case, languages needed…" required />
               </div>
               <button className="btn btn--primary btn--block" type="submit" disabled={submitting}>
                 Send message

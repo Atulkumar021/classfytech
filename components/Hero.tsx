@@ -1,14 +1,11 @@
 'use client';
 
-import dynamic from 'next/dynamic';
 import Counter from '@/components/ui/Counter';
 import Reveal from '@/components/ui/Reveal';
+import VoiceCallPreview from '@/components/VoiceCallPreview';
 import { ArrowRight, Calendar, Chart, Star, Shield } from '@/components/Icons';
 
-// WebGL only exists in the browser — load the canvas client-side, no SSR.
-const HeroCanvas = dynamic(() => import('@/components/three/HeroCanvas'), { ssr: false });
-
-const services = ['Web Development', 'Mobile Apps', 'AI Solutions', 'Custom Software', 'Cloud'];
+const services = ['Outbound Calling', 'Inbound Support', 'Lead Qualification', 'Appointment Booking', '40+ Languages'];
 const avatars = ['PS', 'AM', 'AI', 'RM'];
 
 export default function Hero() {
@@ -20,29 +17,29 @@ export default function Hero() {
           <Reveal>
             <span className="hero__badge">
               <span className="hero__badge-dot" aria-hidden="true" />
-              Now accepting new projects
+              AI voice agents that sound human
             </span>
           </Reveal>
 
           <Reveal as="h1" delay={35}>
-            We build websites, mobile apps and AI solutions that{' '}
-            <span className="gradient-text">grow your business</span>.
+            AI voice agents that call, answer and{' '}
+            <span className="gradient-text">close for you</span>.
           </Reveal>
 
           <Reveal as="p" delay={70} className="hero__sub">
-            A full-service software and digital studio. We design, build and scale high-converting
-            websites, mobile apps, AI automation and custom platforms — engineered to move the
-            metrics that matter to your business.
+            Voice AI makes outbound calls and answers inbound ones — qualifying leads, booking
+            meetings and resolving support questions in a natural, human-like voice, 24/7, in
+            40+ languages.
           </Reveal>
 
           <Reveal delay={100} className="hero__cta">
             <a className="btn btn--primary" href="#contact">
-              Start Your Project
+              Book a Free Demo
               <ArrowRight />
             </a>
             <a className="btn btn--ghost" href="#contact">
               <Calendar />
-              Book a Free Consultation
+              Talk to Sales
             </a>
           </Reveal>
 
@@ -65,53 +62,60 @@ export default function Hero() {
             <p className="hero__proof-text">
               <span className="hero__proof-stars">★★★★★</span>
               <br />
-              Rated <strong>4.9/5</strong> by <strong>250+</strong> businesses worldwide
+              Rated <strong>4.9/5</strong> by sales &amp; support teams worldwide
             </p>
           </Reveal>
         </div>
 
-        {/* ---------- Right: visual stage ---------- */}
+        {/* ---------- Right: visual stage — a live-looking AI call ---------- */}
         <Reveal delay={110} className="hero__visual">
           <div className="hero__stage">
-            <HeroCanvas />
+            <div className="hero__stage-glow" aria-hidden="true" />
 
-            <div className="hero__metric hero__metric--1">
-              <span className="hero__metric-icon">
-                <Chart />
-              </span>
-              <span>
-                <span className="val">
-                  +<Counter value={180} suffix="%" />
-                </span>
-                <br />
-                <span className="lbl">Avg. growth</span>
-              </span>
-            </div>
+            {/* Badges are positioned relative to this wrapper (not the whole
+                stage) so they stay pinned to the card's corners at any
+                viewport width instead of drifting away from it. */}
+            <div className="hero__card-wrap">
+              <VoiceCallPreview />
 
-            <div className="hero__metric hero__metric--2">
-              <span className="hero__metric-icon">
-                <Star />
-              </span>
-              <span>
-                <span className="val">
-                  <Counter value={4.9} decimals={1} />★
+              <div className="hero__metric hero__metric--1">
+                <span className="hero__metric-icon">
+                  <Chart />
                 </span>
-                <br />
-                <span className="lbl">Client rating</span>
-              </span>
-            </div>
+                <span>
+                  <span className="val">
+                    +<Counter value={35} suffix="%" />
+                  </span>
+                  <br />
+                  <span className="lbl">More meetings booked</span>
+                </span>
+              </div>
 
-            <div className="hero__metric hero__metric--3">
-              <span className="hero__metric-icon">
-                <Shield />
-              </span>
-              <span>
-                <span className="val">
-                  <Counter value={250} suffix="+" />
+              <div className="hero__metric hero__metric--2">
+                <span className="hero__metric-icon">
+                  <Star />
                 </span>
-                <br />
-                <span className="lbl">Projects shipped</span>
-              </span>
+                <span>
+                  <span className="val">
+                    <Counter value={4.9} decimals={1} />★
+                  </span>
+                  <br />
+                  <span className="lbl">Caller satisfaction</span>
+                </span>
+              </div>
+
+              <div className="hero__metric hero__metric--3">
+                <span className="hero__metric-icon">
+                  <Shield />
+                </span>
+                <span>
+                  <span className="val">
+                    <Counter value={2} suffix="M+" />
+                  </span>
+                  <br />
+                  <span className="lbl">Calls handled</span>
+                </span>
+              </div>
             </div>
           </div>
         </Reveal>
