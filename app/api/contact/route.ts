@@ -32,16 +32,19 @@ function escapeHtml(value: string) {
 
 let transporter: nodemailer.Transporter | null = null;
 
+// Reads the GMAIL_USER / GMAIL_APP_PASSWORD already configured on the server
+// (see .env there) — Gmail's SMTP host/port are fixed, so no separate
+// SMTP_HOST/SMTP_PORT vars are needed.
 function getTransporter() {
   if (transporter) return transporter;
-  const { SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASS } = process.env;
-  if (!SMTP_HOST || !SMTP_PORT || !SMTP_USER || !SMTP_PASS) return null;
+  const { GMAIL_USER, GMAIL_APP_PASSWORD } = process.env;
+  if (!GMAIL_USER || !GMAIL_APP_PASSWORD) return null;
 
   transporter = nodemailer.createTransport({
-    host: SMTP_HOST,
-    port: Number(SMTP_PORT),
-    secure: Number(SMTP_PORT) === 465,
-    auth: { user: SMTP_USER, pass: SMTP_PASS },
+    host: 'smtp.gmail.com',
+    port: 587,
+    secure: false,
+    auth: { user: GMAIL_USER, pass: GMAIL_APP_PASSWORD.replace(/\s+/g, '') },
   });
   return transporter;
 }
@@ -81,7 +84,7 @@ export async function POST(request: Request) {
 
   const smtp = getTransporter();
   if (!smtp) {
-    console.error('SMTP is not configured — set SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASS.');
+    console.error('Email is not configured — set GMAIL_USER and GMAIL_APP_PASSWORD.');
     return NextResponse.json(
       { ok: false, error: 'Email sending is not configured yet. Please try again later.' },
       { status: 500 },
@@ -89,7 +92,7 @@ export async function POST(request: Request) {
   }
 
   const to = process.env.CONTACT_TO_EMAIL || 'classifytechnologies@gmail.com';
-  const from = process.env.SMTP_FROM || process.env.SMTP_USER!;
+  const from = process.env.GMAIL_USER!;
   const subject =
     source === 'demo' ? `New demo request from ${name}` : `New contact form message from ${name}`;
 
