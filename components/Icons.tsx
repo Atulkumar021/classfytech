@@ -125,6 +125,11 @@ export const Braces = (p: IconProps) => (
     <path d="M16 18l6-6-6-6M8 6l-6 6 6 6" />
   </svg>
 );
+export const Close = (p: IconProps) => (
+  <svg {...base} {...p}>
+    <path d="M18 6L6 18M6 6l12 12" />
+  </svg>
+);
 export const Check = (p: IconProps) => (
   <svg {...base} strokeWidth={2.5} {...p}>
     <path d="M20 6L9 17l-5-5" />

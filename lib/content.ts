@@ -21,6 +21,7 @@ export type FeatureIconKey =
 export interface Service {
   icon: ServiceIconKey;
   title: string;
+  description: string;
   items: string[];
 }
 
@@ -101,6 +102,7 @@ export const services: Service[] = [
   {
     icon: 'phone',
     title: 'Outbound Voice Agents',
+    description: 'Proactive calls that qualify, book and follow up — without a dialer.',
     items: [
       'Automated Cold Calling',
       'Lead Qualification',
@@ -113,6 +115,7 @@ export const services: Service[] = [
   {
     icon: 'monitor',
     title: 'Inbound Voice Agents',
+    description: "Every call answered instantly, day or night, in the caller's language.",
     items: [
       '24/7 Call Answering',
       'Customer Support Automation',
@@ -125,6 +128,7 @@ export const services: Service[] = [
   {
     icon: 'cpu',
     title: 'Conversational AI Engine',
+    description: 'The brain behind every call — natural, context-aware, always on-script.',
     items: [
       'Human-Like, Natural Voice',
       'Real-Time Interruption Handling',
@@ -137,6 +141,7 @@ export const services: Service[] = [
   {
     icon: 'fileCode',
     title: 'Analytics & Insights',
+    description: 'See exactly how every call went, and what to fix next.',
     items: [
       'Full Call Transcripts & Recordings',
       'Live Performance Dashboards',
@@ -149,6 +154,7 @@ export const services: Service[] = [
   {
     icon: 'cloud',
     title: 'Integrations & Infrastructure',
+    description: 'Plugs into the stack you already run, at any scale.',
     items: [
       'CRM: Salesforce, HubSpot, Zoho',
       'Telephony: Twilio & SIP Trunks',
@@ -450,7 +456,7 @@ export const faqs: Faq[] = [
 ];
 
 export const contactInfo = {
-  email: 'hello@classifytechnology.in',
+  email: 'classifytechnologies@gmail.com',
   phoneDisplay: '+91 70176 72081',
   phoneHref: '+917017672081',
   whatsapp: '917017672081',

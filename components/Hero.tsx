@@ -1,9 +1,8 @@
 'use client';
 
-import Counter from '@/components/ui/Counter';
 import Reveal from '@/components/ui/Reveal';
 import VoiceCallPreview from '@/components/VoiceCallPreview';
-import { ArrowRight, Calendar, Chart, Star, Shield } from '@/components/Icons';
+import { ArrowRight, Calendar } from '@/components/Icons';
 
 const services = ['Outbound Calling', 'Inbound Support', 'Lead Qualification', 'Appointment Booking', '40+ Languages'];
 const avatars = ['PS', 'AM', 'AI', 'RM'];
@@ -67,55 +66,17 @@ export default function Hero() {
           </Reveal>
         </div>
 
-        {/* ---------- Right: visual stage — a live-looking AI call ---------- */}
+        {/* ---------- Right: visual stage — a live-looking AI call, front
+             and center with nothing competing for attention around it ---------- */}
         <Reveal delay={110} className="hero__visual">
           <div className="hero__stage">
             <div className="hero__stage-glow" aria-hidden="true" />
-
-            {/* Badges are positioned relative to this wrapper (not the whole
-                stage) so they stay pinned to the card's corners at any
-                viewport width instead of drifting away from it. */}
             <div className="hero__card-wrap">
+              <p className="hero__stage-caption">
+                <span className="hero__stage-caption-dot" aria-hidden="true" />
+                Watch a live Voice AI call unfold, in real time
+              </p>
               <VoiceCallPreview />
-
-              <div className="hero__metric hero__metric--1">
-                <span className="hero__metric-icon">
-                  <Chart />
-                </span>
-                <span>
-                  <span className="val">
-                    +<Counter value={35} suffix="%" />
-                  </span>
-                  <br />
-                  <span className="lbl">More meetings booked</span>
-                </span>
-              </div>
-
-              <div className="hero__metric hero__metric--2">
-                <span className="hero__metric-icon">
-                  <Star />
-                </span>
-                <span>
-                  <span className="val">
-                    <Counter value={4.9} decimals={1} />★
-                  </span>
-                  <br />
-                  <span className="lbl">Caller satisfaction</span>
-                </span>
-              </div>
-
-              <div className="hero__metric hero__metric--3">
-                <span className="hero__metric-icon">
-                  <Shield />
-                </span>
-                <span>
-                  <span className="val">
-                    <Counter value={2} suffix="M+" />
-                  </span>
-                  <br />
-                  <span className="lbl">Calls handled</span>
-                </span>
-              </div>
             </div>
           </div>
         </Reveal>

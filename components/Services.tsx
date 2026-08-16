@@ -30,11 +30,15 @@ export default function Services() {
                 as="article"
                 className={`card service ${spans[i] ?? 'col-2'}`}
               >
+                <span className="service__index" aria-hidden="true">
+                  {String(i + 1).padStart(2, '0')}
+                </span>
                 <div className="service__icon">
                   <Icon />
                 </div>
                 <h3>{service.title}</h3>
-                <ul className="service__list">
+                <p className="service__desc">{service.description}</p>
+                <ul className="service__pills">
                   {service.items.map((item) => (
                     <li key={item}>{item}</li>
                   ))}

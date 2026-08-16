@@ -4,6 +4,7 @@ import Backdrop from '@/components/Backdrop';
 import SpotlightController from '@/components/ui/SpotlightController';
 import SmoothScroll from '@/components/ui/SmoothScroll';
 import ScrollToTop from '@/components/ui/ScrollToTop';
+import DemoModal from '@/components/DemoModal';
 import './globals.css';
 
 // NOTE: We intentionally load fonts via a plain <link> (below) rather than
@@ -69,7 +70,7 @@ const organizationJsonLd = {
   provider: {
     '@type': 'Organization',
     name: 'Classify Technology',
-    email: 'hello@classifytechnology.in',
+    email: 'classifytechnologies@gmail.com',
     telephone: '+91-7017672081',
     address: {
       '@type': 'PostalAddress',
@@ -107,6 +108,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <SpotlightController />
           {children}
           <ScrollToTop />
+          <DemoModal />
         </Providers>
       </body>
     </html>
