@@ -4,12 +4,26 @@ import { useState } from 'react';
 import { faqs } from '@/lib/content';
 import Reveal from '@/components/ui/Reveal';
 
+// Describes the FAQ content already rendered below so search engines can
+// show it as a rich "People also ask"-style result. Kept in sync with
+// `faqs` automatically since it's generated from the same array.
+const faqJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faqs.map((faq) => ({
+    '@type': 'Question',
+    name: faq.question,
+    acceptedAnswer: { '@type': 'Answer', text: faq.answer },
+  })),
+};
+
 export default function FAQ() {
   // Single-open accordion; null means all collapsed.
   const [openIndex, setOpenIndex] = useState<number | null>(0);
 
   return (
     <section className="section" id="faq">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
       <div className="container">
         <Reveal className="section__head center">
           <span className="eyebrow">FAQ</span>

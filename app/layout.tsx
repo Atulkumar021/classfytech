@@ -36,6 +36,11 @@ export const metadata: Metadata = {
   ],
   authors: [{ name: 'Classify Technology' }],
   alternates: { canonical: '/' },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: { index: true, follow: true, 'max-image-preview': 'large' },
+  },
   openGraph: {
     type: 'website',
     url: siteUrl,
@@ -43,12 +48,21 @@ export const metadata: Metadata = {
     description:
       'One platform, natural-sounding voice agents that qualify leads, book meetings and handle support calls around the clock.',
     siteName: 'Voice AI',
+    images: [
+      {
+        url: '/assets/og-image.png',
+        width: 1200,
+        height: 630,
+        alt: 'Voice AI — Human-Like AI Voice Agents for Inbound & Outbound Calls',
+      },
+    ],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Voice AI — Human-Like AI Voice Agents for Inbound & Outbound Calls',
     description:
       'One platform, natural-sounding voice agents that qualify leads, book meetings and handle support calls around the clock.',
+    images: ['/assets/og-image.png'],
   },
 };
 
