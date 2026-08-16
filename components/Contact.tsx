@@ -17,6 +17,7 @@ export default function Contact() {
     const data = new FormData(form);
     const name = String(data.get('name') || '').trim();
     const email = String(data.get('email') || '').trim();
+    const service = String(data.get('service') || '').trim();
     const message = String(data.get('message') || '').trim();
     const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 
@@ -28,17 +29,31 @@ export default function Contact() {
       return;
     }
 
-    // No backend wired up — simulate an async submission. Replace this with a
-    // POST to your API route / form service (e.g. /api/contact, Formspree...).
     setStatus({ message: 'Sending…', state: 'pending' });
     setSubmitting(true);
-    await new Promise((r) => setTimeout(r, 900));
-    setStatus({
-      message: `Thanks, ${name.split(' ')[0]}! We'll be in touch within one business day.`,
-      state: 'success',
-    });
-    setSubmitting(false);
-    form.reset();
+    try {
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ source: 'contact', name, email, service, message }),
+      });
+      const result = await res.json();
+      if (!res.ok || !result.ok) {
+        throw new Error(result.error || 'Something went wrong. Please try again.');
+      }
+      setStatus({
+        message: `Thanks, ${name.split(' ')[0]}! We'll be in touch within one business day.`,
+        state: 'success',
+      });
+      form.reset();
+    } catch (err) {
+      setStatus({
+        message: err instanceof Error ? err.message : 'Something went wrong. Please try again.',
+        state: 'error',
+      });
+    } finally {
+      setSubmitting(false);
+    }
   }
 
   return (

@@ -59,6 +59,7 @@ export default function DemoModal() {
     const data = new FormData(form);
     const name = String(data.get('name') || '').trim();
     const email = String(data.get('email') || '').trim();
+    const countryCode = String(data.get('countryCode') || '').trim();
     const phone = String(data.get('phone') || '').trim();
     const remark = String(data.get('remark') || '').trim();
     const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
@@ -69,17 +70,31 @@ export default function DemoModal() {
       return;
     }
 
-    // No backend wired up — simulate an async submission, matching the main
-    // contact form until this is pointed at a real API route / form service.
     setStatus({ message: 'Sending…', state: 'pending' });
     setSubmitting(true);
-    await new Promise((r) => setTimeout(r, 900));
-    setStatus({
-      message: `Thanks, ${name.split(' ')[0]}! We'll be in touch within one business day.`,
-      state: 'success',
-    });
-    setSubmitting(false);
-    form.reset();
+    try {
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ source: 'demo', name, email, countryCode, phone, remark }),
+      });
+      const result = await res.json();
+      if (!res.ok || !result.ok) {
+        throw new Error(result.error || 'Something went wrong. Please try again.');
+      }
+      setStatus({
+        message: `Thanks, ${name.split(' ')[0]}! We'll be in touch within one business day.`,
+        state: 'success',
+      });
+      form.reset();
+    } catch (err) {
+      setStatus({
+        message: err instanceof Error ? err.message : 'Something went wrong. Please try again.',
+        state: 'error',
+      });
+    } finally {
+      setSubmitting(false);
+    }
   }
 
   return (
