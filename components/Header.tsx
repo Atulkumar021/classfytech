@@ -1,17 +1,16 @@
 'use client';
 
 import { useCallback, useEffect, useState } from 'react';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { navLinks } from '@/lib/content';
-import { useScrollSpy } from '@/lib/hooks';
 import ThemeToggle from '@/components/ui/ThemeToggle';
-
-const sectionIds = navLinks.map((l) => l.href.slice(1));
 
 export default function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [progress, setProgress] = useState(0);
   const [open, setOpen] = useState(false);
-  const active = useScrollSpy(sectionIds);
+  const pathname = usePathname();
 
   useEffect(() => {
     // Cache the scrollable height and only recompute it on resize — reading
@@ -45,13 +44,16 @@ export default function Header() {
       window.removeEventListener('scroll', onScroll);
       window.removeEventListener('resize', onResize);
     };
-  }, []);
+  }, [pathname]);
 
   // Reflect the mobile-menu state on <body> so CSS can react (matches globals).
   useEffect(() => {
     document.body.classList.toggle('nav-open', open);
     return () => document.body.classList.remove('nav-open');
   }, [open]);
+
+  // Close the mobile menu (and reset scroll tracking) on every navigation.
+  useEffect(() => setOpen(false), [pathname]);
 
   const close = useCallback(() => setOpen(false), []);
 
@@ -60,39 +62,39 @@ export default function Header() {
       <div className="progress-bar" style={{ transform: `scaleX(${progress})` }} />
       <header className={`header ${scrolled ? 'is-scrolled' : ''}`}>
         <div className="container nav">
-          <a className="brand" href="#top" aria-label="Voice AI home" onClick={close}>
+          <Link className="brand" href="/" aria-label="Voice AI home" onClick={close}>
             <span className="brand__mark" aria-hidden="true">
               <img src="/assets/logo.png" alt="" />
             </span>
             Voice AI
-          </a>
+          </Link>
 
           <nav className="nav__menu" aria-label="Primary">
             {navLinks.map((link) => (
-              <a
+              <Link
                 key={link.href}
-                className={`nav__link ${active === link.href.slice(1) ? 'is-active' : ''}`}
+                className={`nav__link ${pathname === link.href ? 'is-active' : ''}`}
                 href={link.href}
                 onClick={close}
               >
                 {link.label}
-              </a>
+              </Link>
             ))}
-            <a
+            <Link
               className="btn btn--primary btn--sm nav__cta-mobile"
-              href="#contact"
+              href="/contact"
               onClick={close}
               style={{ marginTop: '1rem' }}
             >
               Book a Demo
-            </a>
+            </Link>
           </nav>
 
           <div className="nav__actions">
             <ThemeToggle />
-            <a className="btn btn--primary btn--sm nav__cta-desktop" href="#contact">
+            <Link className="btn btn--primary btn--sm nav__cta-desktop" href="/contact">
               Book a Demo
-            </a>
+            </Link>
             <button
               className="nav__burger"
               aria-label="Toggle menu"

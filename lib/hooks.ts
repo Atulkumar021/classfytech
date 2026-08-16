@@ -71,26 +71,3 @@ export function useIsIntersecting<T extends HTMLElement>(options?: IntersectionO
 
   return { ref, visible };
 }
-
-/** Tracks the currently active section id for scroll-spy nav highlighting. */
-export function useScrollSpy(ids: string[]): string {
-  const [active, setActive] = useState('');
-  useEffect(() => {
-    if (!('IntersectionObserver' in window)) return;
-    const sections = ids
-      .map((id) => document.getElementById(id))
-      .filter((el): el is HTMLElement => Boolean(el));
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) setActive(entry.target.id);
-        });
-      },
-      { threshold: 0.55 }
-    );
-    sections.forEach((s) => observer.observe(s));
-    return () => observer.disconnect();
-  }, [ids]);
-  return active;
-}

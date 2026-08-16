@@ -1,15 +1,27 @@
 import { projects } from '@/lib/content';
 import Reveal from '@/components/ui/Reveal';
 
+const projectsJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'ItemList',
+  itemListElement: projects.map((project, i) => ({
+    '@type': 'ListItem',
+    position: i + 1,
+    name: project.title,
+    description: project.description,
+  })),
+};
+
 export default function Projects() {
   return (
-    <section className="section" id="work">
+    <section className="section section--page-top" id="work">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(projectsJsonLd) }} />
       <div className="container">
         <Reveal className="section__head center">
           <span className="eyebrow">Solutions</span>
-          <h2 className="section__title">
+          <h1 className="section__title">
             One platform, <span className="gradient-text">endless use cases</span>
-          </h2>
+          </h1>
           <p className="section__subtitle">
             However your team uses the phone today, a Voice AI agent can do it around the clock.
           </p>

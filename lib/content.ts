@@ -73,12 +73,12 @@ export interface Stat {
 }
 
 export const navLinks = [
-  { href: '#services', label: 'Platform' },
-  { href: '#process', label: 'How It Works' },
-  { href: '#work', label: 'Solutions' },
-  { href: '#pricing', label: 'Pricing' },
-  { href: '#faq', label: 'FAQ' },
-  { href: '#contact', label: 'Book a Demo' },
+  { href: '/platform', label: 'Platform' },
+  { href: '/how-it-works', label: 'How It Works' },
+  { href: '/solutions', label: 'Solutions' },
+  { href: '/pricing', label: 'Pricing' },
+  { href: '/faq', label: 'FAQ' },
+  { href: '/contact', label: 'Book a Demo' },
 ];
 
 export const heroStats: Stat[] = [

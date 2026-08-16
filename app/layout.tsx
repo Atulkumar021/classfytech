@@ -5,6 +5,9 @@ import SpotlightController from '@/components/ui/SpotlightController';
 import SmoothScroll from '@/components/ui/SmoothScroll';
 import ScrollToTop from '@/components/ui/ScrollToTop';
 import DemoModal from '@/components/DemoModal';
+import OfferBar from '@/components/OfferBar';
+import Header from '@/components/Header';
+import Footer from '@/components/Footer';
 import './globals.css';
 
 // NOTE: We intentionally load fonts via a plain <link> (below) rather than
@@ -19,7 +22,10 @@ const siteUrl = 'https://voiceai.classifytechnology.in';
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   icons: { icon: '/assets/logo.png', apple: '/assets/logo.png' },
-  title: 'Voice AI — Human-Like AI Voice Agents for Inbound & Outbound Calls',
+  title: {
+    template: '%s | Voice AI',
+    default: 'Voice AI — Human-Like AI Voice Agents for Inbound & Outbound Calls',
+  },
   description:
     'Voice AI by Classify Technology is an AI voice agent platform that makes and takes phone calls for you — qualifying leads, booking meetings and resolving support calls 24/7, in 40+ languages.',
   keywords: [
@@ -120,7 +126,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <SmoothScroll />
           <Backdrop />
           <SpotlightController />
-          {children}
+          <a className="skip-link" href="#main">
+            Skip to content
+          </a>
+          <OfferBar />
+          <Header />
+          <main id="main">{children}</main>
+          <Footer />
           <ScrollToTop />
           <DemoModal />
         </Providers>

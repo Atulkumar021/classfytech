@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { contactInfo } from '@/lib/content';
 import { Twitter, LinkedIn, GitHub } from '@/components/Icons';
 
@@ -5,21 +6,21 @@ const columns = [
   {
     title: 'Platform',
     links: [
-      { label: 'Outbound Agents', href: '#services' },
-      { label: 'Inbound Agents', href: '#services' },
-      { label: 'Conversational AI', href: '#services' },
-      { label: 'Analytics', href: '#services' },
-      { label: 'Integrations', href: '#services' },
+      { label: 'Outbound Agents', href: '/platform' },
+      { label: 'Inbound Agents', href: '/platform' },
+      { label: 'Conversational AI', href: '/platform' },
+      { label: 'Analytics', href: '/platform' },
+      { label: 'Integrations', href: '/platform' },
     ],
   },
   {
     title: 'Company',
     links: [
-      { label: 'Solutions', href: '#work' },
-      { label: 'How It Works', href: '#process' },
-      { label: 'Testimonials', href: '#testimonials' },
-      { label: 'Pricing', href: '#pricing' },
-      { label: 'FAQ', href: '#faq' },
+      { label: 'Solutions', href: '/solutions' },
+      { label: 'How It Works', href: '/how-it-works' },
+      { label: 'Testimonials', href: '/#testimonials' },
+      { label: 'Pricing', href: '/pricing' },
+      { label: 'FAQ', href: '/faq' },
     ],
   },
 ];
@@ -32,12 +33,12 @@ export default function Footer() {
       <div className="container">
         <div className="footer__grid">
           <div>
-            <a className="brand" href="#top">
+            <Link className="brand" href="/">
               <span className="brand__mark" aria-hidden="true">
                 <img src="/assets/logo.png" alt="" />
               </span>
               Voice AI
-            </a>
+            </Link>
             <p className="footer__about">
               Human-like AI voice agents for inbound and outbound calls — lead qualification,
               appointment booking and customer support, 24/7 in 40+ languages.
@@ -77,9 +78,9 @@ export default function Footer() {
             <div className="footer__col" key={col.title}>
               <h4>{col.title}</h4>
               {col.links.map((link) => (
-                <a href={link.href} key={link.label}>
+                <Link href={link.href} key={link.label}>
                   {link.label}
-                </a>
+                </Link>
               ))}
             </div>
           ))}
@@ -91,7 +92,7 @@ export default function Footer() {
             <a href={`https://wa.me/${contactInfo.whatsapp}`} target="_blank" rel="noopener noreferrer">
               WhatsApp
             </a>
-            <a href="#contact">Book a demo</a>
+            <Link href="/contact">Book a demo</Link>
           </div>
         </div>
 

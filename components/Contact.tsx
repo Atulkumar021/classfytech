@@ -57,13 +57,13 @@ export default function Contact() {
   }
 
   return (
-    <section className="section" id="contact">
+    <section className="section section--page-top" id="contact">
       <div className="container">
         <Reveal className="section__head center">
           <span className="eyebrow">Contact</span>
-          <h2 className="section__title">
+          <h1 className="section__title">
             Book Your <span className="gradient-text">Free Demo</span>
-          </h2>
+          </h1>
           <p className="section__subtitle">
             Tell us about your use case and we&apos;ll show you a live voice agent within one
             business day.

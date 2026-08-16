@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { services } from '@/lib/content';
 import { serviceIcons, ArrowRight } from '@/components/Icons';
 import Reveal from '@/components/ui/Reveal';
@@ -7,13 +8,13 @@ const spans = ['col-3', 'col-3', 'col-2', 'col-2', 'col-2'];
 
 export default function Services() {
   return (
-    <section className="section" id="services">
+    <section className="section section--page-top" id="services">
       <div className="container">
         <Reveal className="section__head center">
           <span className="eyebrow">The Platform</span>
-          <h2 className="section__title">
+          <h1 className="section__title">
             One agent, <span className="gradient-text">every conversation</span>
-          </h2>
+          </h1>
           <p className="section__subtitle">
             Outbound calling, inbound support, the conversational AI engine, analytics and every
             integration you need — all in one voice AI platform.
@@ -52,10 +53,10 @@ export default function Services() {
               <h3>Need a custom workflow?</h3>
               <p>Tell us about your call flow and we&apos;ll help you design the right agent for it.</p>
             </div>
-            <a className="btn btn--primary" href="#contact">
+            <Link className="btn btn--primary" href="/contact">
               Let&apos;s talk
               <ArrowRight />
-            </a>
+            </Link>
           </Reveal>
         </div>
       </div>

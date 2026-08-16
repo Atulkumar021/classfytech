@@ -228,6 +228,10 @@ html.lenis body { height: auto; }
     margin-inline: auto;
 }
 .section { padding-block: var(--section-y); position: relative; }
+/* Pages where one of these sections is the very first thing on the page
+   (no Hero above it to provide clearance) need extra top padding so content
+   doesn't start underneath the fixed offer-bar + header. */
+.section--page-top { padding-top: calc(var(--offer-bar-h) + 7rem); }
 .eyebrow {
     display: inline-flex;
     align-items: center;
@@ -813,6 +817,27 @@ body.nav-open .nav__burger span:nth-child(3) { transform: translateY(-7px) rotat
 @media (max-width: 1080px) { .grid--projects { grid-template-columns: repeat(2, 1fr); } }
 @media (max-width: 560px) { .grid--projects { grid-template-columns: 1fr; } }
 .grid--pricing { grid-template-columns: repeat(auto-fit, minmax(min(290px, 100%), 1fr)); align-items: stretch; }
+/* Fixed at 5 columns — all in a single row on desktop, matching the site's
+   nav (Platform / How It Works / Solutions / Pricing / FAQ). */
+.grid--explore { grid-template-columns: repeat(5, 1fr); align-items: stretch; }
+@media (max-width: 1200px) { .grid--explore { grid-template-columns: repeat(3, 1fr); } }
+@media (max-width: 640px) { .grid--explore { grid-template-columns: 1fr; } }
+
+.explore-card { display: flex; flex-direction: column; }
+.explore-card h3 { font-size: 1.05rem; margin-bottom: 0.5rem; }
+.explore-card__desc { color: var(--text-muted); font-size: 0.88rem; line-height: 1.55; flex: 1; margin-bottom: 1.1rem; }
+.explore-card__link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    align-self: flex-start;
+    font-family: var(--font-sans);
+    font-weight: 600;
+    font-size: 0.88rem;
+    color: var(--cyan);
+}
+.explore-card__link svg { width: 16px; height: 16px; transition: transform 0.25s var(--ease); }
+.explore-card__link:hover svg { transform: translateX(3px); }
 
 /* Services bento — varied tile widths on a 6-column grid */
 .bento { display: grid; gap: 1.4rem; grid-template-columns: repeat(6, 1fr); }

@@ -4,10 +4,10 @@ import { useEffect, useState } from 'react';
 import { ArrowUp } from '@/components/Icons';
 
 /**
- * Floating "back to top" button for the long single-page layout. It appears
- * once the user has scrolled past the hero. It's a plain hash link to #top, so
- * the global Lenis click handler smooth-scrolls it for free (and reduced-motion
- * users get a native jump).
+ * Floating "back to top" button. It appears once the user has scrolled down
+ * a bit. It's a plain hash link to #main (the shared layout's <main>, present
+ * on every page), so the global Lenis click handler smooth-scrolls it for
+ * free (and reduced-motion users get a native jump).
  */
 export default function ScrollToTop() {
   const [visible, setVisible] = useState(false);
@@ -33,7 +33,7 @@ export default function ScrollToTop() {
   return (
     <a
       className={`scroll-top ${visible ? 'is-visible' : ''}`}
-      href="#top"
+      href="#main"
       aria-label="Back to top"
       tabIndex={visible ? 0 : -1}
     >

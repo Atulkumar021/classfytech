@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import Reveal from '@/components/ui/Reveal';
 
 export default function CTABand() {
@@ -13,12 +14,12 @@ export default function CTABand() {
             your business.
           </p>
           <div className="hero__cta">
-            <a className="btn btn--primary" href="#contact">
+            <Link className="btn btn--primary" href="/contact">
               Book a Free Demo
-            </a>
-            <a className="btn btn--ghost" href="#contact">
+            </Link>
+            <Link className="btn btn--ghost" href="/contact">
               Talk to Sales
-            </a>
+            </Link>
           </div>
         </Reveal>
       </div>

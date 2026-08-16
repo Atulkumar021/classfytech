@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import Reveal from '@/components/ui/Reveal';
 import VoiceCallPreview from '@/components/VoiceCallPreview';
 import { ArrowRight, Calendar } from '@/components/Icons';
@@ -9,7 +10,7 @@ const avatars = ['PS', 'AM', 'AI', 'RM'];
 
 export default function Hero() {
   return (
-    <section className="hero" id="top">
+    <section className="hero">
       <div className="container hero__layout">
         {/* ---------- Left: copy ---------- */}
         <div className="hero__content">
@@ -32,14 +33,14 @@ export default function Hero() {
           </Reveal>
 
           <Reveal delay={100} className="hero__cta">
-            <a className="btn btn--primary" href="#contact">
+            <Link className="btn btn--primary" href="/contact">
               Book a Free Demo
               <ArrowRight />
-            </a>
-            <a className="btn btn--ghost" href="#contact">
+            </Link>
+            <Link className="btn btn--ghost" href="/contact">
               <Calendar />
               Talk to Sales
-            </a>
+            </Link>
           </Reveal>
 
           <Reveal delay={140} className="hero__services">

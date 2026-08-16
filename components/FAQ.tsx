@@ -22,14 +22,14 @@ export default function FAQ() {
   const [openIndex, setOpenIndex] = useState<number | null>(0);
 
   return (
-    <section className="section" id="faq">
+    <section className="section section--page-top" id="faq">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
       <div className="container">
         <Reveal className="section__head center">
           <span className="eyebrow">FAQ</span>
-          <h2 className="section__title">
+          <h1 className="section__title">
             About <span className="gradient-text">Voice AI</span>
-          </h2>
+          </h1>
         </Reveal>
 
         <Reveal className="faq">

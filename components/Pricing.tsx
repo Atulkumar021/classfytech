@@ -1,16 +1,36 @@
+import Link from 'next/link';
 import { plans } from '@/lib/content';
 import { Check } from '@/components/Icons';
 import Reveal from '@/components/ui/Reveal';
 
+// Only plans with a real per-minute rate go into structured data — "Custom"
+// enterprise pricing has no fixed price, so it isn't a valid Offer.
+const pricingJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Product',
+  name: 'Voice AI',
+  description: 'AI voice agent platform for inbound and outbound phone calls, billed per minute.',
+  offers: plans
+    .filter((plan) => plan.unit === '/min')
+    .map((plan) => ({
+      '@type': 'Offer',
+      name: plan.name,
+      price: plan.price.replace('₹', ''),
+      priceCurrency: 'INR',
+      description: plan.description,
+    })),
+};
+
 export default function Pricing() {
   return (
-    <section className="section" id="pricing">
+    <section className="section section--page-top" id="pricing">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(pricingJsonLd) }} />
       <div className="container">
         <Reveal className="section__head center">
           <span className="eyebrow">Pricing</span>
-          <h2 className="section__title">
+          <h1 className="section__title">
             Simple, <span className="gradient-text">usage-based</span> plans
-          </h2>
+          </h1>
           <p className="section__subtitle">
             Pay for the minutes you use — plans that scale from your first agent to your whole
             call center.
@@ -42,19 +62,19 @@ export default function Pricing() {
                   </li>
                 ))}
               </ul>
-              <a
+              <Link
                 className={`btn ${plan.featured ? 'btn--primary' : 'btn--ghost'} btn--block`}
-                href="#contact"
+                href="/contact"
               >
                 {plan.cta}
-              </a>
+              </Link>
             </Reveal>
           ))}
         </div>
 
         <Reveal as="p" className="pricing__note">
           Need more minutes, agents or a dedicated setup?{' '}
-          <a href="#contact">Request a custom quote →</a>
+          <Link href="/contact">Request a custom quote →</Link>
         </Reveal>
       </div>
     </section>

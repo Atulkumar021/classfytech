@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { PhoneCall } from '@/components/Icons';
 
 const message = 'See it in action — book a free live demo of your Voice AI agent';
@@ -16,7 +17,7 @@ const loop = [...items, ...items];
  */
 export default function OfferBar() {
   return (
-    <a className="offer-bar" role="status" href="#contact">
+    <Link className="offer-bar" role="status" href="/contact">
       <div className="marquee">
         <div className="marquee__track">
           {loop.map((text, i) => (
@@ -27,6 +28,6 @@ export default function OfferBar() {
           ))}
         </div>
       </div>
-    </a>
+    </Link>
   );
 }
