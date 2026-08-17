@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 
-const siteUrl = 'https://voiceai.classifytechnology.in';
+const siteUrl = 'https://classifytechnology.in';
 
 /**
  * Builds a page's metadata, including Open Graph / Twitter previews.

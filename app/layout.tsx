@@ -17,7 +17,7 @@ import './globals.css';
 // the system stack gracefully if Google Fonts is unreachable. Font-family names
 // are wired to the CSS variables in globals.css.
 
-const siteUrl = 'https://voiceai.classifytechnology.in';
+const siteUrl = 'https://classifytechnology.in';
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
