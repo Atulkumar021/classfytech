@@ -7,10 +7,11 @@ import { finishIntro, introAlreadySeen, introElapsedMs } from '@/lib/intro';
 
 /**
  * How long the sequence plays before it starts lifting. The last beats (boot
- * log, waveform) land around 3.3s, so this leaves a short hold on the finished
- * composition before the curtain goes up.
+ * log, waveform) land around 3.3s; the remainder holds on the finished
+ * composition — the radar sweep, reticle rings and waveform keep moving
+ * through it — before the curtain goes up.
  */
-const PLAY_MS = 3800;
+const PLAY_MS = 4800;
 /** Exit fade length. */
 const FADE_MS = 620;
 /** Total time from first paint until the overlay is visually gone. */
