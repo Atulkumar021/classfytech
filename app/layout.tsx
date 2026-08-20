@@ -1,7 +1,6 @@
 import type { Metadata, Viewport } from 'next';
 import Providers from './providers';
 import Backdrop from '@/components/Backdrop';
-import SpotlightController from '@/components/ui/SpotlightController';
 import SmoothScroll from '@/components/ui/SmoothScroll';
 import ScrollToTop from '@/components/ui/ScrollToTop';
 import DemoModal from '@/components/DemoModal';
@@ -133,7 +132,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <IntroScreen />
           <SmoothScroll />
           <Backdrop />
-          <SpotlightController />
           <a className="skip-link" href="#main">
             Skip to content
           </a>

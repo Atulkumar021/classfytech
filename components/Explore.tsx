@@ -45,7 +45,7 @@ export default function Explore() {
   return (
     <section className="section">
       <div className="container">
-        <Reveal className="section__head center">
+        <Reveal className="section__head">
           <span className="eyebrow">Explore Voice AI</span>
           <h2 className="section__title">
             Everything, <span className="gradient-text">in one place</span>

@@ -1,25 +1,36 @@
 /* =========================================================================
-   VOICE AI — LiveKit-inspired redesign (Next.js)
-   A near-black, signal/waveform aesthetic: neutral dark surfaces, a cyan→blue
-   accent used sparingly for glow and gradient text, tight technical corners,
-   film grain, gradient borders, cursor spotlight cards, a live-call preview
-   in the hero, and a Three.js sphere in the tech-stack section.
+   VOICE AI — quiet, editorial dark UI
+   Near-black neutral surfaces, one restrained blue accent, and typography
+   doing the work instead of effects. Deliberately avoids the tells of a
+   generated template: no gradient headline text, no glow halos on buttons,
+   no cursor-spotlight cards, no stacked aurora blobs. Hierarchy comes from
+   size, weight and whitespace; colour is spent sparingly, on one thing at a
+   time. Prefer removing an effect over adding another.
    ========================================================================= */
 
 /* ---------- Design tokens ---------- */
 :root {
-    /* Signal accent palette — cyan → blue, plus a deep teal for depth/glow */
-    --violet: #5a8bff;
-    --indigo: #1447e6;
-    --cyan: #1fd5f9;
-    --sky: #7dd3fc;
-    --magenta: #14748f;
-    --pink: #fb7185;
+    /* One accent, muted enough to sit beside text without shouting. The old
+       neon cyan (#1fd5f9) read as decoration; this reads as a UI colour. */
+    --accent: #5b9df9;
+    --accent-hover: #7db0fb;
+    --accent-quiet: rgba(91, 157, 249, 0.12);
 
-    --grad-brand: linear-gradient(120deg, #1fd5f9 0%, #5a8bff 100%);
-    --grad-brand-3: linear-gradient(120deg, #5a8bff 0%, #1fd5f9 55%, #7dd3fc 100%);
-    --grad-soft: linear-gradient(120deg, rgba(90, 139, 255, 0.14), rgba(31, 213, 249, 0.14));
-    --grad-text: linear-gradient(110deg, #8fe9ff 0%, #1fd5f9 50%, #5a8bff 100%);
+    /* Legacy aliases — plenty of rules still reference these by name. Pointed
+       at the single accent so nothing reintroduces the old rainbow. */
+    --violet: var(--accent);
+    --indigo: var(--accent);
+    --cyan: var(--accent);
+    --sky: var(--accent);
+    --magenta: var(--accent);
+    --pink: #e2725f;
+
+    /* Kept as flat accent fills rather than gradients: a gradient repeated on
+       every button, badge, avatar and icon tile is the loudest generated tell. */
+    --grad-brand: var(--accent);
+    --grad-brand-3: var(--accent);
+    --grad-soft: var(--accent-quiet);
+    --grad-text: var(--accent);
 
     /* Loaded via <link> in the layout head; fall back to the system stack if
        Google Fonts is unreachable. */
@@ -41,10 +52,10 @@
 
     --ease: cubic-bezier(0.22, 1, 0.36, 1);
     --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
-    --dur: 0.55s;
+    --dur: 0.3s;
 
-    --glow-violet: 0 0 60px rgba(90, 139, 255, 0.45);
-    --glow-cyan: 0 0 50px rgba(31, 213, 249, 0.35);
+    --glow-violet: none;
+    --glow-cyan: none;
 }
 
 /* Dark theme — the primary experience, matching a near-black SaaS aesthetic */
@@ -63,7 +74,6 @@
     --glass-bg: rgba(10, 10, 10, 0.55);
     --grid-line: rgba(31, 213, 249, 0.14);
     --shadow-lg: 0 40px 120px -20px rgba(0, 0, 0, 0.85);
-    --spot: rgba(31, 213, 249, 0.14);
     color-scheme: dark;
 }
 
@@ -82,7 +92,6 @@
     --glass-bg: rgba(255, 255, 255, 0.65);
     --grid-line: rgba(20, 71, 230, 0.14);
     --shadow-lg: 0 40px 100px -30px rgba(10, 10, 10, 0.25);
-    --spot: rgba(20, 71, 230, 0.12);
     color-scheme: light;
 }
 
@@ -131,15 +140,15 @@ img { max-width: 100%; display: block; }
 ul { list-style: none; }
 button { font: inherit; }
 :focus-visible { outline: 2px solid var(--cyan); outline-offset: 3px; border-radius: 6px; }
-::selection { background: rgba(90, 139, 255, 0.4); color: #fff; }
+::selection { background: var(--accent); color: #08111f; }
 
 .skip-link {
     position: absolute;
     left: 12px;
     top: -60px;
     z-index: 200;
-    background: var(--violet);
-    color: #fff;
+    background: var(--accent);
+    color: #08111f;
     padding: 0.6rem 1rem;
     border-radius: 8px;
     transition: top 0.2s;
@@ -154,7 +163,12 @@ html.lenis body { height: auto; }
 .lenis.lenis-stopped { overflow: hidden; }
 .lenis.lenis-smooth iframe { pointer-events: none; }
 
-/* ---------- Cinematic backdrop (aurora + grain + vignette) ---------- */
+/* ---------- Backdrop ----------
+   One still, barely-there wash near the top of the page. It replaced three
+   drifting aurora blobs, an animated film-grain layer and a vignette — five
+   stacked effects that fought the content and never sat still. A flat
+   near-black page is the more confident choice, and it costs nothing to
+   render. */
 .backdrop {
     position: fixed;
     inset: 0;
@@ -162,65 +176,9 @@ html.lenis body { height: auto; }
     overflow: hidden;
     pointer-events: none;
     background:
-        radial-gradient(120% 80% at 50% -10%, var(--bg-2), transparent 60%),
+        radial-gradient(130% 62% at 50% -18%, var(--bg-2), transparent 62%),
         var(--bg);
 }
-.backdrop__aurora {
-    position: absolute;
-    border-radius: 50%;
-    filter: blur(90px);
-    opacity: 0.55;
-    mix-blend-mode: screen;
-    will-change: transform;
-}
-[data-theme='light'] .backdrop__aurora { opacity: 0.4; mix-blend-mode: normal; }
-.backdrop__aurora--1 {
-    width: 55vw; height: 55vw;
-    top: -12vw; left: -8vw;
-    background: radial-gradient(circle, rgba(90, 139, 255, 0.7), transparent 70%);
-    animation: drift1 22s var(--ease) infinite alternate;
-}
-.backdrop__aurora--2 {
-    width: 48vw; height: 48vw;
-    top: 10vh; right: -10vw;
-    background: radial-gradient(circle, rgba(31, 213, 249, 0.55), transparent 70%);
-    animation: drift2 26s var(--ease) infinite alternate;
-}
-.backdrop__aurora--3 {
-    width: 42vw; height: 42vw;
-    bottom: -12vw; left: 30%;
-    background: radial-gradient(circle, rgba(20, 116, 144, 0.4), transparent 70%);
-    animation: drift3 30s var(--ease) infinite alternate;
-}
-@keyframes drift1 { to { transform: translate3d(8vw, 6vh, 0) scale(1.15); } }
-@keyframes drift2 { to { transform: translate3d(-6vw, 10vh, 0) scale(1.1); } }
-@keyframes drift3 { to { transform: translate3d(4vw, -8vh, 0) scale(1.2); } }
-
-/* Film grain overlay for cinematic texture */
-.backdrop__grain {
-    position: absolute;
-    inset: -50%;
-    width: 200%;
-    height: 200%;
-    opacity: 0.045;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-    animation: grain 8s steps(6) infinite;
-}
-[data-theme='light'] .backdrop__grain { opacity: 0.02; }
-@keyframes grain {
-    0%, 100% { transform: translate(0, 0); }
-    20% { transform: translate(-4%, 3%); }
-    40% { transform: translate(3%, -5%); }
-    60% { transform: translate(-2%, 4%); }
-    80% { transform: translate(5%, 2%); }
-}
-/* Top/bottom vignette to focus the eye */
-.backdrop__vignette {
-    position: absolute;
-    inset: 0;
-    background: radial-gradient(120% 120% at 50% 40%, transparent 55%, rgba(0, 0, 0, 0.55) 100%);
-}
-[data-theme='light'] .backdrop__vignette { display: none; }
 
 /* ---------- Layout helpers ---------- */
 .container {
@@ -232,50 +190,44 @@ html.lenis body { height: auto; }
    (no Hero above it to provide clearance) need extra top padding so content
    doesn't start underneath the fixed offer-bar + header. */
 .section--page-top { padding-top: calc(var(--offer-bar-h) + 7rem); }
+/* A plain kicker with a short rule, not a glowing pill. Pills-around-labels on
+   every section is a template habit; this reads like a magazine standfirst. */
 .eyebrow {
     display: inline-flex;
     align-items: center;
-    gap: 0.55rem;
+    gap: 0.7rem;
     font-family: var(--font-sans);
-    font-size: 0.78rem;
+    font-size: 0.72rem;
     font-weight: 600;
-    letter-spacing: 0.18em;
+    letter-spacing: 0.16em;
     text-transform: uppercase;
-    color: var(--text);
-    padding: 0.45rem 1rem;
-    border: 1px solid var(--border-strong);
-    border-radius: var(--radius-pill);
-    background: var(--surface);
-    -webkit-backdrop-filter: blur(10px);
-    backdrop-filter: blur(10px);
+    color: var(--text-dim);
 }
 .eyebrow::before {
     content: '';
-    width: 7px;
-    height: 7px;
-    border-radius: 50%;
-    background: var(--cyan);
-    box-shadow: 0 0 12px 2px var(--cyan);
+    width: 18px;
+    height: 1px;
+    background: var(--border-strong);
 }
-.section__head { max-width: 760px; margin-bottom: clamp(2.5rem, 5vw, 4rem); }
+/* Left-aligned by default. Centring every heading on the page flattens the
+   rhythm; a consistent left edge gives the eye something to travel down. */
+/* Sized in rem, not ch: `ch` resolves against the head's inherited body size,
+   which made the much larger title wrap after only a few words. */
+.section__head { max-width: 46rem; margin-bottom: clamp(2.75rem, 5vw, 4.25rem); }
 .section__head.center { margin-inline: auto; text-align: center; }
 .section__title {
-    font-size: clamp(1.6rem, 3.4vw, 2.5rem);
-    margin: 1rem 0 0.9rem;
-    letter-spacing: -0.03em;
+    font-size: clamp(1.75rem, 3.6vw, 2.6rem);
+    font-weight: 700;
+    line-height: 1.12;
+    margin: 1.1rem 0 1rem;
+    letter-spacing: -0.025em;
 }
-.section__subtitle { color: var(--text-muted); font-size: clamp(0.95rem, 1.2vw, 1.05rem); max-width: 62ch; }
+.section__subtitle { color: var(--text-muted); font-size: clamp(0.96rem, 1.2vw, 1.06rem); line-height: 1.65; max-width: 58ch; }
 .section__head.center .section__subtitle { margin-inline: auto; }
-.gradient-text {
-    background: var(--grad-text);
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-    color: transparent;
-}
-[data-theme='dark'] .gradient-text {
-    filter: drop-shadow(0 0 24px rgba(103, 232, 249, 0.25));
-}
+/* Flat accent, no gradient and no drop-shadow. Gradient headline text is the
+   single most recognisable "generated" tell; one solid colour on the phrase
+   that matters says the same thing with more conviction. */
+.gradient-text { color: var(--accent); }
 
 /* ---------- Glass / card primitives with cursor spotlight ---------- */
 .glass {
@@ -285,109 +237,70 @@ html.lenis body { height: auto; }
     border: 1px solid var(--border);
     border-radius: var(--radius-xl);
 }
+/* A flat surface and a hairline border — nothing else.
+   Gone from here: a gradient border that lit up on hover, a cursor-following
+   spotlight, a 6px lift and a large drop shadow. Thirty-odd cards all doing
+   that at once is what made the page feel machine-assembled. Hover now only
+   lifts the border a little, which is enough to say "interactive". */
 .card {
-    --mx: 50%;
-    --my: 50%;
-    /* No backdrop-filter here on purpose — this class covers 30+ elements on
-       the page (bento tiles, feature chips, project/plan/FAQ cards), and
-       `backdrop-filter` is one of the most expensive CSS effects to keep
-       composited during scroll. The gradient background is opaque enough
-       that the frosted-glass blur was barely visible anyway; dropping it
-       removes a real source of scroll jank for very little visual cost.
-       `.glass` (header, nav, hero metrics, tech pills, contact map) keeps
-       its blur — those genuinely float over moving/colorful backgrounds. */
-    background: linear-gradient(180deg, var(--surface-2), var(--surface));
+    background: var(--surface);
     border: 1px solid var(--border);
-    border-radius: var(--radius-lg);
-    padding: clamp(1.5rem, 3vw, 2.1rem);
+    border-radius: var(--radius);
+    padding: clamp(1.5rem, 3vw, 2rem);
     position: relative;
     overflow: hidden;
-    isolation: isolate;
-    transition: transform var(--dur) var(--ease), border-color var(--dur) var(--ease),
-        box-shadow var(--dur) var(--ease);
+    transition: border-color var(--dur) var(--ease), background var(--dur) var(--ease);
 }
-/* gradient border glow */
-.card::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    border-radius: inherit;
-    padding: 1px;
-    background: var(--grad-brand-3);
-    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
-    -webkit-mask-composite: xor;
-    mask-composite: exclude;
-    opacity: 0;
-    transition: opacity var(--dur) var(--ease);
-    pointer-events: none;
-    z-index: 1;
-}
-/* cursor-follow spotlight */
-.card::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    border-radius: inherit;
-    background: radial-gradient(340px circle at var(--mx) var(--my), var(--spot), transparent 55%);
-    opacity: 0;
-    transition: opacity var(--dur) var(--ease);
-    pointer-events: none;
-    z-index: 0;
-}
-.card > * { position: relative; z-index: 2; }
 .card:hover {
-    transform: translateY(-6px);
     border-color: var(--border-strong);
-    box-shadow: var(--shadow-lg);
+    background: var(--surface-2);
 }
-.card:hover::before,
-.card:hover::after { opacity: 1; }
 
 /* ---------- Buttons ---------- */
+/* Solid fills, modest corners, and colour change on hover instead of a lift
+   and a glow halo. The old primary button carried a 46px coloured shadow that
+   made it read as a sticker floating above the page. */
 .btn {
-    --pad-y: 0.9rem;
-    --pad-x: 1.6rem;
+    --pad-y: 0.82rem;
+    --pad-x: 1.45rem;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: 0.55rem;
+    gap: 0.5rem;
     font-family: var(--font-sans);
     font-weight: 600;
-    font-size: 0.98rem;
+    font-size: 0.94rem;
     padding: var(--pad-y) var(--pad-x);
-    border-radius: var(--radius-pill);
+    border-radius: var(--radius-sm);
     border: 1px solid transparent;
     cursor: pointer;
     position: relative;
-    transition: transform 0.28s var(--ease), box-shadow 0.28s var(--ease), border-color 0.28s var(--ease);
+    transition: background 0.2s var(--ease), border-color 0.2s var(--ease), color 0.2s var(--ease);
     white-space: nowrap;
 }
-.btn svg { width: 1.05em; height: 1.05em; }
+.btn svg { width: 1.02em; height: 1.02em; }
 .btn--primary {
-    background: var(--grad-brand);
-    color: #fff;
-    box-shadow: 0 10px 30px -6px rgba(90, 139, 255, 0.6), inset 0 0 0 1px rgba(255, 255, 255, 0.12);
+    background: var(--accent);
+    /* Dark ink on the accent — a near-black label on a mid blue is far more
+       legible than white, and reads less like a default template button. */
+    color: #08111f;
 }
-.btn--primary:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 18px 46px -8px rgba(90, 139, 255, 0.8), 0 0 30px rgba(31, 213, 249, 0.3);
-}
+.btn--primary:hover { background: var(--accent-hover); }
 .btn--ghost {
-    background: var(--surface);
+    background: transparent;
     color: var(--text);
     border-color: var(--border-strong);
-    -webkit-backdrop-filter: blur(10px);
-    backdrop-filter: blur(10px);
 }
-.btn--ghost:hover { transform: translateY(-3px); border-color: var(--cyan); box-shadow: 0 0 24px rgba(31, 213, 249, 0.22); }
-.btn--sm { --pad-y: 0.62rem; --pad-x: 1.15rem; font-size: 0.9rem; }
+.btn--ghost:hover { background: var(--surface); border-color: var(--text-dim); }
+.btn--sm { --pad-y: 0.58rem; --pad-x: 1.05rem; font-size: 0.88rem; }
 .btn--block { width: 100%; }
-/* Tactile press feedback — settle back toward resting position on click. */
-.btn:active { transform: translateY(-1px) scale(0.985); }
-.btn:disabled { opacity: 0.6; cursor: not-allowed; }
-.btn:disabled:hover { transform: none; }
+.btn:active { transform: translateY(1px); }
+.btn:disabled { opacity: 0.5; cursor: not-allowed; }
 
 /* ---------- Offer bar ---------- */
+/* A quiet utility strip, not a billboard. It was a full-width bright blue
+   gradient with a coloured drop shadow, which set the loudest possible tone
+   before a visitor had read a single word. */
 .offer-bar {
     position: fixed;
     top: 0; left: 0; right: 0;
@@ -395,20 +308,20 @@ html.lenis body { height: auto; }
     height: var(--offer-bar-h);
     display: flex;
     align-items: center;
-    background: var(--grad-brand-3);
-    box-shadow: 0 2px 20px rgba(90, 139, 255, 0.4);
+    background: var(--bg-2);
+    border-bottom: 1px solid var(--border);
 }
 .offer-bar .marquee { width: 100%; }
 .offer-bar .marquee__track { gap: 2.5rem; animation-duration: 55s; animation-timing-function: linear; }
 .offer-bar .marquee__item {
     gap: 0.5rem;
-    color: #fff;
-    font-size: 0.8rem;
-    font-weight: 700;
+    color: var(--text-muted);
+    font-size: 0.76rem;
+    font-weight: 500;
     letter-spacing: 0.01em;
 }
-.offer-bar .marquee__item svg { flex-shrink: 0; }
-.offer-bar .marquee__item::after { background: rgba(255, 255, 255, 0.55); }
+.offer-bar .marquee__item svg { flex-shrink: 0; color: var(--accent); }
+.offer-bar .marquee__item::after { background: var(--border-strong); }
 
 /* ---------- Header / nav ---------- */
 .progress-bar {
@@ -418,8 +331,7 @@ html.lenis body { height: auto; }
     width: 100%;
     transform: scaleX(0);
     transform-origin: left;
-    background: var(--grad-brand-3);
-    box-shadow: 0 0 12px rgba(90, 139, 255, 0.7);
+    background: var(--accent);
     z-index: 120;
 }
 .header {
@@ -440,12 +352,11 @@ html.lenis body { height: auto; }
 .nav { display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
 .brand { display: flex; align-items: center; gap: 0.6rem; font-family: var(--font-sans); font-weight: 700; font-size: 1.3rem; letter-spacing: -0.02em; }
 .brand__mark {
-    width: 36px; height: 36px;
-    border-radius: 11px;
+    width: 32px; height: 32px;
+    border-radius: 8px;
     display: grid;
     place-items: center;
     overflow: hidden;
-    box-shadow: 0 6px 20px rgba(31, 213, 249, 0.4);
 }
 .brand__mark img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 35%; }
 .nav__menu { display: flex; align-items: center; gap: 0.3rem; }
@@ -470,7 +381,6 @@ html.lenis body { height: auto; }
     border-radius: 50%;
     transform: translateX(-50%);
     background: var(--cyan);
-    box-shadow: 0 0 10px 1px var(--cyan);
 }
 .nav__actions { display: flex; align-items: center; gap: 0.6rem; }
 .icon-btn {
@@ -484,7 +394,7 @@ html.lenis body { height: auto; }
     cursor: pointer;
     transition: transform 0.25s, border-color 0.25s, box-shadow 0.25s;
 }
-.icon-btn:hover { transform: translateY(-2px); border-color: var(--cyan); box-shadow: 0 0 18px rgba(31, 213, 249, 0.25); }
+.icon-btn:hover { border-color: var(--text-dim); background: var(--surface-2); }
 .nav__burger {
     display: none;
     flex-direction: column;
@@ -524,100 +434,54 @@ body.nav-open .nav__burger span:nth-child(3) { transform: translateY(-7px) rotat
 }
 .hero__content { text-align: left; max-width: 640px; }
 
-/* Availability badge */
+/* A plain overline, not a glassy pill with a pulsing green "live" dot. */
 .hero__badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.55rem;
-    padding: 0.45rem 0.95rem;
-    border-radius: var(--radius-pill);
-    border: 1px solid var(--border-strong);
-    background: var(--surface);
-    -webkit-backdrop-filter: blur(10px);
-    backdrop-filter: blur(10px);
+    display: inline-block;
     font-family: var(--font-sans);
     font-weight: 600;
-    font-size: 0.8rem;
-    letter-spacing: 0.01em;
-    color: var(--text-muted);
-}
-.hero__badge-dot {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background: #34d399;
-    box-shadow: 0 0 0 0 rgba(52, 211, 153, 0.6);
-    animation: ping 2.4s var(--ease) infinite;
-}
-@keyframes ping {
-    0% { box-shadow: 0 0 0 0 rgba(52, 211, 153, 0.55); }
-    70%, 100% { box-shadow: 0 0 0 7px rgba(52, 211, 153, 0); }
+    font-size: 0.72rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--text-dim);
 }
 
+/* Bigger and tighter than before — the headline is now carrying the page,
+   so it gets the size contrast that the removed effects used to provide. */
 .hero h1 {
-    font-size: clamp(2rem, 3.9vw, 3.4rem);
-    line-height: 1.08;
+    font-size: clamp(2.15rem, 4.6vw, 3.9rem);
+    font-weight: 700;
+    line-height: 1.05;
     letter-spacing: -0.035em;
-    margin: 1.25rem 0 1.3rem;
+    margin: 1.1rem 0 1.4rem;
     color: var(--text);
 }
 .hero__sub {
-    font-size: clamp(0.98rem, 1.3vw, 1.12rem);
+    font-size: clamp(1rem, 1.3vw, 1.1rem);
+    line-height: 1.68;
     color: var(--text-muted);
-    max-width: 50ch;
-    margin: 0 0 2rem;
+    max-width: 48ch;
+    margin: 0 0 2.25rem;
 }
-.hero__cta { display: flex; gap: 0.9rem; justify-content: flex-start; flex-wrap: wrap; }
+.hero__cta { display: flex; gap: 0.7rem; justify-content: flex-start; flex-wrap: wrap; }
 
-/* Social proof row */
-.hero__proof {
-    display: flex;
-    align-items: center;
-    gap: 0.9rem;
-    margin-top: 2.2rem;
-    flex-wrap: wrap;
-}
-.hero__avatars { display: flex; }
-.hero__avatar {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    display: grid;
-    place-items: center;
-    font-family: var(--font-sans);
-    font-weight: 700;
-    font-size: 0.76rem;
-    color: #fff;
-    background: var(--grad-brand);
-    border: 2px solid var(--bg);
-    margin-left: -12px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
-}
-.hero__avatar:first-child { margin-left: 0; }
-.hero__proof-text { font-size: 0.88rem; color: var(--text-muted); line-height: 1.35; }
-.hero__proof-text strong { color: var(--text); font-family: var(--font-sans); }
-.hero__proof-stars { color: #fbbf24; letter-spacing: 1px; }
+.hero__proof { margin-top: 2.4rem; }
+.hero__proof-text { font-size: 0.88rem; color: var(--text-dim); line-height: 1.6; max-width: 44ch; }
 
-/* Service pills — quick "what we do" scan */
-.hero__services { display: flex; flex-wrap: wrap; gap: 0.55rem; justify-content: flex-start; margin-top: 1.6rem; }
+/* Quiet text chips — no glass, no glow, no hover lift. */
+.hero__services { display: flex; flex-wrap: wrap; gap: 0.45rem; justify-content: flex-start; margin-top: 1.75rem; }
 .hero__service-pill {
-    padding: 0.45rem 0.95rem;
-    border-radius: var(--radius-pill);
+    padding: 0.34rem 0.7rem;
+    border-radius: var(--radius-sm);
     border: 1px solid var(--border);
-    background: var(--surface);
-    -webkit-backdrop-filter: blur(10px);
-    backdrop-filter: blur(10px);
     font-family: var(--font-sans);
-    font-weight: 600;
-    font-size: 0.78rem;
-    color: var(--text-muted);
-    transition: color 0.3s var(--ease), border-color 0.3s var(--ease), transform 0.3s var(--ease), box-shadow 0.3s var(--ease);
+    font-weight: 500;
+    font-size: 0.76rem;
+    color: var(--text-dim);
+    transition: color 0.2s var(--ease), border-color 0.2s var(--ease);
 }
 .hero__service-pill:hover {
-    color: var(--text);
-    border-color: var(--cyan);
-    transform: translateY(-2px);
-    box-shadow: 0 0 18px rgba(31, 213, 249, 0.2);
+    color: var(--text-muted);
+    border-color: var(--border-strong);
 }
 
 /* Visual stage (live call preview + floating metric cards) */
@@ -638,8 +502,7 @@ body.nav-open .nav__burger span:nth-child(3) { transform: translateY(-7px) rotat
     z-index: 0;
     pointer-events: none;
     background:
-        radial-gradient(42% 42% at 50% 40%, rgba(31, 213, 249, 0.18), transparent 70%),
-        radial-gradient(34% 34% at 68% 68%, rgba(90, 139, 255, 0.15), transparent 70%);
+        radial-gradient(46% 46% at 50% 42%, rgba(91, 157, 249, 0.09), transparent 72%);
     filter: blur(20px);
 }
 
@@ -667,7 +530,6 @@ body.nav-open .nav__burger span:nth-child(3) { transform: translateY(-7px) rotat
     height: 7px;
     border-radius: 50%;
     background: var(--cyan);
-    box-shadow: 0 0 10px 1px var(--cyan);
     flex-shrink: 0;
 }
 
@@ -703,8 +565,8 @@ body.nav-open .nav__burger span:nth-child(3) { transform: translateY(-7px) rotat
     border-radius: 50%;
     display: grid;
     place-items: center;
-    background: var(--grad-brand);
-    color: #fff;
+    background: var(--accent);
+    color: #08111f;
     flex-shrink: 0;
 }
 .call-card__live {
@@ -882,13 +744,11 @@ body.nav-open .nav__burger span:nth-child(3) { transform: translateY(-7px) rotat
     border: 1px solid var(--border-strong);
     color: var(--cyan);
     margin-bottom: 1.1rem;
-    box-shadow: inset 0 0 20px rgba(31, 213, 249, 0.1);
     transition: transform 0.4s var(--ease), box-shadow 0.4s var(--ease);
 }
 .service__icon svg { width: 27px; height: 27px; }
 .card.service:hover .service__icon {
     transform: translateY(-3px) rotate(-4deg);
-    box-shadow: inset 0 0 20px rgba(31, 213, 249, 0.18), 0 8px 20px -6px rgba(31, 213, 249, 0.35);
 }
 .service h3 { font-size: 1.15rem; margin-bottom: 0.55rem; padding-right: 2.5rem; }
 .service__desc { color: var(--text-muted); font-size: 0.88rem; line-height: 1.5; margin-bottom: 1.3rem; }
@@ -896,26 +756,31 @@ body.nav-open .nav__burger span:nth-child(3) { transform: translateY(-7px) rotat
    wrap naturally regardless of a card's bento width. */
 .service__pills { display: flex; flex-wrap: wrap; gap: 0.5rem; }
 .service__pills li {
-    font-size: 0.78rem;
+    font-size: 0.76rem;
     font-weight: 500;
-    color: var(--text-muted);
-    padding: 0.4rem 0.8rem;
-    border-radius: var(--radius-pill);
-    background: var(--surface-2);
+    color: var(--text-dim);
+    padding: 0.34rem 0.7rem;
+    /* Small radius, matching tags/buttons — fully-rounded pills everywhere
+       made every list look like a tag cloud. */
+    border-radius: var(--radius-sm);
+    background: transparent;
     border: 1px solid var(--border);
-    transition: color 0.25s var(--ease), border-color 0.25s var(--ease);
+    transition: color 0.2s var(--ease), border-color 0.2s var(--ease);
 }
 .card.service:hover .service__pills li { border-color: var(--border-strong); }
 
 /* ---------- Feature chips ---------- */
-.feature { display: flex; align-items: center; gap: 0.9rem; padding: 1.15rem 1.25rem; }
-.feature__icon { width: 42px; height: 42px; flex-shrink: 0; border-radius: 12px; display: grid; place-items: center; background: var(--grad-soft); color: var(--violet); }
-.feature__icon svg { width: 20px; height: 20px; }
-.feature span { font-family: var(--font-sans); font-weight: 600; font-size: 0.98rem; }
+/* Sized so a label fits on one line at five across (~226px per chip): the
+   icon and padding were eating enough width that most labels wrapped, which
+   left every row a different height. */
+.feature { display: flex; align-items: center; gap: 0.7rem; padding: 0.95rem 1rem; }
+.feature__icon { width: 28px; height: 28px; flex-shrink: 0; border-radius: 6px; display: grid; place-items: center; background: var(--surface-2); color: var(--accent); }
+.feature__icon svg { width: 16px; height: 16px; }
+.feature span { font-family: var(--font-sans); font-weight: 500; font-size: 0.85rem; line-height: 1.35; color: var(--text); }
 
 /* ---------- Process timeline ---------- */
 .timeline { position: relative; display: grid; gap: 1.5rem; }
-.timeline::before { content: ''; position: absolute; left: 28px; top: 14px; bottom: 14px; width: 2px; background: linear-gradient(var(--violet), var(--cyan)); box-shadow: 0 0 14px rgba(90, 139, 255, 0.5); opacity: 0.6; }
+.timeline::before { content: ''; position: absolute; left: 28px; top: 14px; bottom: 14px; width: 2px; background: var(--border-strong); }
 .step { display: grid; grid-template-columns: 58px 1fr; gap: 1.3rem; align-items: start; position: relative; }
 .step__num {
     width: 58px; height: 58px;
@@ -925,9 +790,8 @@ body.nav-open .nav__burger span:nth-child(3) { transform: translateY(-7px) rotat
     font-family: var(--font-sans);
     font-weight: 700;
     font-size: 1.25rem;
-    color: #fff;
-    background: var(--grad-brand);
-    box-shadow: 0 8px 26px -4px rgba(90, 139, 255, 0.6);
+    color: #08111f;
+    background: var(--accent);
     z-index: 1;
 }
 .step__body { padding-top: 0.5rem; }
@@ -984,37 +848,30 @@ body.nav-open .nav__burger span:nth-child(3) { transform: translateY(-7px) rotat
     place-items: center;
     font-size: 0.42rem;
     font-weight: 700;
-    color: #fff;
-    background: var(--grad-brand);
+    color: #08111f;
+    background: var(--accent);
 }
 
 /* ---------- Tech grid (legacy / fallback) ---------- */
 .tech-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(118px, 1fr)); gap: 1rem; }
 .tech { display: flex; flex-direction: column; align-items: center; gap: 0.7rem; padding: 1.4rem 0.8rem; text-align: center; font-family: var(--font-sans); font-weight: 600; font-size: 0.88rem; transition: transform 0.3s var(--ease), border-color 0.3s; }
-.tech:hover { transform: translateY(-6px) scale(1.04); border-color: var(--cyan); }
-.tech__dot { width: 46px; height: 46px; border-radius: 13px; display: grid; place-items: center; background: var(--grad-soft); color: var(--cyan); font-family: var(--font-sans); font-weight: 700; }
+.tech:hover { border-color: var(--border-strong); }
+.tech__dot { width: 42px; height: 42px; border-radius: var(--radius-sm); display: grid; place-items: center; background: var(--surface-2); color: var(--text-muted); font-family: var(--font-sans); font-weight: 600; }
 
-/* ---------- Project cards ---------- */
+/* ---------- Use-case cards ----------
+   These used to lead with a 16:10 panel of three overlapping coloured blobs
+   and a giant emoji. A small line icon says the same thing without pretending
+   to be an illustration. */
 .project { padding: 0; display: flex; flex-direction: column; }
-.project__media { aspect-ratio: 16 / 10; background: var(--grad-soft); position: relative; overflow: hidden; display: grid; place-items: center; }
-.project__media::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: radial-gradient(circle at 28% 22%, rgba(90, 139, 255, 0.6), transparent 58%),
-        radial-gradient(circle at 78% 82%, rgba(31, 213, 249, 0.5), transparent 58%),
-        radial-gradient(circle at 60% 40%, rgba(20, 116, 144, 0.35), transparent 55%);
-    transition: transform 0.7s var(--ease);
-}
-.project:hover .project__media::after { transform: scale(1.2) rotate(8deg); }
-.project__glyph { position: relative; z-index: 1; font-family: var(--font-sans); font-weight: 700; font-size: 2.6rem; color: #fff; text-shadow: 0 4px 24px rgba(0, 0, 0, 0.4); }
-.project__body { padding: 1.6rem; display: flex; flex-direction: column; gap: 0.9rem; flex: 1; }
-.project__body h3 { font-size: 1.12rem; }
-.project__desc { color: var(--text-muted); font-size: 0.93rem; }
-.tags { display: flex; flex-wrap: wrap; gap: 0.4rem; }
-.tag { font-size: 0.74rem; font-weight: 600; padding: 0.3rem 0.72rem; border-radius: var(--radius-pill); background: var(--surface-2); border: 1px solid var(--border); color: var(--text-muted); }
+.project__icon { color: var(--accent); display: inline-flex; margin-bottom: 0.15rem; }
+.project__icon svg { width: 20px; height: 20px; }
+.project__body { padding: 1.5rem; display: flex; flex-direction: column; gap: 0.75rem; flex: 1; }
+.project__body h3 { font-size: 1.02rem; font-weight: 600; letter-spacing: -0.01em; }
+.project__desc { color: var(--text-muted); font-size: 0.9rem; line-height: 1.6; }
+.tags { display: flex; flex-wrap: wrap; gap: 0.35rem; }
+.tag { font-size: 0.7rem; font-weight: 500; padding: 0.24rem 0.6rem; border-radius: var(--radius-sm); background: transparent; border: 1px solid var(--border); color: var(--text-dim); }
 .project__result { margin-top: auto; display: flex; gap: 1.3rem; padding-top: 1rem; border-top: 1px solid var(--border); }
-.project__result .num { font-family: var(--font-sans); font-weight: 700; font-size: 1.3rem; background: var(--grad-text); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+.project__result .num { font-family: var(--font-sans); font-weight: 700; font-size: 1.15rem; color: var(--text); }
 .project__result .lbl { font-size: 0.72rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.06em; }
 
 /* ---------- Testimonials ---------- */
@@ -1022,23 +879,23 @@ body.nav-open .nav__burger span:nth-child(3) { transform: translateY(-7px) rotat
 .testimonials__viewport { overflow: hidden; border-radius: var(--radius-lg); }
 .testimonials__track { display: flex; transition: transform 0.6s var(--ease); }
 .testimonial { min-width: 100%; padding: clamp(2rem, 5vw, 3.5rem); text-align: center; }
-.testimonial__stars { color: #fbbf24; letter-spacing: 3px; margin-bottom: 1rem; font-size: 1.15rem; text-shadow: 0 0 12px rgba(251, 191, 36, 0.4); }
+.testimonial__stars { color: var(--text-dim); letter-spacing: 2px; margin-bottom: 1rem; font-size: 0.9rem; }
 .testimonial__quote { font-family: var(--font-sans); font-size: clamp(1.05rem, 2vw, 1.4rem); line-height: 1.5; max-width: 44ch; margin: 0 auto 1.7rem; letter-spacing: -0.02em; }
 .testimonial__person { display: flex; align-items: center; gap: 0.9rem; justify-content: center; }
-.testimonial__avatar { width: 54px; height: 54px; border-radius: 50%; display: grid; place-items: center; font-family: var(--font-sans); font-weight: 700; color: #fff; background: var(--grad-brand); box-shadow: 0 0 20px rgba(90, 139, 255, 0.5); }
+.testimonial__avatar { width: 54px; height: 54px; border-radius: 50%; display: grid; place-items: center; font-family: var(--font-sans); font-weight: 700; color: var(--text); background: var(--surface-2); border: 1px solid var(--border); }
 .testimonial__meta strong { display: block; font-family: var(--font-sans); }
 .testimonial__meta span { color: var(--text-muted); font-size: 0.88rem; }
 .testimonials__controls { display: flex; align-items: center; justify-content: center; gap: 1.5rem; margin-top: 1.5rem; }
 .testimonials__dots { display: flex; gap: 0.5rem; }
 .testimonials__dot { width: 9px; height: 9px; border-radius: 50%; border: none; background: var(--border-strong); cursor: pointer; transition: transform 0.25s, background 0.25s; }
-.testimonials__dot.is-active { background: var(--grad-brand); transform: scale(1.5); box-shadow: 0 0 10px var(--violet); }
+.testimonials__dot.is-active { background: var(--accent); }
 
 /* ---------- Pricing ---------- */
 .plan { display: flex; flex-direction: column; gap: 1.2rem; }
-.plan--featured { border-color: rgba(90, 139, 255, 0.5); box-shadow: 0 24px 70px -18px rgba(90, 139, 255, 0.5); }
+.plan--featured { border-color: var(--accent); }
 .plan--featured::before { opacity: 0.7; }
-.plan__badge { position: absolute; top: 1.3rem; right: 1.3rem; font-size: 0.68rem; font-weight: 700; letter-spacing: 0.09em; text-transform: uppercase; padding: 0.32rem 0.75rem; border-radius: var(--radius-pill); background: var(--grad-brand); color: #fff; box-shadow: 0 0 18px rgba(90, 139, 255, 0.6); z-index: 3; }
-.plan__discount { align-self: flex-start; font-size: 0.68rem; font-weight: 700; letter-spacing: 0.09em; text-transform: uppercase; padding: 0.32rem 0.75rem; border-radius: var(--radius-pill); background: linear-gradient(135deg, #f43f5e, #fb923c); color: #fff; box-shadow: 0 0 18px rgba(244, 63, 94, 0.55); z-index: 3; margin-bottom: -0.4rem; }
+.plan__badge { position: absolute; top: 1.3rem; right: 1.3rem; font-size: 0.68rem; font-weight: 700; letter-spacing: 0.09em; text-transform: uppercase; padding: 0.32rem 0.75rem; border-radius: var(--radius-pill); background: var(--accent); color: #08111f; z-index: 3; }
+.plan__discount { align-self: flex-start; font-size: 0.68rem; font-weight: 700; letter-spacing: 0.09em; text-transform: uppercase; padding: 0.32rem 0.75rem; border-radius: var(--radius-pill); background: transparent; color: var(--pink); border: 1px solid currentColor; z-index: 3; margin-bottom: -0.4rem; }
 .plan h3 { font-size: 1.15rem; }
 .plan__price { font-family: var(--font-sans); font-size: 2.1rem; font-weight: 700; letter-spacing: -0.03em; }
 .plan__price span { font-size: 1rem; color: var(--text-muted); font-weight: 500; }
@@ -1065,7 +922,7 @@ body.nav-open .nav__burger span:nth-child(3) { transform: translateY(-7px) rotat
 .faq__item { padding: 0; overflow: hidden; }
 .faq__question { width: 100%; display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: 1.2rem 1.5rem; background: none; border: none; color: var(--text); font-family: var(--font-sans); font-weight: 600; font-size: 0.98rem; text-align: left; cursor: pointer; }
 .faq__icon { flex-shrink: 0; width: 24px; height: 24px; position: relative; }
-.faq__icon::before, .faq__icon::after { content: ''; position: absolute; background: var(--cyan); border-radius: 2px; inset: 0; margin: auto; box-shadow: 0 0 8px var(--cyan); }
+.faq__icon::before, .faq__icon::after { content: ''; position: absolute; background: var(--text-muted); border-radius: 2px; inset: 0; margin: auto; }
 .faq__icon::before { width: 14px; height: 2px; }
 .faq__icon::after { width: 2px; height: 14px; transition: transform 0.35s var(--ease); }
 .faq__item.is-open .faq__icon::after { transform: rotate(90deg); }
@@ -1095,7 +952,7 @@ body.nav-open .nav__burger span:nth-child(3) { transform: translateY(-7px) rotat
     background: var(--bg-elev);
     color: var(--text);
 }
-.field input:focus, .field textarea:focus, .field select:focus { outline: none; border-color: var(--cyan); box-shadow: 0 0 0 3px rgba(31, 213, 249, 0.18); }
+.field input:focus, .field textarea:focus, .field select:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-quiet); }
 .field textarea { resize: vertical; min-height: 130px; }
 .form__status { font-size: 0.9rem; min-height: 1.2em; }
 .form__status[data-state='error'] { color: #fb7185; }
@@ -1104,7 +961,7 @@ body.nav-open .nav__burger span:nth-child(3) { transform: translateY(-7px) rotat
 
 /* ---------- CTA band ---------- */
 .cta-band { text-align: center; padding: clamp(3rem, 7vw, 5.5rem); position: relative; overflow: hidden; }
-.cta-band::after { content: ''; position: absolute; inset: 0; background: radial-gradient(60% 120% at 50% 0%, rgba(90, 139, 255, 0.25), transparent 70%); pointer-events: none; }
+
 .cta-band h2 { font-size: clamp(1.6rem, 3.6vw, 2.6rem); margin-bottom: 1.1rem; position: relative; }
 .cta-band p { color: var(--text-muted); max-width: 56ch; margin: 0 auto 2rem; position: relative; }
 .cta-band .hero__cta { position: relative; }
@@ -1130,16 +987,15 @@ body.nav-open .nav__burger span:nth-child(3) { transform: translateY(-7px) rotat
     display: grid;
     place-items: center;
     border-radius: 50%;
-    color: #fff;
-    background: var(--grad-brand);
-    box-shadow: 0 10px 30px -6px rgba(90, 139, 255, 0.6), inset 0 0 0 1px rgba(255, 255, 255, 0.12);
+    color: #08111f;
+    background: var(--accent);
     opacity: 0;
     transform: translateY(16px) scale(0.85);
     pointer-events: none;
     transition: opacity 0.35s var(--ease), transform 0.35s var(--ease), box-shadow 0.28s var(--ease);
 }
 .scroll-top.is-visible { opacity: 1; transform: none; pointer-events: auto; }
-.scroll-top:hover { transform: translateY(-3px); box-shadow: 0 18px 46px -8px rgba(90, 139, 255, 0.8), 0 0 30px rgba(31, 213, 249, 0.3); }
+.scroll-top:hover { background: var(--accent-hover); }
 .scroll-top:active { transform: translateY(-1px) scale(0.96); }
 
 /* ---------- Reveal animation ---------- */

@@ -5,7 +5,7 @@ export default function Process() {
   return (
     <section className="section section--page-top" id="process">
       <div className="container">
-        <Reveal className="section__head center">
+        <Reveal className="section__head">
           <span className="eyebrow">How It Works</span>
           <h1 className="section__title">
             From script to <span className="gradient-text">live agent</span>

@@ -5,7 +5,7 @@ export default function Technologies() {
   return (
     <section className="section" id="tech">
       <div className="container">
-        <Reveal className="section__head center">
+        <Reveal className="section__head">
           <span className="eyebrow">Under the Hood</span>
           <h2 className="section__title">
             A <span className="gradient-text">modern, battle-tested</span> stack

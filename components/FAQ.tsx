@@ -25,7 +25,7 @@ export default function FAQ() {
     <section className="section section--page-top" id="faq">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
       <div className="container">
-        <Reveal className="section__head center">
+        <Reveal className="section__head">
           <span className="eyebrow">FAQ</span>
           <h1 className="section__title">
             About <span className="gradient-text">Voice AI</span>

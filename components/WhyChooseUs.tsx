@@ -6,7 +6,7 @@ export default function WhyChooseUs() {
   return (
     <section className="section" id="why">
       <div className="container">
-        <Reveal className="section__head center">
+        <Reveal className="section__head">
           <span className="eyebrow">Why Voice AI</span>
           <h2 className="section__title">
             Built for <span className="gradient-text">scale, speed and trust</span>

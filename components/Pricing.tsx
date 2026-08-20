@@ -26,7 +26,7 @@ export default function Pricing() {
     <section className="section section--page-top" id="pricing">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(pricingJsonLd) }} />
       <div className="container">
-        <Reveal className="section__head center">
+        <Reveal className="section__head">
           <span className="eyebrow">Pricing</span>
           <h1 className="section__title">
             Simple, <span className="gradient-text">usage-based</span> plans

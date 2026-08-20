@@ -34,7 +34,7 @@ export default function Testimonials() {
   return (
     <section className="section" id="testimonials">
       <div className="container">
-        <Reveal className="section__head center">
+        <Reveal className="section__head">
           <span className="eyebrow">Testimonials</span>
           <h2 className="section__title">
             Loved by <span className="gradient-text">the teams using it</span>

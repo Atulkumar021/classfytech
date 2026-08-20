@@ -1,16 +1,11 @@
 /**
- * Backdrop — the fixed, full-viewport atmosphere behind all content:
- * three drifting aurora blobs, an animated film-grain layer, and a vignette.
- * Pure CSS/markup (no client JS), sits at z-index -3.
+ * Backdrop — a single still wash behind all content.
+ *
+ * This used to layer three drifting aurora blobs, animated film grain and a
+ * vignette. All of it is gone on purpose: the page reads calmer and more
+ * deliberate without permanently-moving decoration behind the text, and
+ * there's nothing left here to animate.
  */
 export default function Backdrop() {
-  return (
-    <div className="backdrop" aria-hidden="true">
-      <div className="backdrop__aurora backdrop__aurora--1" />
-      <div className="backdrop__aurora backdrop__aurora--2" />
-      <div className="backdrop__aurora backdrop__aurora--3" />
-      <div className="backdrop__grain" />
-      <div className="backdrop__vignette" />
-    </div>
-  );
+  return <div className="backdrop" aria-hidden="true" />;
 }

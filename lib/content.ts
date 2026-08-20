@@ -35,8 +35,18 @@ export interface ProcessStep {
   description: string;
 }
 
+export type ProjectIconKey =
+  | 'chart'
+  | 'chat'
+  | 'calendar'
+  | 'clock'
+  | 'star'
+  | 'mapPin'
+  | 'search'
+  | 'globe';
+
 export interface Project {
-  glyph: string;
+  icon: ProjectIconKey;
   title: string;
   description: string;
   tags: string[];
@@ -166,17 +176,20 @@ export const services: Service[] = [
   },
 ];
 
+// Kept short and in sentence case so each chip holds its label on one line —
+// the longer Title Case versions wrapped to two lines at five across, which
+// left the row looking ragged. Title Case On Every Label also reads as filler.
 export const features: Feature[] = [
-  { icon: 'cpu', label: 'Human-Like Voice AI' },
-  { icon: 'bolt', label: 'Sub-Second Response' },
-  { icon: 'chat', label: '40+ Languages' },
-  { icon: 'clock', label: '24/7 Availability' },
-  { icon: 'shield', label: 'Enterprise-Grade Security' },
-  { icon: 'layout', label: 'CRM & Calendar Sync' },
-  { icon: 'code', label: 'No-Code Script Builder' },
-  { icon: 'chart', label: 'Real-Time Analytics' },
-  { icon: 'search', label: 'Smart Call Routing' },
-  { icon: 'braces', label: 'Open API & Webhooks' },
+  { icon: 'cpu', label: 'Human-like voice' },
+  { icon: 'bolt', label: 'Sub-second replies' },
+  { icon: 'chat', label: '40+ languages' },
+  { icon: 'clock', label: '24/7 availability' },
+  { icon: 'shield', label: 'Enterprise security' },
+  { icon: 'layout', label: 'CRM & calendar sync' },
+  { icon: 'code', label: 'No-code builder' },
+  { icon: 'chart', label: 'Real-time analytics' },
+  { icon: 'search', label: 'Smart call routing' },
+  { icon: 'braces', label: 'Open API & webhooks' },
 ];
 
 export const processSteps: ProcessStep[] = [
@@ -243,7 +256,7 @@ export const technologies = [
 // metrics once available; not attributed to specific named clients.
 export const projects: Project[] = [
   {
-    glyph: '💼',
+    icon: 'chart',
     title: 'Sales & Lead Qualification',
     description:
       'Outbound agents cold-call fresh leads, qualify intent on the spot, and book meetings directly on your reps’ calendars.',
@@ -254,7 +267,7 @@ export const projects: Project[] = [
     ],
   },
   {
-    glyph: '🎧',
+    icon: 'chat',
     title: 'Customer Support Hotline',
     description:
       'Inbound agents answer FAQs, check order status, and escalate complex issues to a human with full context.',
@@ -265,7 +278,7 @@ export const projects: Project[] = [
     ],
   },
   {
-    glyph: '📅',
+    icon: 'calendar',
     title: 'Appointment Scheduling',
     description:
       'Automated booking, reminder and rescheduling calls for clinics, salons and service businesses.',
@@ -276,7 +289,7 @@ export const projects: Project[] = [
     ],
   },
   {
-    glyph: '💳',
+    icon: 'clock',
     title: 'Payment Reminders',
     description:
       'Polite, consistent payment reminder calls with promise-to-pay tracking and compliant scripting.',
@@ -287,7 +300,7 @@ export const projects: Project[] = [
     ],
   },
   {
-    glyph: '📊',
+    icon: 'star',
     title: 'Survey & Feedback Calls',
     description:
       'Post-service NPS/CSAT calls at scale, with every response transcribed and sentiment-scored automatically.',
@@ -298,7 +311,7 @@ export const projects: Project[] = [
     ],
   },
   {
-    glyph: '🏠',
+    icon: 'mapPin',
     title: 'Real Estate Inquiries',
     description:
       'Qualifies buyer and renter interest around the clock and schedules site visits automatically.',
@@ -309,7 +322,7 @@ export const projects: Project[] = [
     ],
   },
   {
-    glyph: '🧑‍💻',
+    icon: 'search',
     title: 'Recruitment Screening',
     description:
       'Pre-screens candidates against your criteria, answers FAQs, and schedules interviews with recruiters.',
@@ -320,7 +333,7 @@ export const projects: Project[] = [
     ],
   },
   {
-    glyph: '📦',
+    icon: 'globe',
     title: 'Delivery & Logistics Updates',
     description:
       'Proactive calls for delivery confirmations, ETA updates and address verification at scale.',

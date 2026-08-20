@@ -10,7 +10,7 @@ export default function Services() {
   return (
     <section className="section section--page-top" id="services">
       <div className="container">
-        <Reveal className="section__head center">
+        <Reveal className="section__head">
           <span className="eyebrow">The Platform</span>
           <h1 className="section__title">
             One agent, <span className="gradient-text">every conversation</span>

@@ -203,6 +203,18 @@ export const serviceIcons = {
   cloud: Cloud,
 } as const;
 
+/** Use-case card icons. Replaced the emoji glyphs these cards used to show. */
+export const projectIcons = {
+  chart: Chart,
+  chat: Chat,
+  calendar: Calendar,
+  clock: Clock,
+  star: Star,
+  mapPin: MapPin,
+  search: Search,
+  globe: Globe,
+} as const;
+
 export const featureIcons = {
   braces: Braces,
   cpu: Cpu,

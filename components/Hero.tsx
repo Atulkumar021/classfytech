@@ -5,8 +5,9 @@ import Reveal from '@/components/ui/Reveal';
 import VoiceCallPreview from '@/components/VoiceCallPreview';
 import { ArrowRight, Calendar } from '@/components/Icons';
 
-const services = ['Outbound Calling', 'Inbound Support', 'Lead Qualification', 'Appointment Booking', '40+ Languages'];
-const avatars = ['PS', 'AM', 'AI', 'RM'];
+// Trimmed from five to three. A wall of feature pills under the CTA reads as
+// filler; three carries the same message and lets the headline breathe.
+const services = ['Outbound calling', 'Inbound support', '40+ languages'];
 
 export default function Hero() {
   return (
@@ -15,10 +16,7 @@ export default function Hero() {
         {/* ---------- Left: copy ---------- */}
         <div className="hero__content">
           <Reveal>
-            <span className="hero__badge">
-              <span className="hero__badge-dot" aria-hidden="true" />
-              AI voice agents that sound human
-            </span>
+            <span className="hero__badge">Voice AI by Classify Technology</span>
           </Reveal>
 
           <Reveal as="h1" delay={35}>
@@ -51,18 +49,12 @@ export default function Hero() {
             ))}
           </Reveal>
 
+          {/* Was a stack of fake initial-avatars plus ★★★★★ and "Rated 4.9/5" —
+              the most recognisable stock-template social proof there is, and
+              not attributable to anyone real. One plain sentence instead. */}
           <Reveal delay={170} className="hero__proof">
-            <div className="hero__avatars" aria-hidden="true">
-              {avatars.map((initials) => (
-                <span className="hero__avatar" key={initials}>
-                  {initials}
-                </span>
-              ))}
-            </div>
             <p className="hero__proof-text">
-              <span className="hero__proof-stars">★★★★★</span>
-              <br />
-              Rated <strong>4.9/5</strong> by sales &amp; support teams worldwide
+              Trusted by sales and support teams to handle live calls every day.
             </p>
           </Reveal>
         </div>

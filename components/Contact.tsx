@@ -59,7 +59,7 @@ export default function Contact() {
   return (
     <section className="section section--page-top" id="contact">
       <div className="container">
-        <Reveal className="section__head center">
+        <Reveal className="section__head">
           <span className="eyebrow">Contact</span>
           <h1 className="section__title">
             Book Your <span className="gradient-text">Free Demo</span>
