@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { useReducedMotion } from '@/lib/hooks';
+import { INTRO_DONE_EVENT, isIntroFinished } from '@/lib/intro';
 import { Close, Send } from '@/components/Icons';
 
 type Status = { message: string; state: 'idle' | 'error' | 'pending' | 'success' };
@@ -27,8 +28,23 @@ export default function DemoModal() {
   const lastFocused = useRef<HTMLElement | null>(null);
 
   useEffect(() => {
-    const id = setTimeout(() => setOpen(true), reduced ? 0 : OPEN_DELAY_MS);
-    return () => clearTimeout(id);
+    let id: ReturnType<typeof setTimeout>;
+    const schedule = () => {
+      id = setTimeout(() => setOpen(true), reduced ? 0 : OPEN_DELAY_MS);
+    };
+
+    // Don't open behind the intro overlay — wait for it to lift first. Checked
+    // synchronously because if the intro is already done the event has fired
+    // and will never fire again.
+    if (isIntroFinished()) {
+      schedule();
+      return () => clearTimeout(id);
+    }
+    window.addEventListener(INTRO_DONE_EVENT, schedule, { once: true });
+    return () => {
+      clearTimeout(id);
+      window.removeEventListener(INTRO_DONE_EVENT, schedule);
+    };
   }, [reduced]);
 
   // Lock background scroll and trap focus while the dialog is open; restore

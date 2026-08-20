@@ -5,9 +5,11 @@ import SpotlightController from '@/components/ui/SpotlightController';
 import SmoothScroll from '@/components/ui/SmoothScroll';
 import ScrollToTop from '@/components/ui/ScrollToTop';
 import DemoModal from '@/components/DemoModal';
+import IntroScreen from '@/components/IntroScreen';
 import OfferBar from '@/components/OfferBar';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
+import { INTRO_BLOCKING_SCRIPT } from '@/lib/intro';
 import './globals.css';
 
 // NOTE: We intentionally load fonts via a plain <link> (below) rather than
@@ -116,6 +118,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700;800&display=swap"
           rel="stylesheet"
         />
+        {/* Runs before first paint so a repeat navigation never flashes the
+            intro overlay — same trick next-themes uses to avoid a theme flash. */}
+        <script dangerouslySetInnerHTML={{ __html: INTRO_BLOCKING_SCRIPT }} />
       </head>
       <body>
         <script
@@ -123,6 +128,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
         />
         <Providers>
+          {/* Mounted before DemoModal so the modal can synchronously see whether
+              an intro is still pending before scheduling itself. */}
+          <IntroScreen />
           <SmoothScroll />
           <Backdrop />
           <SpotlightController />

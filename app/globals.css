@@ -1311,3 +1311,485 @@ body.nav-open .nav__burger span:nth-child(3) { transform: translateY(-7px) rotat
 @media (prefers-reduced-motion: reduce) {
     .demo-modal-overlay, .demo-modal { animation: none; }
 }
+
+/* =========================================================================
+   Cinematic intro overlay — "voice engine boot" sequence
+   Plays once per session on the homepage, then lifts to reveal the site.
+   Everything animates on opacity/transform only, so the whole sequence stays
+   on the compositor and can't jank the reveal underneath it.
+   ========================================================================= */
+/* Set before first paint by the blocking script in the layout head, so a
+   repeat navigation never flashes the overlay. */
+html.intro-seen .intro { display: none; }
+
+.intro {
+    position: fixed;
+    inset: 0;
+    z-index: 300;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    background: #01040c;
+    color: #eaf7ff;
+    opacity: 1;
+    /* --intro-play / --intro-fade are set inline by IntroScreen so the JS
+       cleanup and these animations share one source of truth. */
+    transition: opacity var(--intro-fade) var(--ease-out), transform var(--intro-fade) var(--ease-out);
+    /* Lifts itself away in pure CSS. React only unmounts the node afterwards,
+       so a decorative overlay can never permanently block the page when the
+       bundle is slow to hydrate or fails to load at all. */
+    animation: intro-autolift var(--intro-fade) var(--ease-out) var(--intro-play) forwards;
+}
+/* Lifts and scales away rather than just fading — reads as a curtain rising
+   off the page instead of a dialog closing. */
+@keyframes intro-autolift {
+    to { opacity: 0; transform: translateY(-3%) scale(1.06); visibility: hidden; }
+}
+/* Skip pressed: cancel the scheduled auto-lift so the transition above takes
+   over and the overlay leaves right now. */
+.intro.is-closing {
+    animation: none;
+    opacity: 0;
+    transform: translateY(-3%) scale(1.06);
+    pointer-events: none;
+}
+/* Shared monospace stack for the HUD chrome — technical voice, no extra font
+   to download. */
+.intro__hud-label,
+.intro__boot li,
+.intro__readout { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace; }
+
+/* ---------- Atmosphere ---------- */
+.intro__bg {
+    position: absolute;
+    inset: 0;
+    background:
+        radial-gradient(circle at 50% 42%, rgba(31, 213, 249, 0.22), transparent 34%),
+        radial-gradient(circle at 74% 22%, rgba(90, 139, 255, 0.18), transparent 30%),
+        radial-gradient(circle at 22% 76%, rgba(139, 92, 246, 0.12), transparent 32%),
+        linear-gradient(150deg, #01040c 0%, #04162b 46%, #01040c 100%);
+}
+/* Flat grid that eases back as the reticle takes over. */
+.intro__grid {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    background-image:
+        linear-gradient(rgba(183, 243, 239, 0.1) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(183, 243, 239, 0.09) 1px, transparent 1px);
+    background-size: 68px 68px;
+    animation: intro-grid 3.2s var(--ease-out) both;
+}
+@keyframes intro-grid {
+    0% { opacity: 0; transform: scale(1.18); }
+    45% { opacity: 0.13; }
+    100% { opacity: 0.06; transform: none; }
+}
+/* Perspective floor — the single biggest "futuristic" cue, and it's just one
+   rotated gradient plane. */
+.intro__floor {
+    position: absolute;
+    left: -25%;
+    right: -25%;
+    bottom: -14%;
+    height: 62%;
+    transform: perspective(520px) rotateX(68deg);
+    transform-origin: bottom center;
+    background-image:
+        linear-gradient(rgba(31, 213, 249, 0.42) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(31, 213, 249, 0.32) 1px, transparent 1px);
+    background-size: 74px 74px;
+    -webkit-mask-image: linear-gradient(to top, #000 4%, transparent 82%);
+    mask-image: linear-gradient(to top, #000 4%, transparent 82%);
+    opacity: 0;
+    /* Deliberately only fades in — an earlier version also drifted the grid via
+       `background-position`, which repaints this whole masked 3D layer every
+       frame and measurably stretched the intro on a throttled CPU. The static
+       perspective reads just as futuristic for none of that cost. */
+    animation: intro-floor 2.6s var(--ease-out) 0.15s both;
+}
+@keyframes intro-floor {
+    from { opacity: 0; }
+    to { opacity: 0.9; }
+}
+/* Single scanline sweep — a classic HUD tell, one element. */
+.intro__scan {
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 34vh;
+    top: -34vh;
+    background: linear-gradient(to bottom, transparent, rgba(31, 213, 249, 0.07) 46%, rgba(143, 233, 255, 0.16) 50%, rgba(31, 213, 249, 0.07) 54%, transparent);
+    animation: intro-scan 2.6s var(--ease) 0.5s 2 both;
+}
+@keyframes intro-scan {
+    from { transform: translateY(0); }
+    to { transform: translateY(160vh); }
+}
+/* Focuses the eye centrally. Kept lighter than a full vignette so the
+   perspective floor and outer rings still read through it. */
+.intro__vignette {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 50% 48%, transparent 0%, rgba(1, 4, 12, 0.2) 44%, rgba(0, 0, 0, 0.66) 100%);
+}
+
+/* ---------- Reticle: rings, radar sweep, glow ---------- */
+.intro__reticle { position: absolute; inset: 0; display: grid; place-items: center; }
+.intro__ring {
+    position: absolute;
+    border-radius: 50%;
+    border: 1px solid rgba(31, 213, 249, 0.14);
+    opacity: 0;
+    animation: intro-ring 1.5s var(--ease-out) both;
+}
+.intro__ring--1 { width: min(90vw, 780px); aspect-ratio: 1; animation-delay: 0.05s; }
+.intro__ring--2 { width: min(66vw, 560px); aspect-ratio: 1; border-color: rgba(90, 139, 255, 0.16); animation-delay: 0.18s; }
+.intro__ring--3 { width: min(44vw, 374px); aspect-ratio: 1; animation-delay: 0.31s; }
+@keyframes intro-ring {
+    from { opacity: 0; transform: scale(0.72); }
+    to { opacity: 1; transform: none; }
+}
+/* Dashed reticle rings counter-rotating — reads as an instrument locking on. */
+.intro__ring--dash {
+    position: absolute;
+    border-radius: 50%;
+    border: 1px dashed rgba(143, 233, 255, 0.26);
+    opacity: 0;
+}
+/* `will-change` on the continuously-rotating layers so they get their own
+   compositor layer instead of repainting the reticle each frame. */
+.intro__ring--dash-a {
+    width: min(76vw, 650px);
+    aspect-ratio: 1;
+    will-change: transform;
+    animation: intro-ring 1.4s var(--ease-out) 0.35s both, intro-spin 26s linear 0.35s infinite;
+}
+.intro__ring--dash-b {
+    width: min(54vw, 460px);
+    aspect-ratio: 1;
+    border-style: dotted;
+    border-color: rgba(90, 139, 255, 0.3);
+    will-change: transform;
+    animation: intro-ring 1.4s var(--ease-out) 0.5s both, intro-spin-rev 18s linear 0.5s infinite;
+}
+@keyframes intro-spin { to { transform: rotate(360deg); } }
+@keyframes intro-spin-rev { to { transform: rotate(-360deg); } }
+/* Radar sweep — a conic gradient we only ever rotate. */
+.intro__sweep {
+    position: absolute;
+    width: min(66vw, 560px);
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background: conic-gradient(from 0deg, rgba(31, 213, 249, 0.3), rgba(31, 213, 249, 0.04) 18%, transparent 32%, transparent 100%);
+    -webkit-mask-image: radial-gradient(circle, transparent 34%, #000 36%, #000 99%, transparent 100%);
+    mask-image: radial-gradient(circle, transparent 34%, #000 36%, #000 99%, transparent 100%);
+    opacity: 0;
+    will-change: transform;
+    animation: intro-fade-in 1s var(--ease-out) 0.55s both, intro-spin 3.6s linear 0.55s infinite;
+}
+@keyframes intro-fade-in { from { opacity: 0; } to { opacity: 1; } }
+.intro__glow {
+    position: absolute;
+    width: min(72vw, 580px);
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(31, 213, 249, 0.18), transparent 66%);
+    filter: blur(44px);
+    animation: intro-glow 2.4s var(--ease-out) both;
+}
+@keyframes intro-glow {
+    from { opacity: 0; transform: scale(0.6); }
+    to { opacity: 1; transform: none; }
+}
+
+/* ---------- Particles ---------- */
+.intro__particles { position: absolute; inset: 0; }
+.intro__particle {
+    position: absolute;
+    border-radius: 50%;
+    background: #8fe9ff;
+    box-shadow: 0 0 14px rgba(31, 213, 249, 0.85);
+    opacity: 0;
+    animation: intro-particle 2.8s var(--ease-out) both;
+}
+@keyframes intro-particle {
+    0% { opacity: 0; transform: scale(0.2); }
+    45% { opacity: 1; transform: scale(1); }
+    100% { opacity: 0; transform: scale(0.35); }
+}
+
+/* ---------- HUD chrome ---------- */
+.intro__hud { position: absolute; inset: clamp(0.9rem, 2.4vw, 1.6rem); pointer-events: none; }
+.intro__bracket {
+    position: absolute;
+    width: clamp(24px, 4vw, 40px);
+    height: clamp(24px, 4vw, 40px);
+    border: 1px solid rgba(143, 233, 255, 0.38);
+    opacity: 0;
+    animation: intro-fade-in 0.9s var(--ease-out) 0.3s both;
+}
+.intro__bracket--tl { top: 0; left: 0; border-right: 0; border-bottom: 0; }
+.intro__bracket--tr { top: 0; right: 0; border-left: 0; border-bottom: 0; }
+.intro__bracket--bl { bottom: 0; left: 0; border-right: 0; border-top: 0; }
+.intro__bracket--br { bottom: 0; right: 0; border-left: 0; border-top: 0; }
+.intro__hud-label {
+    position: absolute;
+    font-size: clamp(0.5rem, 1.1vw, 0.6rem);
+    font-weight: 600;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: rgba(143, 233, 255, 0.5);
+    white-space: nowrap;
+    opacity: 0;
+    animation: intro-fade-in 0.9s var(--ease-out) 0.65s both;
+}
+.intro__hud-label--tl { top: 2px; left: calc(clamp(24px, 4vw, 40px) + 0.7rem); }
+.intro__hud-label--tr { top: 2px; right: calc(clamp(24px, 4vw, 40px) + 0.7rem); }
+.intro__hud-label--bl { bottom: 2px; left: calc(clamp(24px, 4vw, 40px) + 0.7rem); }
+@media (max-width: 640px) {
+    /* Too tight to read next to the brackets — drop the side labels. */
+    .intro__hud-label--tr, .intro__hud-label--bl { display: none; }
+}
+
+/* ---------- Center stack ---------- */
+.intro__center {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding-inline: var(--gutter);
+}
+.intro__eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    font-family: var(--font-sans);
+    font-size: clamp(0.6rem, 1.5vw, 0.72rem);
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(224, 247, 255, 0.74);
+    padding: 0.45rem 1.05rem;
+    border: 1px solid rgba(143, 233, 255, 0.22);
+    border-radius: var(--radius-pill);
+    background: rgba(143, 233, 255, 0.06);
+    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(8px);
+    opacity: 0;
+    animation: intro-up 0.8s var(--ease-out) 0.3s both;
+}
+.intro__eyebrow-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--cyan);
+    box-shadow: 0 0 12px 2px var(--cyan);
+    flex-shrink: 0;
+    animation: intro-pulse 1.6s var(--ease) infinite;
+}
+@keyframes intro-pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.45; transform: scale(0.82); }
+}
+
+/* Logo mark, powering up inside its own halo. */
+.intro__mark-wrap { position: relative; margin-top: clamp(1.4rem, 3.6vw, 2.2rem); display: grid; place-items: center; }
+.intro__mark-halo {
+    position: absolute;
+    width: clamp(120px, 20vw, 168px);
+    aspect-ratio: 1;
+    border-radius: 50%;
+    border: 1px solid rgba(31, 213, 249, 0.3);
+    opacity: 0;
+    animation: intro-halo 2.4s var(--ease-out) 0.6s infinite;
+}
+@keyframes intro-halo {
+    0% { opacity: 0.55; transform: scale(0.72); }
+    70% { opacity: 0; transform: scale(1.25); }
+    100% { opacity: 0; transform: scale(1.25); }
+}
+.intro__mark {
+    position: relative;
+    width: clamp(74px, 13vw, 100px);
+    aspect-ratio: 1;
+    border-radius: 24px;
+    overflow: hidden;
+    display: grid;
+    place-items: center;
+    box-shadow: 0 0 64px -8px rgba(31, 213, 249, 0.75), 0 0 0 1px rgba(143, 233, 255, 0.22);
+    opacity: 0;
+    animation: intro-mark 1.15s var(--ease-out) 0.45s both;
+}
+.intro__mark img { width: 100%; height: 100%; object-fit: cover; }
+@keyframes intro-mark {
+    0% { opacity: 0; transform: scale(0.5) rotate(-10deg); }
+    55% { opacity: 1; }
+    100% { opacity: 1; transform: none; }
+}
+
+/* Wordmark reveals letter by letter — the per-letter delay is set inline. */
+.intro__word {
+    display: flex;
+    justify-content: center;
+    font-family: var(--font-sans);
+    font-weight: 800;
+    font-size: clamp(2.3rem, 7.6vw, 4.8rem);
+    line-height: 1.02;
+    letter-spacing: -0.04em;
+    color: #f6fcff;
+    margin-top: clamp(1rem, 2.4vw, 1.4rem);
+}
+.intro__letter {
+    display: inline-block;
+    white-space: pre;
+    opacity: 0;
+    animation: intro-letter 0.62s var(--ease-out) both;
+}
+@keyframes intro-letter {
+    from { opacity: 0; transform: translateY(0.42em) scale(0.9); filter: blur(6px); }
+    to { opacity: 1; transform: none; filter: blur(0); }
+}
+.intro__tagline {
+    font-family: var(--font-sans);
+    font-size: clamp(0.8rem, 1.9vw, 0.96rem);
+    font-weight: 500;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: rgba(224, 247, 255, 0.52);
+    margin-top: 0.7rem;
+    opacity: 0;
+    animation: intro-up 0.9s var(--ease-out) 1.7s both;
+}
+@keyframes intro-up {
+    from { opacity: 0; transform: translateY(14px); }
+    to { opacity: 1; transform: none; }
+}
+
+/* Boot log — sequential technical lines, staggered inline. */
+.intro__boot {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    margin-top: clamp(1.3rem, 3vw, 1.9rem);
+    font-size: clamp(0.56rem, 1.3vw, 0.68rem);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: rgba(143, 233, 255, 0.6);
+}
+.intro__boot li {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    opacity: 0;
+    animation: intro-boot 0.5s var(--ease-out) both;
+}
+.intro__boot li::before {
+    content: '';
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--cyan);
+    box-shadow: 0 0 8px var(--cyan);
+    flex-shrink: 0;
+}
+@keyframes intro-boot {
+    from { opacity: 0; transform: translateX(-8px); }
+    to { opacity: 0.95; transform: none; }
+}
+
+/* Voice waveform — reuses the hero call card's `wave-bar` keyframes so the
+   product's visual language is the same in the intro as on the page. */
+.intro__wave {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    height: 44px;
+    margin-top: clamp(1.3rem, 3vw, 1.9rem);
+    opacity: 0;
+    animation: intro-up 0.8s var(--ease-out) 2.5s both;
+}
+.intro__wave-bar {
+    width: 3px;
+    height: 100%;
+    border-radius: 2px;
+    background: var(--grad-brand);
+    animation: wave-bar 1.1s ease-in-out infinite;
+}
+
+/* ---------- Progress + skip ---------- */
+.intro__progress {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 2px;
+    background: rgba(143, 233, 255, 0.09);
+    overflow: hidden;
+}
+.intro__progress span {
+    display: block;
+    height: 100%;
+    width: 100%;
+    transform-origin: left;
+    background: var(--grad-brand);
+    box-shadow: 0 0 14px rgba(31, 213, 249, 0.8);
+    animation: intro-progress var(--intro-play) linear both;
+}
+@keyframes intro-progress {
+    from { transform: scaleX(0); }
+    to { transform: scaleX(1); }
+}
+.intro__readout {
+    position: absolute;
+    left: 50%;
+    bottom: 1rem;
+    transform: translateX(-50%);
+    font-size: clamp(0.5rem, 1.1vw, 0.58rem);
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: rgba(143, 233, 255, 0.42);
+    white-space: nowrap;
+    opacity: 0;
+    animation: intro-fade-in 0.8s var(--ease-out) 0.8s both;
+}
+@media (max-width: 560px) { .intro__readout { display: none; } }
+.intro__skip {
+    position: absolute;
+    right: clamp(1rem, 3vw, 1.75rem);
+    bottom: clamp(1.4rem, 3vw, 2rem);
+    z-index: 3;
+    font-family: var(--font-sans);
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgba(224, 247, 255, 0.72);
+    padding: 0.75rem 1.2rem;
+    border-radius: var(--radius-pill);
+    border: 1px solid rgba(143, 233, 255, 0.24);
+    background: rgba(143, 233, 255, 0.07);
+    -webkit-backdrop-filter: blur(14px);
+    backdrop-filter: blur(14px);
+    cursor: pointer;
+    opacity: 0;
+    animation: intro-up 0.7s var(--ease-out) 0.75s both;
+    transition: color 0.25s, background 0.25s, border-color 0.25s;
+}
+.intro__skip:hover {
+    color: #fff;
+    background: rgba(143, 233, 255, 0.16);
+    border-color: rgba(143, 233, 255, 0.45);
+}
+
+/* Reduced motion: skip the intro outright. React also returns null for these
+   visitors, but this covers the server-rendered overlay before hydration —
+   blanket-disabling animations here instead would kill the auto-lift and
+   strand the overlay on screen. */
+@media (prefers-reduced-motion: reduce) {
+    .intro { display: none; }
+}
