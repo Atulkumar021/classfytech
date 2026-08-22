@@ -470,8 +470,8 @@ export const faqs: Faq[] = [
 
 export const contactInfo = {
   email: 'classifytechnologies@gmail.com',
-  phoneDisplay: '+91 70176 72081',
-  phoneHref: '+917017672081',
-  whatsapp: '917017672081',
+  phoneDisplay: '+91 9457636571',
+  phoneHref: '+91 9457636571',
+  whatsapp: '91 9457636571',
   address: 'New Delhi, India',
 };
