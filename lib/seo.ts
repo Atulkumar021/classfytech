@@ -20,7 +20,9 @@ export function pageMetadata({
   description: string;
   path: string;
 }): Metadata {
-  const socialTitle = `${title} | Voice AI`;
+  // Brand suffix matches the layout title template, so every shared
+  // link carries the company name.
+  const socialTitle = `${title} | Classify Technology`;
 
   return {
     title,
@@ -31,7 +33,7 @@ export function pageMetadata({
       url: `${siteUrl}${path}`,
       title: socialTitle,
       description,
-      siteName: 'Voice AI',
+      siteName: 'Classify Technology',
       images: [
         {
           url: '/assets/og-image.png',

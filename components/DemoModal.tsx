@@ -11,13 +11,17 @@ type Status = { message: string; state: 'idle' | 'error' | 'pending' | 'success'
 // instant popup on first paint reads as jarring rather than a real welcome.
 const OPEN_DELAY_MS = 900;
 
+// India first and pre-selected — it's the primary market (₹ pricing, a +91
+// contact number, Delhi-based), so defaulting to +1 made most visitors change
+// it on every submission.
 const COUNTRY_CODES = [
+  { code: '+91', flag: '🇮🇳' },
+  { code: '+971', flag: '🇦🇪' },
   { code: '+1', flag: '🇺🇸' },
   { code: '+44', flag: '🇬🇧' },
-  { code: '+91', flag: '🇮🇳' },
   { code: '+61', flag: '🇦🇺' },
-  { code: '+971', flag: '🇦🇪' },
 ];
+const DEFAULT_COUNTRY_CODE = '+91';
 
 export default function DemoModal() {
   const reduced = useReducedMotion();
@@ -156,14 +160,15 @@ export default function DemoModal() {
             <div className="field field--full">
               <label htmlFor="dm-phone">Mobile number</label>
               <div className="phone-field">
-                <select aria-label="Country code" name="countryCode" defaultValue="+1">
+                <select aria-label="Country code" name="countryCode" defaultValue={DEFAULT_COUNTRY_CODE}>
                   {COUNTRY_CODES.map(({ code, flag }) => (
                     <option key={code} value={code}>
                       {flag} {code}
                     </option>
                   ))}
                 </select>
-                <input id="dm-phone" name="phone" type="tel" autoComplete="tel" placeholder="(555) 000-0000" required />
+                {/* Indian format, matching the default +91 country code. */}
+                <input id="dm-phone" name="phone" type="tel" autoComplete="tel" placeholder="98765 43210" required />
               </div>
             </div>
 

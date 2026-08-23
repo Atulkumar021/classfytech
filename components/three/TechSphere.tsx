@@ -84,7 +84,8 @@ export default function TechSphere({ reduced = false }: { reduced?: boolean }) {
         {/* Faint structural shell */}
         <mesh>
           <icosahedronGeometry args={[RADIUS, 1]} />
-          <meshBasicMaterial color="#5a8bff" wireframe transparent opacity={0.06} />
+          {/* Matches the site accent (logo green) — see --accent in globals.css. */}
+          <meshBasicMaterial color="#43a84a" wireframe transparent opacity={0.06} />
         </mesh>
         {technologies.map((tech, i) => (
           <TechNode key={tech.name} position={positions[i]} abbr={tech.abbr} name={tech.name} />

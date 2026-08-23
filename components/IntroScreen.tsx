@@ -226,7 +226,7 @@ export default function IntroScreen() {
         <div className="intro__mark-wrap">
           <span className="intro__mark-halo" aria-hidden="true" />
           <span className="intro__mark" aria-hidden="true">
-            <img src="/assets/logo.png" alt="" />
+            <img src="/assets/logo-mark.png" alt="" />
           </span>
         </div>
 

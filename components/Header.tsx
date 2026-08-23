@@ -46,10 +46,28 @@ export default function Header() {
     };
   }, [pathname]);
 
-  // Reflect the mobile-menu state on <body> so CSS can react (matches globals).
+  // Reflect the mobile-menu state on <body> so CSS can react (matches globals),
+  // and hold the page still while the drawer covers it — without this the
+  // content behind the drawer stays scrollable under your finger.
   useEffect(() => {
     document.body.classList.toggle('nav-open', open);
-    return () => document.body.classList.remove('nav-open');
+    const html = document.documentElement;
+    const prevOverflow = html.style.overflow;
+    if (open) html.style.overflow = 'hidden';
+    return () => {
+      document.body.classList.remove('nav-open');
+      html.style.overflow = prevOverflow;
+    };
+  }, [open]);
+
+  // Escape closes the drawer, matching the dialog behaviour elsewhere.
+  useEffect(() => {
+    if (!open) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setOpen(false);
+    };
+    document.addEventListener('keydown', onKey);
+    return () => document.removeEventListener('keydown', onKey);
   }, [open]);
 
   // Close the mobile menu (and reset scroll tracking) on every navigation.
@@ -64,10 +82,18 @@ export default function Header() {
         <div className="container nav">
           <Link className="brand" href="/" aria-label="Voice AI home" onClick={close}>
             <span className="brand__mark" aria-hidden="true">
-              <img src="/assets/logo.png" alt="" />
+              <img src="/assets/logo-mark.png" alt="" />
             </span>
             Voice AI
           </Link>
+
+          <button
+            type="button"
+            className="nav__scrim"
+            aria-label="Close menu"
+            tabIndex={open ? 0 : -1}
+            onClick={close}
+          />
 
           <nav className="nav__menu" aria-label="Primary">
             {navLinks.map((link) => (

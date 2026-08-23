@@ -22,10 +22,14 @@ const siteUrl = 'https://classifytechnology.in';
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
-  icons: { icon: '/assets/logo.png', apple: '/assets/logo.png' },
+  icons: { icon: '/assets/logo-icon.png', apple: '/assets/logo-icon.png' },
+  // The company name belongs in every title. This domain is the Classify
+  // Technology brand, and when the homepage title said only "Voice AI" the
+  // strongest brand signal on the site was gone — leaving nothing for a
+  // navigational "classify technology" search to match on.
   title: {
-    template: '%s | Voice AI',
-    default: 'Voice AI — Human-Like AI Voice Agents for Inbound & Outbound Calls',
+    template: '%s | Classify Technology',
+    default: 'Classify Technology — AI Voice Agents for Sales & Support Calls',
   },
   description:
     'Voice AI by Classify Technology is an AI voice agent platform that makes and takes phone calls for you — qualifying leads, booking meetings and resolving support calls 24/7, in 40+ languages.',
@@ -51,60 +55,96 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     url: siteUrl,
-    title: 'Voice AI — Human-Like AI Voice Agents for Inbound & Outbound Calls',
+    title: 'Classify Technology — AI Voice Agents for Sales & Support Calls',
     description:
-      'One platform, natural-sounding voice agents that qualify leads, book meetings and handle support calls around the clock.',
-    siteName: 'Voice AI',
+      'Voice AI by Classify Technology — natural-sounding voice agents that qualify leads, book meetings and handle support calls around the clock.',
+    // The site is the company; "Voice AI" is the product on it.
+    siteName: 'Classify Technology',
     images: [
       {
         url: '/assets/og-image.png',
         width: 1200,
         height: 630,
-        alt: 'Voice AI — Human-Like AI Voice Agents for Inbound & Outbound Calls',
+        alt: 'Classify Technology — AI Voice Agents for Sales & Support Calls',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Voice AI — Human-Like AI Voice Agents for Inbound & Outbound Calls',
+    title: 'Classify Technology — AI Voice Agents for Sales & Support Calls',
     description:
-      'One platform, natural-sounding voice agents that qualify leads, book meetings and handle support calls around the clock.',
+      'Voice AI by Classify Technology — natural-sounding voice agents that qualify leads, book meetings and handle support calls around the clock.',
     images: ['/assets/og-image.png'],
   },
 };
 
 export const viewport: Viewport = {
-  themeColor: '#0a0a0a',
+  // Matches the default (light) theme's page background, so the mobile browser
+  // chrome doesn't sit dark above a light page.
+  themeColor: '#fafafa',
   width: 'device-width',
   initialScale: 1,
 };
 
-const organizationJsonLd = {
+/**
+ * A linked graph rather than one nested blob.
+ *
+ * Previously the only entity here was `SoftwareApplication` named "Voice AI",
+ * with the company buried as its `provider`. That gave search engines nothing
+ * to bind the *domain* to the Classify Technology brand. Now `Organization` is
+ * a first-class entity that `WebSite` publishes and the product references by
+ * `@id`, which is what a brand/navigational query needs to resolve.
+ */
+const siteJsonLd = {
   '@context': 'https://schema.org',
-  '@type': 'SoftwareApplication',
-  name: 'Voice AI',
-  applicationCategory: 'BusinessApplication',
-  operatingSystem: 'Web',
-  description:
-    'AI voice agent platform for inbound and outbound phone calls — lead qualification, appointment booking, customer support and more, in 40+ languages.',
-  url: siteUrl,
-  provider: {
-    '@type': 'Organization',
-    name: 'Classify Technology',
-    email: 'classifytechnologies@gmail.com',
-    telephone: '+91-7017672081',
-    address: {
-      '@type': 'PostalAddress',
-      addressLocality: 'New Delhi',
-      addressRegion: 'Delhi',
-      addressCountry: 'IN',
+  '@graph': [
+    {
+      '@type': 'Organization',
+      '@id': `${siteUrl}/#organization`,
+      name: 'Classify Technology',
+      // Covers the spellings people actually search and the email domain.
+      alternateName: ['Classify Technologies', 'Classify Tech', 'Classify'],
+      url: siteUrl,
+      logo: {
+        '@type': 'ImageObject',
+        url: `${siteUrl}/assets/logo-icon.png`,
+        width: 512,
+        height: 512,
+      },
+      email: 'classifytechnologies@gmail.com',
+      telephone: '+91-9457636571',
+      address: {
+        '@type': 'PostalAddress',
+        addressLocality: 'New Delhi',
+        addressRegion: 'Delhi',
+        addressCountry: 'IN',
+      },
+      sameAs: [
+        'https://twitter.com/classifytechin',
+        'https://www.linkedin.com/company/classify-technology',
+        'https://github.com/classifytechnology',
+      ],
     },
-    sameAs: [
-      'https://twitter.com/classifytechin',
-      'https://www.linkedin.com/company/classify-technology',
-      'https://github.com/classifytechnology',
-    ],
-  },
+    {
+      '@type': 'WebSite',
+      '@id': `${siteUrl}/#website`,
+      url: siteUrl,
+      name: 'Classify Technology',
+      publisher: { '@id': `${siteUrl}/#organization` },
+      inLanguage: 'en',
+    },
+    {
+      '@type': 'SoftwareApplication',
+      '@id': `${siteUrl}/#voice-ai`,
+      name: 'Voice AI',
+      applicationCategory: 'BusinessApplication',
+      operatingSystem: 'Web',
+      description:
+        'AI voice agent platform for inbound and outbound phone calls — lead qualification, appointment booking, customer support and more, in 40+ languages.',
+      url: siteUrl,
+      provider: { '@id': `${siteUrl}/#organization` },
+    },
+  ],
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -124,7 +164,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body>
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(siteJsonLd) }}
         />
         <Providers>
           {/* Mounted before DemoModal so the modal can synchronously see whether

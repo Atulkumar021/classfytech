@@ -35,7 +35,7 @@ export default function Footer() {
           <div>
             <Link className="brand" href="/">
               <span className="brand__mark" aria-hidden="true">
-                <img src="/assets/logo.png" alt="" />
+                <img src="/assets/logo-mark.png" alt="" />
               </span>
               Voice AI
             </Link>

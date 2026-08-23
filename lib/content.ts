@@ -470,8 +470,11 @@ export const faqs: Faq[] = [
 
 export const contactInfo = {
   email: 'classifytechnologies@gmail.com',
-  phoneDisplay: '+91 9457636571',
-  phoneHref: '+91 9457636571',
-  whatsapp: '91 9457636571',
+  // Display is spaced for readability; the two link values must stay
+  // unspaced — `wa.me/` rejects spaces outright and `tel:` is unreliable
+  // with them.
+  phoneDisplay: '+91 94576 36571',
+  phoneHref: '+919457636571',
+  whatsapp: '919457636571',
   address: 'New Delhi, India',
 };

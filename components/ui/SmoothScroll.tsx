@@ -13,16 +13,19 @@ export default function SmoothScroll() {
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
     const lenis = new Lenis({
-      // Slower, heavier glide per scroll tick — reads as buttery/cinematic
-      // rather than snappy. Frame-rate smoothness itself comes from the rAF
-      // loop below staying unblocked (see TechCanvas visibility pausing and
-      // the throttled scroll listeners elsewhere in the app).
-      duration: 1.6,
+      // How long each glide takes to settle. Frame-rate smoothness itself comes
+      // from the rAF loop below staying unblocked (see TechCanvas visibility
+      // pausing and the throttled scroll listeners elsewhere in the app).
+      duration: 1.5,
       // easeOutExpo — quick start, gentle settle.
       easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       smoothWheel: true,
-      wheelMultiplier: 0.85,
-      touchMultiplier: 1.3,
+      // This — not `duration` — is the real "how fast does the page move"
+      // control: it scales how far one wheel notch travels. At 0.85 a single
+      // notch covered most of a viewport, which read as the page lurching.
+      // Lower means more turns of the wheel but far more control.
+      wheelMultiplier: 0.5,
+      touchMultiplier: 1,
     });
 
     let rafId = 0;

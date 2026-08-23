@@ -8,12 +8,12 @@ export default function manifest(): MetadataRoute.Manifest {
       'AI voice agent platform for inbound and outbound phone calls — lead qualification, appointment booking, customer support and more, in 40+ languages.',
     start_url: '/',
     display: 'standalone',
-    background_color: '#0a0a0a',
-    theme_color: '#0a0a0a',
+    background_color: '#fafafa',
+    theme_color: '#fafafa',
     icons: [
       {
-        src: '/assets/logo.png',
-        sizes: '1536x1024',
+        src: '/assets/logo-icon.png',
+        sizes: '512x512',
         type: 'image/png',
       },
     ],
