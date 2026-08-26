@@ -6,6 +6,17 @@ import { usePathname } from 'next/navigation';
 import { navLinks } from '@/lib/content';
 import ThemeToggle from '@/components/ui/ThemeToggle';
 
+/**
+ * True when the current route is inside a nav item's section, so "Voice AI"
+ * stays highlighted on `/voice-ai/pricing` too. An exact match alone left the
+ * header with nothing active on every sub-page.
+ */
+function isSectionActive(pathname: string | null, href: string) {
+  if (!pathname) return false;
+  if (href === '/') return pathname === '/';
+  return pathname === href || pathname.startsWith(`${href}/`);
+}
+
 export default function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [progress, setProgress] = useState(0);
@@ -80,11 +91,11 @@ export default function Header() {
       <div className="progress-bar" style={{ transform: `scaleX(${progress})` }} />
       <header className={`header ${scrolled ? 'is-scrolled' : ''}`}>
         <div className="container nav">
-          <Link className="brand" href="/" aria-label="Voice AI home" onClick={close}>
+          <Link className="brand" href="/" aria-label="Classify Technology home" onClick={close}>
             <span className="brand__mark" aria-hidden="true">
               <img src="/assets/logo-mark.png" alt="" />
             </span>
-            Voice AI
+            Classify Technology
           </Link>
 
           <button
@@ -99,7 +110,7 @@ export default function Header() {
             {navLinks.map((link) => (
               <Link
                 key={link.href}
-                className={`nav__link ${pathname === link.href ? 'is-active' : ''}`}
+                className={`nav__link ${isSectionActive(pathname, link.href) ? 'is-active' : ''}`}
                 href={link.href}
                 onClick={close}
               >

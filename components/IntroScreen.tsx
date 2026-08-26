@@ -46,23 +46,37 @@ const PARTICLES = [
 
 const WAVE_BARS = 28;
 
-/** Split so each glyph can be revealed on its own delay. */
-const WORD = 'Voice ';
-const WORD_ACCENT = 'AI';
+/**
+ * Split so each glyph can be revealed on its own delay.
+ *
+ * The company name, not "Voice AI" — the site covers three products now, so
+ * an intro that named only one of them mis-set expectations before the page
+ * had even loaded.
+ */
+const WORD = 'Classify ';
+const WORD_ACCENT = 'Technology';
 /** Wordmark reveal starts here; each letter follows `LETTER_STEP` behind. */
 const WORD_DELAY = 1.05;
-const LETTER_STEP = 0.055;
+/** Faster per-letter step than before, since this wordmark is twice as long. */
+const LETTER_STEP = 0.035;
+
+/** The three products, revealed in sequence under the wordmark. */
+const PRODUCTS = ['Voice AI', 'Dialer', 'Chatbot'];
+const PRODUCT_START = 1.75;
+const PRODUCT_STEP = 0.16;
 
 // Decorative HUD chrome. Kept to things the site actually claims elsewhere
 // rather than invented metrics.
 const BOOT_LINES = [
   'Loading speech models',
   'Connecting telephony',
-  'Calibrating voice persona',
-  'Agent ready',
+  'Starting chat engine',
+  'All systems ready',
 ];
-const BOOT_START = 1.85;
-const BOOT_STEP = 0.26;
+// Starts after the product row has landed, so the sequence reads in order:
+// wordmark → products → boot log → waveform.
+const BOOT_START = 2.35;
+const BOOT_STEP = 0.24;
 
 export default function IntroScreen() {
   const pathname = usePathname();
@@ -172,7 +186,7 @@ export default function IntroScreen() {
       style={timing}
       onAnimationStart={handleAnimationStart}
       onAnimationEnd={handleAnimationEnd}
-      aria-label="Voice AI intro animation"
+      aria-label="Classify Technology intro animation"
     >
       <div className="intro__bg" aria-hidden="true" />
       <div className="intro__floor" aria-hidden="true" />
@@ -213,14 +227,14 @@ export default function IntroScreen() {
         <span className="intro__bracket intro__bracket--bl" />
         <span className="intro__bracket intro__bracket--br" />
         <span className="intro__hud-label intro__hud-label--tl">Classify Technology</span>
-        <span className="intro__hud-label intro__hud-label--tr">40+ Languages</span>
-        <span className="intro__hud-label intro__hud-label--bl">Inbound + Outbound</span>
+        <span className="intro__hud-label intro__hud-label--tr">Three products</span>
+        <span className="intro__hud-label intro__hud-label--bl">Voice · Dialer · Chat</span>
       </div>
 
       <div className="intro__center">
         <p className="intro__eyebrow">
           <span className="intro__eyebrow-dot" aria-hidden="true" />
-          AI Voice Agents That Sound Human
+          AI that talks to your customers
         </p>
 
         <div className="intro__mark-wrap">
@@ -244,7 +258,15 @@ export default function IntroScreen() {
           ))}
         </p>
 
-        <p className="intro__tagline">by Classify Technology</p>
+        {/* The three products, replacing the old "by Classify Technology"
+            line — the company name is now the wordmark above. */}
+        <ul className="intro__products" aria-hidden="true">
+          {PRODUCTS.map((name, i) => (
+            <li key={name} style={{ animationDelay: `${PRODUCT_START + i * PRODUCT_STEP}s` }}>
+              {name}
+            </li>
+          ))}
+        </ul>
 
         <ul className="intro__boot" aria-hidden="true">
           {BOOT_LINES.map((line, i) => (
@@ -266,7 +288,7 @@ export default function IntroScreen() {
       </div>
 
       <p className="intro__readout" aria-hidden="true">
-        Initializing voice engine
+        Initializing systems
       </p>
 
       <div className="intro__progress" aria-hidden="true">

@@ -2,25 +2,35 @@ import Link from 'next/link';
 import { contactInfo } from '@/lib/content';
 import { Twitter, LinkedIn, GitHub } from '@/components/Icons';
 
+// Each product page holds all of its sections, so these deep-link to anchors
+// on that page rather than to sub-pages.
 const columns = [
   {
-    title: 'Platform',
+    title: 'Products',
     links: [
-      { label: 'Outbound Agents', href: '/platform' },
-      { label: 'Inbound Agents', href: '/platform' },
-      { label: 'Conversational AI', href: '/platform' },
-      { label: 'Analytics', href: '/platform' },
-      { label: 'Integrations', href: '/platform' },
+      { label: 'Voice AI', href: '/voice-ai' },
+      { label: 'Dialer', href: '/dialer' },
+      { label: 'Chatbot', href: '/chatbot' },
     ],
   },
   {
-    title: 'Company',
+    title: 'Voice AI',
     links: [
-      { label: 'Solutions', href: '/solutions' },
-      { label: 'How It Works', href: '/how-it-works' },
-      { label: 'Testimonials', href: '/#testimonials' },
-      { label: 'Pricing', href: '/pricing' },
-      { label: 'FAQ', href: '/faq' },
+      { label: 'Platform', href: '/voice-ai#services' },
+      { label: 'How It Works', href: '/voice-ai#process' },
+      { label: 'Solutions', href: '/voice-ai#solutions' },
+      { label: 'Pricing', href: '/voice-ai#pricing' },
+      { label: 'FAQ', href: '/voice-ai#faq' },
+    ],
+  },
+  {
+    // There's no single "Pricing" nav link (it would have to favour one
+    // product), so this is where all three sit side by side.
+    title: 'Pricing',
+    links: [
+      { label: 'Voice AI pricing', href: '/voice-ai#pricing' },
+      { label: 'Dialer pricing', href: '/dialer#pricing' },
+      { label: 'Chatbot pricing', href: '/chatbot#pricing' },
     ],
   },
 ];
@@ -37,11 +47,11 @@ export default function Footer() {
               <span className="brand__mark" aria-hidden="true">
                 <img src="/assets/logo-mark.png" alt="" />
               </span>
-              Voice AI
+              Classify Technology
             </Link>
             <p className="footer__about">
-              Human-like AI voice agents for inbound and outbound calls — lead qualification,
-              appointment booking and customer support, 24/7 in 40+ languages.
+              AI that talks to your customers — voice agents for inbound and outbound calls, an
+              outbound dialer for your calling team, and an AI chat widget for your website.
             </p>
             <div className="footer__socials">
               <a
@@ -97,8 +107,8 @@ export default function Footer() {
         </div>
 
         <div className="footer__bottom">
-          <span>© {year} Voice AI, a product of Classify Technology. All rights reserved.</span>
-          <span>Outbound Agents · Inbound Agents · Analytics · Integrations</span>
+          <span>© {year} Classify Technology. All rights reserved.</span>
+          <span>Voice AI · Dialer · Chatbot</span>
         </div>
       </div>
     </footer>

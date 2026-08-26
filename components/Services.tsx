@@ -8,13 +8,13 @@ const spans = ['col-3', 'col-3', 'col-2', 'col-2', 'col-2'];
 
 export default function Services() {
   return (
-    <section className="section section--page-top" id="services">
+    <section className="section" id="services">
       <div className="container">
         <Reveal className="section__head">
           <span className="eyebrow">The Platform</span>
-          <h1 className="section__title">
+          <h2 className="section__title">
             One agent, <span className="gradient-text">every conversation</span>
-          </h1>
+          </h2>
           <p className="section__subtitle">
             Outbound calling, inbound support, the conversational AI engine, analytics and every
             integration you need — all in one voice AI platform.

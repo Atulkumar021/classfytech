@@ -724,25 +724,11 @@ body.nav-open .nav__burger span:nth-child(3) { transform: translateY(-7px) rotat
 .grid--pricing { grid-template-columns: repeat(auto-fit, minmax(min(290px, 100%), 1fr)); align-items: stretch; }
 /* Fixed at 5 columns — all in a single row on desktop, matching the site's
    nav (Platform / How It Works / Solutions / Pricing / FAQ). */
-.grid--explore { grid-template-columns: repeat(5, 1fr); align-items: stretch; }
-@media (max-width: 1200px) { .grid--explore { grid-template-columns: repeat(3, 1fr); } }
-@media (max-width: 640px) { .grid--explore { grid-template-columns: 1fr; } }
-
-.explore-card { display: flex; flex-direction: column; }
-.explore-card h3 { font-size: 1.05rem; margin-bottom: 0.5rem; }
-.explore-card__desc { color: var(--text-muted); font-size: 0.88rem; line-height: 1.55; flex: 1; margin-bottom: 1.1rem; }
-.explore-card__link {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.4rem;
-    align-self: flex-start;
-    font-family: var(--font-sans);
-    font-weight: 600;
-    font-size: 0.88rem;
-    color: var(--cyan);
-}
-.explore-card__link svg { width: 16px; height: 16px; transition: transform 0.25s var(--ease); }
-.explore-card__link:hover svg { transform: translateX(3px); }
+/* Capability cards on the Dialer / Chatbot pages — a plain 2-up, since these
+   products have four evenly-weighted capabilities rather than the Voice AI
+   platform's varied bento tiles. */
+.grid--capabilities { grid-template-columns: repeat(2, 1fr); align-items: stretch; }
+@media (max-width: 900px) { .grid--capabilities { grid-template-columns: 1fr; } }
 
 /* Services bento — varied tile widths on a 6-column grid */
 .bento { display: grid; gap: 1.4rem; grid-template-columns: repeat(6, 1fr); }
@@ -1567,13 +1553,18 @@ html.intro-seen .intro { display: none; }
 .intro__word {
     display: flex;
     justify-content: center;
+    /* "Classify Technology" is more than twice the length of the old "Voice AI"
+       wordmark, so it's set smaller and allowed to wrap — a non-wrapping flex
+       row at the previous size overflowed the viewport on a phone. */
+    flex-wrap: wrap;
     font-family: var(--font-sans);
     font-weight: 800;
-    font-size: clamp(2.3rem, 7.6vw, 4.8rem);
-    line-height: 1.02;
-    letter-spacing: -0.04em;
+    font-size: clamp(1.5rem, 5vw, 3.2rem);
+    line-height: 1.05;
+    letter-spacing: -0.035em;
     color: #f6fcff;
     margin-top: clamp(1rem, 2.4vw, 1.4rem);
+    padding-inline: var(--gutter);
 }
 .intro__letter {
     display: inline-block;
@@ -1585,16 +1576,31 @@ html.intro-seen .intro { display: none; }
     from { opacity: 0; transform: translateY(0.42em) scale(0.9); filter: blur(6px); }
     to { opacity: 1; transform: none; filter: blur(0); }
 }
-.intro__tagline {
+/* The three products, revealed one after another under the wordmark. Replaced
+   the single "by Classify Technology" line now that the company name is the
+   wordmark itself. */
+.intro__products {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-top: clamp(0.9rem, 2vw, 1.2rem);
+    padding-inline: var(--gutter);
+}
+.intro__products li {
     font-family: var(--font-sans);
-    font-size: clamp(0.8rem, 1.9vw, 0.96rem);
-    font-weight: 500;
-    letter-spacing: 0.16em;
+    font-size: clamp(0.7rem, 1.6vw, 0.84rem);
+    font-weight: 600;
+    letter-spacing: 0.1em;
     text-transform: uppercase;
-    color: rgba(224, 247, 255, 0.52);
-    margin-top: 0.7rem;
+    color: rgba(224, 247, 255, 0.78);
+    padding: 0.36rem 0.85rem;
+    border: 1px solid rgba(166, 239, 171, 0.24);
+    border-radius: var(--radius-pill);
+    background: rgba(166, 239, 171, 0.06);
+    white-space: nowrap;
     opacity: 0;
-    animation: intro-up 0.9s var(--ease-out) 1.7s both;
+    animation: intro-up 0.6s var(--ease-out) both;
 }
 @keyframes intro-up {
     from { opacity: 0; transform: translateY(14px); }
@@ -1725,3 +1731,280 @@ html.intro-seen .intro { display: none; }
 @media (prefers-reduced-motion: reduce) {
     .intro { display: none; }
 }
+
+/* =========================================================================
+   Multi-product: company homepage, product heroes, chat widget preview
+   ========================================================================= */
+
+/* ---------- Company homepage hero ---------- */
+/* Single-column and shorter than the product hero — it introduces the company
+   and then hands off to the product rail, so it doesn't need a visual. */
+.hero--company { min-height: auto; padding-block: calc(6.5rem + var(--offer-bar-h)) clamp(3rem, 6vw, 5rem); }
+.hero__content--wide { max-width: 46rem; }
+.hero--company h1 { font-size: clamp(1.9rem, 3.4vw, 3rem); }
+
+/* Three live product previews under the hero copy. Each column captions its
+   own card and links to that product. */
+.hero__previews {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: clamp(1.25rem, 2.5vw, 2rem);
+    /* Stretch, so all three columns share the tallest height and the "Explore"
+       links line up (see `margin-top: auto` below). The cards themselves keep
+       their natural height at the top of each column. */
+    align-items: stretch;
+    margin-top: clamp(2.5rem, 5vw, 3.75rem);
+}
+@media (max-width: 1080px) { .hero__previews { grid-template-columns: 1fr; max-width: 30rem; margin-inline: auto; } }
+
+.hero__preview { display: flex; flex-direction: column; gap: 0.9rem; }
+/* The stage absorbs the leftover height in an equal-height column, so all
+   three cards end up the same size rather than each being as tall as its own
+   content. */
+.hero__preview-stage { display: flex; flex: 1; }
+.hero__preview-head { display: flex; align-items: center; gap: 0.7rem; }
+.hero__preview-icon {
+    width: 32px;
+    height: 32px;
+    flex-shrink: 0;
+    border-radius: var(--radius-sm);
+    display: grid;
+    place-items: center;
+    background: var(--accent-quiet);
+    color: var(--accent);
+}
+.hero__preview-icon svg { width: 17px; height: 17px; }
+.hero__preview-head strong { display: block; font-family: var(--font-sans); font-size: 0.95rem; font-weight: 600; color: var(--text); }
+.hero__preview-sub { display: block; font-size: 0.76rem; color: var(--text-dim); line-height: 1.35; }
+
+/* The preview cards each cap their own width for their product page; in a grid
+   column they should just fill it. Selected by class rather than `> *` so this
+   outranks each card's own rule regardless of which is declared later —
+   `> *` tied on specificity and left the three columns different widths. */
+.hero__preview-stage > .call-card,
+.hero__preview-stage > .dialer-card,
+.hero__preview-stage > .chat-card {
+    width: 100%;
+    max-width: none;
+    margin-inline: 0;
+    height: 100%;
+}
+/* With the cards stretched to a shared height, give each one an element that
+   takes up the slack — otherwise the extra space collects at the bottom and
+   the card looks bottom-heavy. */
+.hero__preview-stage > .call-card .call-card__caption,
+.hero__preview-stage > .chat-card .chat-card__body { flex: 1; }
+.hero__preview-stage > .dialer-card .dialer-card__stats { margin-top: auto; }
+
+/* Per-product CTAs, replacing the single site-wide pair that used to sit in
+   the hero copy — a visitor books a demo for the product they're looking at. */
+.hero__preview-actions { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+.hero__preview-actions .btn { flex: 1; min-width: 0; }
+.hero__preview-actions .btn svg { width: 14px; height: 14px; }
+@media (max-width: 420px) { .hero__preview-actions .btn { flex: 1 1 100%; } }
+
+
+/* ---------- Product hero (Dialer / Chatbot) ---------- */
+.product-hero__layout {
+    display: grid;
+    grid-template-columns: 1.05fr 0.95fr;
+    gap: clamp(2rem, 5vw, 4rem);
+    align-items: center;
+}
+.product-hero--solo .product-hero__layout { grid-template-columns: 1fr; }
+.product-hero--solo .product-hero__content { max-width: 46rem; }
+@media (max-width: 980px) { .product-hero__layout { grid-template-columns: 1fr; } }
+.product-hero__title {
+    font-size: clamp(1.8rem, 3.1vw, 2.8rem);
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: -0.03em;
+    margin: 1rem 0 1.25rem;
+}
+.product-hero__visual { position: relative; }
+
+/* ---------- Chat widget preview ---------- */
+.chat-card {
+    width: min(100%, 400px);
+    margin-inline: auto;
+    display: flex;
+    flex-direction: column;
+    background: var(--bg-elev);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lg);
+    overflow: hidden;
+}
+.chat-card__head { padding: 0.9rem 1rem; border-bottom: 1px solid var(--border); }
+.chat-card__bot { display: flex; align-items: center; gap: 0.65rem; }
+.chat-card__bot-icon {
+    width: 34px;
+    height: 34px;
+    flex-shrink: 0;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    background: var(--accent);
+    color: var(--accent-ink);
+}
+.chat-card__bot strong { display: block; font-family: var(--font-sans); font-size: 0.9rem; font-weight: 700; }
+.chat-card__status { display: flex; align-items: center; gap: 0.35rem; font-size: 0.74rem; color: var(--text-dim); }
+.chat-card__status-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); }
+
+.chat-card__body {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding: 1rem;
+    /* Fixed height so messages appearing one by one don't resize the card and
+       shift the hero around them. */
+    min-height: 232px;
+    justify-content: flex-end;
+}
+.chat-card__msg {
+    max-width: 85%;
+    padding: 0.6rem 0.8rem;
+    border-radius: var(--radius);
+    font-size: 0.85rem;
+    line-height: 1.45;
+    animation: chat-in 0.3s var(--ease-out);
+}
+.chat-card__msg--visitor {
+    align-self: flex-end;
+    background: var(--accent);
+    color: var(--accent-ink);
+    border-bottom-right-radius: 4px;
+}
+.chat-card__msg--bot {
+    align-self: flex-start;
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    color: var(--text);
+    border-bottom-left-radius: 4px;
+}
+@keyframes chat-in {
+    from { opacity: 0; transform: translateY(6px); }
+    to { opacity: 1; transform: none; }
+}
+.chat-card__typing { display: flex; gap: 4px; align-items: center; padding: 0.7rem 0.85rem; }
+.chat-card__typing span {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--text-dim);
+    animation: chat-typing 1.2s ease-in-out infinite;
+}
+.chat-card__typing span:nth-child(2) { animation-delay: 0.15s; }
+.chat-card__typing span:nth-child(3) { animation-delay: 0.3s; }
+@keyframes chat-typing {
+    0%, 100% { opacity: 0.3; transform: translateY(0); }
+    50% { opacity: 1; transform: translateY(-3px); }
+}
+.chat-card__input {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.6rem;
+    padding: 0.8rem 1rem;
+    border-top: 1px solid var(--border);
+    color: var(--text-dim);
+    font-size: 0.84rem;
+}
+.chat-card__input svg { color: var(--accent); flex-shrink: 0; }
+
+/* ---------- Dialer preview ---------- */
+.dialer-card {
+    width: min(100%, 400px);
+    margin-inline: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 0.9rem;
+    padding: 1.25rem;
+    background: var(--bg-elev);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lg);
+}
+.dialer-card__head { padding-bottom: 0.9rem; border-bottom: 1px solid var(--border); }
+.dialer-card__campaign { display: flex; align-items: center; gap: 0.6rem; }
+.dialer-card__campaign-icon {
+    width: 30px; height: 30px;
+    flex-shrink: 0;
+    border-radius: var(--radius-sm);
+    display: grid;
+    place-items: center;
+    background: var(--accent);
+    color: var(--accent-ink);
+}
+.dialer-card__campaign strong { display: block; font-family: var(--font-sans); font-size: 0.85rem; font-weight: 700; }
+.dialer-card__mode { display: block; font-size: 0.72rem; color: var(--text-dim); }
+
+.dialer-card__lead {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    padding: 0.8rem;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--surface);
+    animation: chat-in 0.3s var(--ease-out);
+}
+.dialer-card__avatar {
+    width: 36px; height: 36px;
+    flex-shrink: 0;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    background: var(--accent-quiet);
+    color: var(--accent);
+    font-family: var(--font-sans);
+    font-weight: 700;
+    font-size: 0.74rem;
+}
+.dialer-card__lead-meta { flex: 1; min-width: 0; }
+.dialer-card__lead-meta strong { display: block; font-family: var(--font-sans); font-size: 0.86rem; font-weight: 600; }
+.dialer-card__lead-meta span { display: block; font-size: 0.74rem; color: var(--text-dim); }
+.dialer-card__phone { font-variant-numeric: tabular-nums; }
+.dialer-card__status {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    flex-shrink: 0;
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    padding: 0.25rem 0.55rem;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border);
+    color: var(--text-muted);
+}
+.dialer-card__status-dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+.dialer-card__status--dialing { color: var(--text-muted); }
+/* Only the live state animates — a card where everything pulses reads as noise. */
+.dialer-card__status--live { color: var(--accent); border-color: var(--accent); }
+.dialer-card__status--live .dialer-card__status-dot { animation: intro-pulse 1.4s var(--ease) infinite; }
+.dialer-card__status--done { color: var(--text-dim); }
+
+.dialer-card__detail { font-size: 0.78rem; color: var(--text-dim); font-variant-numeric: tabular-nums; }
+
+.dialer-card__dispositions { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+.dialer-card__chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    font-size: 0.72rem;
+    font-weight: 500;
+    padding: 0.35rem 0.6rem;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border);
+    color: var(--text-muted);
+}
+.dialer-card__chip--primary { border-color: var(--accent); color: var(--accent); }
+
+.dialer-card__stats { display: flex; gap: 1.4rem; padding-top: 0.9rem; border-top: 1px solid var(--border); }
+.dialer-card__stats .num { display: block; font-family: var(--font-sans); font-weight: 700; font-size: 1.05rem; }
+.dialer-card__stats .lbl { display: block; font-size: 0.68rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.05em; }
+
+/* "Let's talk" in place of a figure on enquiry-only pricing. */
+.plan__price--enquire { font-size: 1.5rem; color: var(--text-muted); }

@@ -201,6 +201,11 @@ export const serviceIcons = {
   cpu: Cpu,
   fileCode: FileCode,
   cloud: Cloud,
+  // Added for the Dialer's capability groups (supervision, reporting, messaging).
+  shield: Shield,
+  chart: Chart,
+  chat: Chat,
+  layout: Layout,
 } as const;
 
 /** Use-case card icons. Replaced the emoji glyphs these cards used to show. */
@@ -226,4 +231,5 @@ export const featureIcons = {
   layout: Layout,
   clock: Clock,
   chat: Chat,
+  phone: Phone,
 } as const;

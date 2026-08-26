@@ -23,14 +23,14 @@ const pricingJsonLd = {
 
 export default function Pricing() {
   return (
-    <section className="section section--page-top" id="pricing">
+    <section className="section" id="pricing">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(pricingJsonLd) }} />
       <div className="container">
         <Reveal className="section__head">
           <span className="eyebrow">Pricing</span>
-          <h1 className="section__title">
+          <h2 className="section__title">
             Simple, <span className="gradient-text">usage-based</span> plans
-          </h1>
+          </h2>
           <p className="section__subtitle">
             Pay for the minutes you use — plans that scale from your first agent to your whole
             call center.

@@ -3,13 +3,13 @@ import Reveal from '@/components/ui/Reveal';
 
 export default function Process() {
   return (
-    <section className="section section--page-top" id="process">
+    <section className="section" id="process">
       <div className="container">
         <Reveal className="section__head">
           <span className="eyebrow">How It Works</span>
-          <h1 className="section__title">
+          <h2 className="section__title">
             From script to <span className="gradient-text">live agent</span>
-          </h1>
+          </h2>
           <p className="section__subtitle">
             No code, no call center to hire — just a clear path from idea to a live voice agent.
           </p>
