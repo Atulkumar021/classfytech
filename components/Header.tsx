@@ -91,11 +91,11 @@ export default function Header() {
       <div className="progress-bar" style={{ transform: `scaleX(${progress})` }} />
       <header className={`header ${scrolled ? 'is-scrolled' : ''}`}>
         <div className="container nav">
-          <Link className="brand" href="/" aria-label="Classify Technology home" onClick={close}>
+          <Link className="brand" href="/" aria-label="NiaTalks home" onClick={close}>
             <span className="brand__mark" aria-hidden="true">
               <img src="/assets/logo-mark.png" alt="" />
             </span>
-            Classify Technology
+            NiaTalks
           </Link>
 
           <button

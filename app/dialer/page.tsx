@@ -20,8 +20,20 @@ import { pageMetadata } from '@/lib/seo';
 export const metadata = pageMetadata({
   title: 'Dialer — Call Centre Software with Predictive Dialing & CRM',
   description:
-    'A calling desk for your agents: six dialing modes, inbound queues and IVR, WhatsApp/SMS/email, a built-in CRM, supervisor monitoring and 100+ reports.',
+    'The NiaTalks Dialer is a calling desk for your agents: six dialing modes, inbound queues and IVR, WhatsApp/SMS/email, a built-in CRM, supervisor monitoring and 100+ reports.',
   path: '/dialer',
+  keywords: [
+    'predictive dialer',
+    'call centre software',
+    'call center software',
+    'auto dialer',
+    'progressive dialer',
+    'outbound dialer',
+    'contact centre CRM',
+    'IVR and call queues',
+    'supervisor call monitoring',
+    'agent desktop software',
+  ],
 });
 
 /** Complete Dialer page — capabilities, process, use cases, pricing and FAQ. */

@@ -9,6 +9,9 @@ const pricingJsonLd = {
   '@context': 'https://schema.org',
   '@type': 'Product',
   name: 'Voice AI',
+  // Ties the priced product back to the company, so a price rich result is
+  // attributed to NiaTalks rather than floating unbranded.
+  brand: { '@type': 'Brand', name: 'NiaTalks' },
   description: 'AI voice agent platform for inbound and outbound phone calls, billed per minute.',
   offers: plans
     .filter((plan) => plan.unit === '/min')

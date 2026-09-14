@@ -10,7 +10,6 @@ const columns = [
     links: [
       { label: 'Voice AI', href: '/voice-ai' },
       { label: 'Dialer', href: '/dialer' },
-      { label: 'Chatbot', href: '/chatbot' },
     ],
   },
   {
@@ -25,12 +24,11 @@ const columns = [
   },
   {
     // There's no single "Pricing" nav link (it would have to favour one
-    // product), so this is where all three sit side by side.
+    // product), so this is where both sit side by side.
     title: 'Pricing',
     links: [
       { label: 'Voice AI pricing', href: '/voice-ai#pricing' },
       { label: 'Dialer pricing', href: '/dialer#pricing' },
-      { label: 'Chatbot pricing', href: '/chatbot#pricing' },
     ],
   },
 ];
@@ -47,17 +45,17 @@ export default function Footer() {
               <span className="brand__mark" aria-hidden="true">
                 <img src="/assets/logo-mark.png" alt="" />
               </span>
-              Classify Technology
+              NiaTalks
             </Link>
             <p className="footer__about">
-              AI that talks to your customers — voice agents for inbound and outbound calls, an
-              outbound dialer for your calling team, and an AI chat widget for your website.
+              AI that talks to your customers — voice agents for inbound and outbound calls, and an
+              outbound dialer that gives your calling team one screen for every conversation.
             </p>
             <div className="footer__socials">
               <a
                 className="icon-btn"
                 href="https://twitter.com/classifytechin"
-                aria-label="Classify Technology on Twitter"
+                aria-label="NiaTalks on Twitter"
                 target="_blank"
                 rel="noopener noreferrer"
               >
@@ -66,7 +64,7 @@ export default function Footer() {
               <a
                 className="icon-btn"
                 href="https://www.linkedin.com/company/classify-technology"
-                aria-label="Classify Technology on LinkedIn"
+                aria-label="NiaTalks on LinkedIn"
                 target="_blank"
                 rel="noopener noreferrer"
               >
@@ -75,7 +73,7 @@ export default function Footer() {
               <a
                 className="icon-btn"
                 href="https://github.com/classifytechnology"
-                aria-label="Classify Technology on GitHub"
+                aria-label="NiaTalks on GitHub"
                 target="_blank"
                 rel="noopener noreferrer"
               >
@@ -107,8 +105,8 @@ export default function Footer() {
         </div>
 
         <div className="footer__bottom">
-          <span>© {year} Classify Technology. All rights reserved.</span>
-          <span>Voice AI · Dialer · Chatbot</span>
+          <span>© {year} NiaTalks. All rights reserved.</span>
+          <span>Voice AI · Dialer</span>
         </div>
       </div>
     </footer>

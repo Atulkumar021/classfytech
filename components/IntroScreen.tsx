@@ -7,11 +7,15 @@ import { finishIntro, introAlreadySeen, introElapsedMs } from '@/lib/intro';
 
 /**
  * How long the sequence plays before it starts lifting. The last beats (boot
- * log, waveform) land around 3.3s; the remainder holds on the finished
+ * log, waveform) land around 3.1s; the remainder holds on the finished
  * composition — the radar sweep, reticle rings and waveform keep moving
  * through it — before the curtain goes up.
+ *
+ * Trimmed from 4800ms: a shorter wordmark and one fewer boot line pulled the
+ * whole sequence in, and the old value left the composition sitting finished
+ * and still for well over a second.
  */
-const PLAY_MS = 4800;
+const PLAY_MS = 4200;
 /** Exit fade length. */
 const FADE_MS = 620;
 /** Total time from first paint until the overlay is visually gone. */
@@ -49,33 +53,32 @@ const WAVE_BARS = 28;
 /**
  * Split so each glyph can be revealed on its own delay.
  *
- * The company name, not "Voice AI" — the site covers three products now, so
+ * The company name, not "Voice AI" — the site covers two products now, so
  * an intro that named only one of them mis-set expectations before the page
  * had even loaded.
  */
-const WORD = 'Classify ';
-const WORD_ACCENT = 'Technology';
+const WORD = 'Nia';
+const WORD_ACCENT = 'Talks';
 /** Wordmark reveal starts here; each letter follows `LETTER_STEP` behind. */
-const WORD_DELAY = 1.05;
-/** Faster per-letter step than before, since this wordmark is twice as long. */
-const LETTER_STEP = 0.035;
+const WORD_DELAY = 0.95;
+/** Eight glyphs, so a slightly wider step still resolves inside half a second. */
+const LETTER_STEP = 0.06;
 
-/** The three products, revealed in sequence under the wordmark. */
-const PRODUCTS = ['Voice AI', 'Dialer', 'Chatbot'];
-const PRODUCT_START = 1.75;
-const PRODUCT_STEP = 0.16;
+/** The two products, revealed in sequence under the wordmark. */
+const PRODUCTS = ['Voice AI', 'Dialer'];
+const PRODUCT_START = 1.62;
+const PRODUCT_STEP = 0.18;
 
 // Decorative HUD chrome. Kept to things the site actually claims elsewhere
 // rather than invented metrics.
 const BOOT_LINES = [
   'Loading speech models',
   'Connecting telephony',
-  'Starting chat engine',
   'All systems ready',
 ];
 // Starts after the product row has landed, so the sequence reads in order:
 // wordmark → products → boot log → waveform.
-const BOOT_START = 2.35;
+const BOOT_START = 2.15;
 const BOOT_STEP = 0.24;
 
 export default function IntroScreen() {
@@ -186,7 +189,7 @@ export default function IntroScreen() {
       style={timing}
       onAnimationStart={handleAnimationStart}
       onAnimationEnd={handleAnimationEnd}
-      aria-label="Classify Technology intro animation"
+      aria-label="NiaTalks intro animation"
     >
       <div className="intro__bg" aria-hidden="true" />
       <div className="intro__floor" aria-hidden="true" />
@@ -226,9 +229,9 @@ export default function IntroScreen() {
         <span className="intro__bracket intro__bracket--tr" />
         <span className="intro__bracket intro__bracket--bl" />
         <span className="intro__bracket intro__bracket--br" />
-        <span className="intro__hud-label intro__hud-label--tl">Classify Technology</span>
-        <span className="intro__hud-label intro__hud-label--tr">Three products</span>
-        <span className="intro__hud-label intro__hud-label--bl">Voice · Dialer · Chat</span>
+        <span className="intro__hud-label intro__hud-label--tl">NiaTalks</span>
+        <span className="intro__hud-label intro__hud-label--tr">Two products</span>
+        <span className="intro__hud-label intro__hud-label--bl">Voice · Dialer</span>
       </div>
 
       <div className="intro__center">
@@ -258,7 +261,7 @@ export default function IntroScreen() {
           ))}
         </p>
 
-        {/* The three products, replacing the old "by Classify Technology"
+        {/* The two products, replacing the old "by NiaTalks"
             line — the company name is now the wordmark above. */}
         <ul className="intro__products" aria-hidden="true">
           {PRODUCTS.map((name, i) => (

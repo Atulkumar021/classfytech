@@ -14,8 +14,20 @@ import { pageMetadata } from '@/lib/seo';
 export const metadata = pageMetadata({
   title: 'Voice AI — AI Voice Agents for Inbound & Outbound Calls',
   description:
-    'Voice AI makes outbound calls and answers inbound ones — qualifying leads, booking meetings and resolving support questions in a natural voice, 24/7, in 40+ languages.',
+    'NiaTalks Voice AI makes outbound calls and answers inbound ones — qualifying leads, booking meetings and resolving support questions in a natural voice, 24/7, in 40+ languages.',
   path: '/voice-ai',
+  keywords: [
+    'AI voice agent',
+    'voice AI',
+    'AI calling software',
+    'AI phone agent',
+    'AI receptionist',
+    'inbound call automation',
+    'outbound calling AI',
+    'appointment booking AI',
+    'lead qualification calls',
+    'multilingual voice bot',
+  ],
 });
 
 /**

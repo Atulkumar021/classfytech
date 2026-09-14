@@ -16,7 +16,7 @@ export default function Hero() {
         {/* ---------- Left: copy ---------- */}
         <div className="hero__content">
           <Reveal>
-            <span className="hero__badge">Voice AI by Classify Technology</span>
+            <span className="hero__badge">Voice AI by NiaTalks</span>
           </Reveal>
 
           <Reveal as="h1" delay={35}>

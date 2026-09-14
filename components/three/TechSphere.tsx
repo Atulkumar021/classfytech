@@ -84,7 +84,9 @@ export default function TechSphere({ reduced = false }: { reduced?: boolean }) {
         {/* Faint structural shell */}
         <mesh>
           <icosahedronGeometry args={[RADIUS, 1]} />
-          {/* Matches the site accent (logo green) — see --accent in globals.css. */}
+          {/* Matches the site accent (logo green) — see --accent in globals.css.
+              WebGL can't read a CSS custom property, so this literal has to be
+              kept in step with the dark-theme --accent by hand. */}
           <meshBasicMaterial color="#43a84a" wireframe transparent opacity={0.06} />
         </mesh>
         {technologies.map((tech, i) => (

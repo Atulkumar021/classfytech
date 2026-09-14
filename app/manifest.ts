@@ -2,10 +2,12 @@ import type { MetadataRoute } from 'next';
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: 'Voice AI — Human-Like AI Voice Agents',
-    short_name: 'Voice AI',
+    // The installed app is the company, not one product — it opens on the
+    // homepage, which introduces both Voice AI and the Dialer.
+    name: 'NiaTalks — AI Voice Agents & Calling Software',
+    short_name: 'NiaTalks',
     description:
-      'AI voice agent platform for inbound and outbound phone calls — lead qualification, appointment booking, customer support and more, in 40+ languages.',
+      'NiaTalks builds AI that talks to your customers: voice agents for inbound and outbound phone calls in 40+ languages, and a dialer that puts every call, channel and customer record on one screen.',
     start_url: '/',
     display: 'standalone',
     background_color: '#fafafa',

@@ -3,7 +3,7 @@ import type { MetadataRoute } from 'next';
 const siteUrl = 'https://classifytechnology.in';
 
 /**
- * Five URLs, one per distinct intent: the company, each of the three products,
+ * Four URLs, one per distinct intent: the company, each of the two products,
  * and contact. Each product page carries its own platform / process / use-case
  * / pricing / FAQ sections, so there are no sub-pages to list.
  */
@@ -11,7 +11,6 @@ const pages: { path: string; priority: number; changeFrequency: MetadataRoute.Si
   { path: '/', priority: 1, changeFrequency: 'weekly' },
   { path: '/voice-ai', priority: 0.9, changeFrequency: 'weekly' },
   { path: '/dialer', priority: 0.9, changeFrequency: 'weekly' },
-  { path: '/chatbot', priority: 0.9, changeFrequency: 'weekly' },
   { path: '/contact', priority: 0.8, changeFrequency: 'monthly' },
 ];
 

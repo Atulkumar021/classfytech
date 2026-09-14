@@ -61,7 +61,7 @@ export interface Project {
   description: string;
   tags: string[];
   /**
-   * Optional headline figures. Omitted for the Dialer and Chatbot rather than
+   * Optional headline figures. Omitted for the Dialer rather than
    * inventing metrics for products with no published results yet.
    */
   results?: { num: string; label: string }[];
@@ -97,16 +97,15 @@ export interface Stat {
 }
 
 /**
- * Primary nav: the three products, then contact.
+ * Primary nav: the two products, then contact.
  *
- * There's deliberately no single "Pricing" link — with three products it would
+ * There's deliberately no single "Pricing" link — with two products it would
  * have to favour one arbitrarily. Each product page links its own pricing, and
- * the footer lists all three.
+ * the footer lists both.
  */
 export const navLinks = [
   { href: '/voice-ai', label: 'Voice AI' },
   { href: '/dialer', label: 'Dialer' },
-  { href: '/chatbot', label: 'Chatbot' },
   { href: '/contact', label: 'Book a Demo' },
 ];
 
@@ -489,13 +488,13 @@ export const faqs: Faq[] = [
 
 /* =========================================================================
    Products
-   Classify Technology sells three products. The site is organised around them:
-   the homepage introduces the company and all three, and each product owns a
-   path (`/voice-ai`, `/dialer`, `/chatbot`) with its own sub-pages.
+   NiaTalks sells two products. The site is organised around them:
+   the homepage introduces the company and both, and each product owns a
+   path (`/voice-ai`, `/dialer`) with its own sub-pages.
    ========================================================================= */
 
 export interface ProductSummary {
-  slug: 'voice-ai' | 'dialer' | 'chatbot';
+  slug: 'voice-ai' | 'dialer';
   name: string;
   /** One line for cards and nav. */
   tagline: string;
@@ -530,16 +529,6 @@ export const products: ProductSummary[] = [
     icon: 'phone',
     href: '/dialer',
     highlights: ['Six dialing modes', 'Calls, chat & CRM in one screen', 'Supervisor monitoring'],
-  },
-  {
-    slug: 'chatbot',
-    name: 'Chatbot',
-    tagline: 'An AI chat widget for your website',
-    description:
-      'A single script tag puts an AI assistant on your site — answering questions from your own content, capturing leads and handing off to your team.',
-    icon: 'chat',
-    href: '/chatbot',
-    highlights: ['Trained on your content', 'Captures leads 24/7', 'Human handoff built in'],
   },
 ];
 
@@ -703,97 +692,6 @@ export const dialerSteps: ProcessStep[] = [
   },
 ];
 
-/* ---------- Chatbot ---------- */
-
-export const chatbotFeatures: Feature[] = [
-  { icon: 'cpu', label: 'Answers from your content' },
-  { icon: 'bolt', label: 'Instant replies' },
-  { icon: 'chat', label: 'Lead capture in chat' },
-  { icon: 'clock', label: '24/7 coverage' },
-  { icon: 'layout', label: 'Matches your brand' },
-  { icon: 'search', label: 'Chat transcripts' },
-  { icon: 'shield', label: 'Human handoff' },
-  { icon: 'braces', label: 'One script tag' },
-];
-
-export const chatbotCapabilities: Service[] = [
-  {
-    icon: 'cpu',
-    title: 'Trained on what you already have',
-    description: 'Point it at your own material — no rulebuilding, no decision trees.',
-    items: [
-      'Crawl your website pages',
-      'Upload PDFs and docs',
-      'Add Q&A pairs by hand',
-      'Answers cite their source',
-      'Says "I don\'t know" instead of guessing',
-      'Re-crawls when your content changes',
-    ],
-  },
-  {
-    icon: 'monitor',
-    title: 'A widget that fits your site',
-    description: 'It should look like part of your product, not a bolted-on box.',
-    items: [
-      'Your colours, logo and copy',
-      'Light and dark themes',
-      'Launcher position and greeting',
-      'Mobile-friendly by default',
-      'Page-specific opening prompts',
-      'Loads asynchronously — no speed hit',
-    ],
-  },
-  {
-    icon: 'fileCode',
-    title: 'Turns conversations into pipeline',
-    description: 'A support widget is only worth it if you can see what it produced.',
-    items: [
-      'Name, email and phone captured in chat',
-      'Leads pushed to your CRM',
-      'Full transcripts, searchable',
-      'Topics people ask about most',
-      'Unanswered questions surfaced',
-      'Email digest of new conversations',
-    ],
-  },
-  {
-    icon: 'cloud',
-    title: 'Hands off cleanly to people',
-    description: 'The bot handles volume; your team handles the ones that matter.',
-    items: [
-      'Escalate on request or low confidence',
-      'Full conversation passed to the agent',
-      'Route by topic or page',
-      'Offline message capture',
-      'Email and Slack notifications',
-      'REST API and webhooks',
-    ],
-  },
-];
-
-export const chatbotSteps: ProcessStep[] = [
-  {
-    title: 'Point it at your content',
-    description: 'Give it your site URL and any documents — it reads them and builds its own knowledge base.',
-  },
-  {
-    title: 'Style the widget',
-    description: 'Set colours, logo, greeting and launcher position so it looks like it belongs on your site.',
-  },
-  {
-    title: 'Paste one script tag',
-    description: 'Drop a single line into your site and the widget is live — no build step, no plugin.',
-  },
-  {
-    title: 'It answers and captures',
-    description: 'Visitors get instant answers, and the bot collects contact details before they leave.',
-  },
-  {
-    title: 'Review what it learned',
-    description: 'Transcripts and unanswered questions show you exactly what content to add next.',
-  },
-];
-
 /**
  * Tiers for products whose pricing isn't public yet. Deliberately no numbers —
  * these route to sales rather than showing invented figures.
@@ -843,49 +741,6 @@ export const dialerPlans: EnquiryPlan[] = [
       'Multi-tenant client setup',
       'Service-level and custom reporting',
       'Dedicated infrastructure & SLA',
-      'Dedicated success manager',
-    ],
-    cta: 'Contact Sales',
-  },
-];
-
-export const chatbotPlans: EnquiryPlan[] = [
-  {
-    name: 'Starter',
-    description: 'For a single site that needs questions answered around the clock.',
-    features: [
-      '1 website',
-      'Trained on your pages',
-      'Lead capture in chat',
-      'Email notifications',
-      'Chat transcripts',
-      'Email support',
-    ],
-    cta: 'Talk to Sales',
-  },
-  {
-    name: 'Growth',
-    description: 'For teams that want the widget feeding their pipeline.',
-    features: [
-      'Up to 5 websites',
-      'PDF & document training',
-      'CRM lead push',
-      'Human handoff & routing',
-      'Topic analytics',
-      'Priority support',
-    ],
-    cta: 'Talk to Sales',
-    featured: true,
-  },
-  {
-    name: 'Enterprise',
-    description: 'For higher volumes and stricter data requirements.',
-    features: [
-      'Unlimited websites',
-      'Dedicated infrastructure & SLA',
-      'Data residency controls',
-      'SSO and audit logs',
-      'Custom integrations',
       'Dedicated success manager',
     ],
     cta: 'Contact Sales',
@@ -991,86 +846,6 @@ export const dialerFaqs: Faq[] = [
     question: 'Is it a desktop app or browser-based?',
     answer:
       'Primarily a Windows desktop app — which is what gives you the floating call widget, tray alerts and native call pop-ups. The same dashboard also runs as an installable web app if you would rather not deploy a desktop client.',
-  },
-];
-
-/* ---------- Chatbot: use cases & FAQ ---------- */
-
-export const chatbotUseCases: Project[] = [
-  {
-    icon: 'chat',
-    title: 'Answering pre-sales questions',
-    description:
-      'Visitors get straight answers on pricing, integrations and fit at the moment they are deciding, instead of waiting on email.',
-    tags: ['Instant replies', 'Cited answers'],
-  },
-  {
-    icon: 'chart',
-    title: 'Capturing leads after hours',
-    description:
-      'The widget collects name, email and intent overnight and pushes them to your CRM before the team logs on.',
-    tags: ['Lead capture', 'CRM push'],
-  },
-  {
-    icon: 'search',
-    title: 'Deflecting repeat support questions',
-    description:
-      'The questions your team answers twenty times a week get handled from your own documentation instead.',
-    tags: ['Trained on your docs', 'Transcripts'],
-  },
-  {
-    icon: 'calendar',
-    title: 'Guiding people to a demo',
-    description:
-      'When someone shows buying intent, the bot moves the conversation toward booking rather than just answering.',
-    tags: ['Lead capture', 'Handoff'],
-  },
-  {
-    icon: 'mapPin',
-    title: 'Onboarding and how-to help',
-    description:
-      'Point existing customers at the right guide, in context, on the page where they got stuck.',
-    tags: ['Page-aware', 'Knowledge base'],
-  },
-  {
-    icon: 'star',
-    title: 'Finding the gaps in your content',
-    description:
-      'Unanswered questions are surfaced as a list, telling you exactly what to write next.',
-    tags: ['Analytics', 'Gap reporting'],
-  },
-];
-
-export const chatbotFaqs: Faq[] = [
-  {
-    question: 'How long does setup take?',
-    answer:
-      'Usually an afternoon. You point it at your site, it reads your pages, you style the widget and paste one script tag. There are no decision trees to build.',
-  },
-  {
-    question: 'Where do its answers come from?',
-    answer:
-      'Only your material — your website pages, uploaded documents and any Q&A you add by hand. Answers cite their source, and it says it does not know rather than guessing when your content does not cover something.',
-  },
-  {
-    question: 'Will it slow my site down?',
-    answer:
-      'No. The widget loads asynchronously after your page, so it does not block rendering or affect your Core Web Vitals.',
-  },
-  {
-    question: 'Can a human take over a conversation?',
-    answer:
-      'Yes. It escalates on request or when confidence is low, and passes the full conversation to whoever picks it up. You can route by topic or by the page the visitor is on.',
-  },
-  {
-    question: 'Does it work on WhatsApp too?',
-    answer:
-      'Not today — this product is the website widget. If you need WhatsApp, our Voice AI and messaging work covers that; tell us your use case and we will point you at the right fit.',
-  },
-  {
-    question: 'What happens when my content changes?',
-    answer:
-      'It re-crawls on a schedule, so updates to your pages flow through without you re-training anything manually.',
   },
 ];
 

@@ -7,7 +7,7 @@ import CTABand from '@/components/CTABand';
 /**
  * `ProductGrid` used to sit between the marquee and WhyChooseUs. It's gone:
  * the hero's preview cards now carry the product name, tagline, a live demo of
- * it running and both CTAs, so the grid was a second listing of the same three
+ * it running and both CTAs, so the grid was a second listing of the same
  * products immediately below the first.
  */
 export default function Home() {

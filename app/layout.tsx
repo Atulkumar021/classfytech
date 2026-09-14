@@ -23,29 +23,38 @@ const siteUrl = 'https://classifytechnology.in';
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   icons: { icon: '/assets/logo-icon.png', apple: '/assets/logo-icon.png' },
-  // The company name belongs in every title. This domain is the Classify
-  // Technology brand, and when the homepage title said only "Voice AI" the
-  // strongest brand signal on the site was gone — leaving nothing for a
-  // navigational "classify technology" search to match on.
+  // The company name belongs in every title. This domain carries the NiaTalks
+  // brand, and when the homepage title said only "Voice AI" the strongest
+  // brand signal on the site was gone — leaving nothing for a navigational
+  // "niatalks" search to match on.
   title: {
-    template: '%s | Classify Technology',
-    default: 'Classify Technology — AI Voice Agents for Sales & Support Calls',
+    template: '%s | NiaTalks',
+    default: 'NiaTalks — AI Voice Agents & Call Centre Dialer',
   },
+  // The homepage is the company, so this covers both products rather than
+  // only Voice AI — /voice-ai and /dialer each carry their own description.
   description:
-    'Voice AI by Classify Technology is an AI voice agent platform that makes and takes phone calls for you — qualifying leads, booking meetings and resolving support calls 24/7, in 40+ languages.',
+    'NiaTalks builds AI that talks to your customers — voice agents that make and take phone calls 24/7 in 40+ languages, plus a dialer that runs your whole calling team from one screen.',
+  // Brand spellings first — a navigational "niatalks" search is the one query
+  // this domain must own — then the two products' category terms.
   keywords: [
+    'NiaTalks',
+    'Nia Talks',
     'voice AI',
     'AI voice agent',
     'AI calling software',
-    'outbound dialer',
+    'AI phone agent',
     'inbound call automation',
     'conversational AI',
-    'AI phone agent',
-    'call center automation',
     'AI receptionist',
+    'predictive dialer',
+    'outbound dialer',
+    'call centre software',
+    'call center automation',
+    'contact centre CRM',
     'sales automation',
   ],
-  authors: [{ name: 'Classify Technology' }],
+  authors: [{ name: 'NiaTalks' }],
   alternates: { canonical: '/' },
   robots: {
     index: true,
@@ -55,25 +64,25 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     url: siteUrl,
-    title: 'Classify Technology — AI Voice Agents for Sales & Support Calls',
+    title: 'NiaTalks — AI Voice Agents & Call Centre Dialer',
     description:
-      'Voice AI by Classify Technology — natural-sounding voice agents that qualify leads, book meetings and handle support calls around the clock.',
-    // The site is the company; "Voice AI" is the product on it.
-    siteName: 'Classify Technology',
+      'AI that talks to your customers — natural-sounding voice agents that qualify leads, book meetings and handle support calls around the clock, and a dialer for the team that calls alongside them.',
+    // The site is the company; Voice AI and the Dialer are the products on it.
+    siteName: 'NiaTalks',
     images: [
       {
         url: '/assets/og-image.png',
         width: 1200,
         height: 630,
-        alt: 'Classify Technology — AI Voice Agents for Sales & Support Calls',
+        alt: 'NiaTalks — AI Voice Agents & Call Centre Dialer',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Classify Technology — AI Voice Agents for Sales & Support Calls',
+    title: 'NiaTalks — AI Voice Agents & Call Centre Dialer',
     description:
-      'Voice AI by Classify Technology — natural-sounding voice agents that qualify leads, book meetings and handle support calls around the clock.',
+      'AI that talks to your customers — natural-sounding voice agents that qualify leads, book meetings and handle support calls around the clock, and a dialer for the team that calls alongside them.',
     images: ['/assets/og-image.png'],
   },
 };
@@ -91,9 +100,13 @@ export const viewport: Viewport = {
  *
  * Previously the only entity here was `SoftwareApplication` named "Voice AI",
  * with the company buried as its `provider`. That gave search engines nothing
- * to bind the *domain* to the Classify Technology brand. Now `Organization` is
- * a first-class entity that `WebSite` publishes and the product references by
+ * to bind the *domain* to the NiaTalks brand. Now `Organization` is a
+ * first-class entity that `WebSite` publishes and each product references by
  * `@id`, which is what a brand/navigational query needs to resolve.
+ *
+ * Both products are listed, each pointing at its own page — a product entity
+ * whose `url` is the homepage gives search engines nothing to rank for that
+ * product's own query.
  */
 const siteJsonLd = {
   '@context': 'https://schema.org',
@@ -101,9 +114,9 @@ const siteJsonLd = {
     {
       '@type': 'Organization',
       '@id': `${siteUrl}/#organization`,
-      name: 'Classify Technology',
+      name: 'NiaTalks',
       // Covers the spellings people actually search and the email domain.
-      alternateName: ['Classify Technologies', 'Classify Tech', 'Classify'],
+      alternateName: ['Nia Talks', 'NiaTalks AI', 'Nia'],
       url: siteUrl,
       logo: {
         '@type': 'ImageObject',
@@ -129,7 +142,7 @@ const siteJsonLd = {
       '@type': 'WebSite',
       '@id': `${siteUrl}/#website`,
       url: siteUrl,
-      name: 'Classify Technology',
+      name: 'NiaTalks',
       publisher: { '@id': `${siteUrl}/#organization` },
       inLanguage: 'en',
     },
@@ -141,7 +154,19 @@ const siteJsonLd = {
       operatingSystem: 'Web',
       description:
         'AI voice agent platform for inbound and outbound phone calls — lead qualification, appointment booking, customer support and more, in 40+ languages.',
-      url: siteUrl,
+      url: `${siteUrl}/voice-ai`,
+      provider: { '@id': `${siteUrl}/#organization` },
+    },
+    {
+      '@type': 'SoftwareApplication',
+      '@id': `${siteUrl}/#dialer`,
+      name: 'Dialer',
+      applicationCategory: 'BusinessApplication',
+      // An agent desktop app with a browser-based admin console behind it.
+      operatingSystem: 'Windows, Web',
+      description:
+        'Call centre software for outbound and inbound teams — six dialing modes, IVR and queues, WhatsApp, SMS and email, a built-in CRM, supervisor monitoring and 100+ reports.',
+      url: `${siteUrl}/dialer`,
       provider: { '@id': `${siteUrl}/#organization` },
     },
   ],

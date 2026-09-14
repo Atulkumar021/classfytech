@@ -10,30 +10,37 @@ const siteUrl = 'https://classifytechnology.in';
  * entirely, dropping `images`/`siteName`/`type` unless repeated. This keeps
  * every page's social preview on-topic (not the homepage's) without losing
  * the shared OG image or site name.
+ *
+ * `keywords` is per-page on purpose: the layout's list is the company's, and
+ * inheriting it everywhere told search engines the Dialer page was about
+ * voice agents too. Omit it and the page simply inherits the layout's.
  */
 export function pageMetadata({
   title,
   description,
   path,
+  keywords,
 }: {
   title: string;
   description: string;
   path: string;
+  keywords?: string[];
 }): Metadata {
   // Brand suffix matches the layout title template, so every shared
   // link carries the company name.
-  const socialTitle = `${title} | Classify Technology`;
+  const socialTitle = `${title} | NiaTalks`;
 
   return {
     title,
     description,
+    ...(keywords ? { keywords } : {}),
     alternates: { canonical: path },
     openGraph: {
       type: 'website',
       url: `${siteUrl}${path}`,
       title: socialTitle,
       description,
-      siteName: 'Classify Technology',
+      siteName: 'NiaTalks',
       images: [
         {
           url: '/assets/og-image.png',

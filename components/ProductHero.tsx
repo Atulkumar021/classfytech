@@ -4,9 +4,9 @@ import { ArrowRight, Calendar } from '@/components/Icons';
 import Reveal from '@/components/ui/Reveal';
 
 /**
- * Shared hero for a product page. Kept generic so Dialer, Chatbot and the
- * Voice AI hub all read as the same family instead of three bespoke layouts —
- * the `visual` slot is where each product puts its own illustration.
+ * Shared hero for a product page. Kept generic so the Dialer and the Voice AI
+ * hub read as the same family instead of two bespoke layouts — the `visual`
+ * slot is where each product puts its own illustration.
  */
 export default function ProductHero({
   eyebrow,

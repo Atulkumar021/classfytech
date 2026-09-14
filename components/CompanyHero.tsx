@@ -7,10 +7,9 @@ import { products } from '@/lib/content';
 import { featureIcons, ArrowRight } from '@/components/Icons';
 import VoiceCallPreview from '@/components/VoiceCallPreview';
 import DialerPreview from '@/components/DialerPreview';
-import ChatWidgetPreview from '@/components/ChatWidgetPreview';
 
 /**
- * Homepage hero: a single headline, then all three products running live.
+ * Homepage hero: a single headline, then both products running live.
  *
  * The standing copy block and the pair of site-wide CTAs that used to sit here
  * are gone — each card now carries its own "Book a Demo" / "See Product", so a
@@ -23,7 +22,6 @@ import ChatWidgetPreview from '@/components/ChatWidgetPreview';
 const PREVIEWS: Record<string, ReactNode> = {
   'voice-ai': <VoiceCallPreview />,
   dialer: <DialerPreview />,
-  chatbot: <ChatWidgetPreview />,
 };
 
 export default function CompanyHero() {
@@ -32,12 +30,12 @@ export default function CompanyHero() {
       <div className="container">
         <div className="hero__content hero__content--wide">
           <Reveal>
-            <span className="hero__badge">Classify Technology</span>
+            <span className="hero__badge">NiaTalks</span>
           </Reveal>
 
           <Reveal as="h1" delay={35}>
             AI that talks to your customers —{' '}
-            <span className="gradient-text">on the phone and on your site</span>.
+            <span className="gradient-text">on every call you make and take</span>.
           </Reveal>
         </div>
 

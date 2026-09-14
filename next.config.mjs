@@ -37,7 +37,11 @@ const nextConfig = {
       })),
       // New products' pricing now lives on the product page.
       { source: '/dialer/pricing', destination: '/dialer#pricing', permanent: true },
-      { source: '/chatbot/pricing', destination: '/chatbot#pricing', permanent: true },
+      // The Chatbot product is retired. Its page and every URL under it fold
+      // back to the homepage rather than 404ing, so indexed links and whatever
+      // ranking signal they carried land somewhere real.
+      { source: '/chatbot', destination: '/', permanent: true },
+      { source: '/chatbot/:path*', destination: '/', permanent: true },
     ];
   },
 };

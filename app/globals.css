@@ -1,5 +1,5 @@
 /* =========================================================================
-   VOICE AI — quiet, editorial dark UI
+   NIATALKS — quiet, editorial dark UI
    Near-black neutral surfaces, one restrained blue accent, and typography
    doing the work instead of effects. Deliberately avoids the tells of a
    generated template: no gradient headline text, no glow halos on buttons,
@@ -10,14 +10,15 @@
 
 /* ---------- Design tokens ---------- */
 :root {
-    /* One accent, taken from the Classify Technology logo's green. Kept at a
-       mid tone so it stays legible on near-black and readable as a UI colour
-       rather than decoration. */
+    /* One accent, in the NiaTalks logo's green. The logo's own greens run
+       deeper (#005020-#109030); this is lifted to a mid tone so it stays
+       legible on near-black (6.54:1) and reads as a UI colour rather than
+       decoration. */
     --accent: #43a84a;
     --accent-hover: #58bf5e;
     --accent-quiet: rgba(67, 168, 74, 0.13);
-    /* Near-black ink for labels sitting on the accent fill. Tinted green
-       rather than neutral so it reads as one family. */
+    /* Near-black ink for labels sitting on the accent fill (6.11:1). Tinted
+       green rather than neutral so it reads as one family. */
     --accent-ink: #06170a;
 
     /* Legacy aliases — plenty of rules still reference these by name. Pointed
@@ -377,9 +378,13 @@ html.lenis body { height: auto; }
 /* Only exists as a drawer backdrop on small screens (see the mobile block). */
 .nav__scrim { display: none; }
 .brand { display: flex; align-items: center; gap: 0.6rem; font-family: var(--font-sans); font-weight: 700; font-size: 1.3rem; letter-spacing: -0.02em; }
-/* White plate behind the logo mark. The Classify glyph is green *and* black —
-   on a near-black page the black faces would disappear and the mark would read
-   as broken, so it gets its own light ground rather than being recoloured. */
+/* White plate behind the logo mark, and the artwork keeps its own white ground.
+   The NiaTalks mark can't be cut out: the face is drawn in near-white (min
+   channel 252-254) against a near-white backdrop (253-254), so no threshold
+   separates them — any keying eats her profile. It also has near-black green
+   in the N, which would vanish on a near-black page. So it gets a light tile
+   on both themes, sized identically, rather than being recoloured. On #fafafa
+   the tile is imperceptible; on the dark theme it reads as an app icon. */
 .brand__mark {
     width: 32px; height: 32px;
     border-radius: 8px;
@@ -390,11 +395,8 @@ html.lenis body { height: auto; }
     padding: 3px;
     flex-shrink: 0;
 }
-/* On a light page the glyph already has the light ground it needs, and a white
-   tile on #fafafa just reads as a faint smudge — so drop it. */
-[data-theme='light'] .brand__mark { background: transparent; padding: 0; }
-/* `contain`, not `cover` — the glyph is taller than it is wide, so cover
-   would crop its top and bottom points off. */
+/* `contain` — the mark is wider than it is tall, so cover would crop the N's
+   outer shoulders off. */
 .brand__mark img { width: 100%; height: 100%; object-fit: contain; }
 .nav__menu { display: flex; align-items: center; gap: 0.3rem; }
 .nav__link {
@@ -476,7 +478,7 @@ body.nav-open .nav__burger span:nth-child(3) { transform: translateY(-7px) rotat
 }
 .hero__content { text-align: left; max-width: 640px; }
 
-/* A plain overline, not a glassy pill with a pulsing green "live" dot. */
+/* A plain overline, not a glassy pill with a pulsing "live" dot. */
 .hero__badge {
     display: inline-block;
     font-family: var(--font-sans);
@@ -724,7 +726,7 @@ body.nav-open .nav__burger span:nth-child(3) { transform: translateY(-7px) rotat
 .grid--pricing { grid-template-columns: repeat(auto-fit, minmax(min(290px, 100%), 1fr)); align-items: stretch; }
 /* Fixed at 5 columns — all in a single row on desktop, matching the site's
    nav (Platform / How It Works / Solutions / Pricing / FAQ). */
-/* Capability cards on the Dialer / Chatbot pages — a plain 2-up, since these
+/* Capability cards on the Dialer page — a plain 2-up, since these
    products have four evenly-weighted capabilities rather than the Voice AI
    platform's varied bento tiles. */
 .grid--capabilities { grid-template-columns: repeat(2, 1fr); align-items: stretch; }
@@ -1535,8 +1537,8 @@ html.intro-seen .intro { display: none; }
     display: grid;
     place-items: center;
     box-shadow: 0 0 64px -8px rgba(67, 168, 74, 0.75), 0 0 0 1px rgba(166, 239, 171, 0.22);
-    /* Same reason as `.brand__mark`: the glyph's black faces need a light
-       ground to stay visible against the dark overlay. */
+    /* Same reason as `.brand__mark`: the mark's near-white face and near-black
+       green both need a light ground to survive the dark overlay. */
     background: #fff;
     padding: 12px;
     opacity: 0;
@@ -1553,13 +1555,14 @@ html.intro-seen .intro { display: none; }
 .intro__word {
     display: flex;
     justify-content: center;
-    /* "Classify Technology" is more than twice the length of the old "Voice AI"
-       wordmark, so it's set smaller and allowed to wrap — a non-wrapping flex
-       row at the previous size overflowed the viewport on a phone. */
+    /* "NiaTalks" is a short wordmark, so it can be set large — the earlier
+       clamp was sized for a two-word name and left this one looking lost in
+       the middle of the reticle. `flex-wrap` stays as a safety net for very
+       narrow viewports; at this length it never actually wraps. */
     flex-wrap: wrap;
     font-family: var(--font-sans);
     font-weight: 800;
-    font-size: clamp(1.5rem, 5vw, 3.2rem);
+    font-size: clamp(2.4rem, 9vw, 4.6rem);
     line-height: 1.05;
     letter-spacing: -0.035em;
     color: #f6fcff;
@@ -1576,8 +1579,8 @@ html.intro-seen .intro { display: none; }
     from { opacity: 0; transform: translateY(0.42em) scale(0.9); filter: blur(6px); }
     to { opacity: 1; transform: none; filter: blur(0); }
 }
-/* The three products, revealed one after another under the wordmark. Replaced
-   the single "by Classify Technology" line now that the company name is the
+/* The two products, revealed one after another under the wordmark. Replaced
+   the single "by NiaTalks" line now that the company name is the
    wordmark itself. */
 .intro__products {
     display: flex;
@@ -1649,7 +1652,7 @@ html.intro-seen .intro { display: none; }
     height: 44px;
     margin-top: clamp(1.3rem, 3vw, 1.9rem);
     opacity: 0;
-    animation: intro-up 0.8s var(--ease-out) 2.5s both;
+    animation: intro-up 0.8s var(--ease-out) 2.3s both;
 }
 .intro__wave-bar {
     width: 3px;
@@ -1733,7 +1736,7 @@ html.intro-seen .intro { display: none; }
 }
 
 /* =========================================================================
-   Multi-product: company homepage, product heroes, chat widget preview
+   Multi-product: company homepage, product heroes, product previews
    ========================================================================= */
 
 /* ---------- Company homepage hero ---------- */
@@ -1743,23 +1746,28 @@ html.intro-seen .intro { display: none; }
 .hero__content--wide { max-width: 46rem; }
 .hero--company h1 { font-size: clamp(1.9rem, 3.4vw, 3rem); }
 
-/* Three live product previews under the hero copy. Each column captions its
+/* Two live product previews under the hero copy. Each column captions its
    own card and links to that product. */
 .hero__previews {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(2, 1fr);
     gap: clamp(1.25rem, 2.5vw, 2rem);
-    /* Stretch, so all three columns share the tallest height and the "Explore"
+    /* Capped and centred: at two columns the full 1220px container stretched
+       each card far past the ~420px the previews are drawn for, and the
+       waveform / lead rows inside them looked thin. */
+    max-width: 58rem;
+    margin-inline: auto;
+    /* Stretch, so both columns share the tallest height and the "Explore"
        links line up (see `margin-top: auto` below). The cards themselves keep
        their natural height at the top of each column. */
     align-items: stretch;
     margin-top: clamp(2.5rem, 5vw, 3.75rem);
 }
-@media (max-width: 1080px) { .hero__previews { grid-template-columns: 1fr; max-width: 30rem; margin-inline: auto; } }
+@media (max-width: 880px) { .hero__previews { grid-template-columns: 1fr; max-width: 30rem; margin-inline: auto; } }
 
 .hero__preview { display: flex; flex-direction: column; gap: 0.9rem; }
-/* The stage absorbs the leftover height in an equal-height column, so all
-   three cards end up the same size rather than each being as tall as its own
+/* The stage absorbs the leftover height in an equal-height column, so both
+   cards end up the same size rather than each being as tall as its own
    content. */
 .hero__preview-stage { display: flex; flex: 1; }
 .hero__preview-head { display: flex; align-items: center; gap: 0.7rem; }
@@ -1780,10 +1788,9 @@ html.intro-seen .intro { display: none; }
 /* The preview cards each cap their own width for their product page; in a grid
    column they should just fill it. Selected by class rather than `> *` so this
    outranks each card's own rule regardless of which is declared later —
-   `> *` tied on specificity and left the three columns different widths. */
+   `> *` tied on specificity and left the columns different widths. */
 .hero__preview-stage > .call-card,
-.hero__preview-stage > .dialer-card,
-.hero__preview-stage > .chat-card {
+.hero__preview-stage > .dialer-card {
     width: 100%;
     max-width: none;
     margin-inline: 0;
@@ -1792,8 +1799,7 @@ html.intro-seen .intro { display: none; }
 /* With the cards stretched to a shared height, give each one an element that
    takes up the slack — otherwise the extra space collects at the bottom and
    the card looks bottom-heavy. */
-.hero__preview-stage > .call-card .call-card__caption,
-.hero__preview-stage > .chat-card .chat-card__body { flex: 1; }
+.hero__preview-stage > .call-card .call-card__caption { flex: 1; }
 .hero__preview-stage > .dialer-card .dialer-card__stats { margin-top: auto; }
 
 /* Per-product CTAs, replacing the single site-wide pair that used to sit in
@@ -1804,7 +1810,7 @@ html.intro-seen .intro { display: none; }
 @media (max-width: 420px) { .hero__preview-actions .btn { flex: 1 1 100%; } }
 
 
-/* ---------- Product hero (Dialer / Chatbot) ---------- */
+/* ---------- Product hero (Dialer) ---------- */
 .product-hero__layout {
     display: grid;
     grid-template-columns: 1.05fr 0.95fr;
@@ -1822,95 +1828,6 @@ html.intro-seen .intro { display: none; }
     margin: 1rem 0 1.25rem;
 }
 .product-hero__visual { position: relative; }
-
-/* ---------- Chat widget preview ---------- */
-.chat-card {
-    width: min(100%, 400px);
-    margin-inline: auto;
-    display: flex;
-    flex-direction: column;
-    background: var(--bg-elev);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-lg);
-    box-shadow: var(--shadow-lg);
-    overflow: hidden;
-}
-.chat-card__head { padding: 0.9rem 1rem; border-bottom: 1px solid var(--border); }
-.chat-card__bot { display: flex; align-items: center; gap: 0.65rem; }
-.chat-card__bot-icon {
-    width: 34px;
-    height: 34px;
-    flex-shrink: 0;
-    border-radius: 50%;
-    display: grid;
-    place-items: center;
-    background: var(--accent);
-    color: var(--accent-ink);
-}
-.chat-card__bot strong { display: block; font-family: var(--font-sans); font-size: 0.9rem; font-weight: 700; }
-.chat-card__status { display: flex; align-items: center; gap: 0.35rem; font-size: 0.74rem; color: var(--text-dim); }
-.chat-card__status-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); }
-
-.chat-card__body {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-    padding: 1rem;
-    /* Fixed height so messages appearing one by one don't resize the card and
-       shift the hero around them. */
-    min-height: 232px;
-    justify-content: flex-end;
-}
-.chat-card__msg {
-    max-width: 85%;
-    padding: 0.6rem 0.8rem;
-    border-radius: var(--radius);
-    font-size: 0.85rem;
-    line-height: 1.45;
-    animation: chat-in 0.3s var(--ease-out);
-}
-.chat-card__msg--visitor {
-    align-self: flex-end;
-    background: var(--accent);
-    color: var(--accent-ink);
-    border-bottom-right-radius: 4px;
-}
-.chat-card__msg--bot {
-    align-self: flex-start;
-    background: var(--surface-2);
-    border: 1px solid var(--border);
-    color: var(--text);
-    border-bottom-left-radius: 4px;
-}
-@keyframes chat-in {
-    from { opacity: 0; transform: translateY(6px); }
-    to { opacity: 1; transform: none; }
-}
-.chat-card__typing { display: flex; gap: 4px; align-items: center; padding: 0.7rem 0.85rem; }
-.chat-card__typing span {
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: var(--text-dim);
-    animation: chat-typing 1.2s ease-in-out infinite;
-}
-.chat-card__typing span:nth-child(2) { animation-delay: 0.15s; }
-.chat-card__typing span:nth-child(3) { animation-delay: 0.3s; }
-@keyframes chat-typing {
-    0%, 100% { opacity: 0.3; transform: translateY(0); }
-    50% { opacity: 1; transform: translateY(-3px); }
-}
-.chat-card__input {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 0.6rem;
-    padding: 0.8rem 1rem;
-    border-top: 1px solid var(--border);
-    color: var(--text-dim);
-    font-size: 0.84rem;
-}
-.chat-card__input svg { color: var(--accent); flex-shrink: 0; }
 
 /* ---------- Dialer preview ---------- */
 .dialer-card {
@@ -1939,6 +1856,10 @@ html.intro-seen .intro { display: none; }
 .dialer-card__campaign strong { display: block; font-family: var(--font-sans); font-size: 0.85rem; font-weight: 700; }
 .dialer-card__mode { display: block; font-size: 0.72rem; color: var(--text-dim); }
 
+@keyframes card-in {
+    from { opacity: 0; transform: translateY(6px); }
+    to { opacity: 1; transform: none; }
+}
 .dialer-card__lead {
     display: flex;
     align-items: center;
@@ -1947,7 +1868,7 @@ html.intro-seen .intro { display: none; }
     border: 1px solid var(--border);
     border-radius: var(--radius);
     background: var(--surface);
-    animation: chat-in 0.3s var(--ease-out);
+    animation: card-in 0.3s var(--ease-out);
 }
 .dialer-card__avatar {
     width: 36px; height: 36px;
