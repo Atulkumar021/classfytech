@@ -10,8 +10,10 @@ export default function manifest(): MetadataRoute.Manifest {
       'NiaTalks builds AI that talks to your customers: voice agents for inbound and outbound phone calls in 40+ languages, and a dialer that puts every call, channel and customer record on one screen.',
     start_url: '/',
     display: 'standalone',
-    background_color: '#fafafa',
-    theme_color: '#fafafa',
+    // Both follow the light theme's soft-UI page tone. An installed app that
+    // splashes near-white and then settles on grey reads as a loading bug.
+    background_color: '#e8ebf0',
+    theme_color: '#e8ebf0',
     icons: [
       {
         src: '/assets/logo-icon.png',

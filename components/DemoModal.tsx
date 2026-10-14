@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 import { useReducedMotion } from '@/lib/hooks';
 import { INTRO_DONE_EVENT, isIntroFinished } from '@/lib/intro';
 import { Close, Send } from '@/components/Icons';
+import { acquireScrollLock, releaseScrollLock } from '@/lib/scroll-lock';
 
 type Status = { message: string; state: 'idle' | 'error' | 'pending' | 'success' };
 
@@ -56,8 +57,7 @@ export default function DemoModal() {
   useEffect(() => {
     if (!open) return;
     lastFocused.current = document.activeElement as HTMLElement | null;
-    const prevOverflow = document.documentElement.style.overflow;
-    document.documentElement.style.overflow = 'hidden';
+    acquireScrollLock();
     closeRef.current?.focus();
 
     const onKeyDown = (e: KeyboardEvent) => {
@@ -65,7 +65,7 @@ export default function DemoModal() {
     };
     document.addEventListener('keydown', onKeyDown);
     return () => {
-      document.documentElement.style.overflow = prevOverflow;
+      releaseScrollLock();
       document.removeEventListener('keydown', onKeyDown);
       lastFocused.current?.focus();
     };
@@ -146,7 +146,7 @@ export default function DemoModal() {
           </p>
         </div>
 
-        <div className="demo-modal__body">
+        <div className="demo-modal__body" data-lenis-prevent>
           <form className="demo-modal__form" onSubmit={handleSubmit} noValidate>
             <div className="field">
               <label htmlFor="dm-name">Name</label>

@@ -5,6 +5,11 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { navLinks } from '@/lib/content';
 import ThemeToggle from '@/components/ui/ThemeToggle';
+import Logo from '@/components/ui/Logo';
+import { useScrollLock } from '@/lib/scroll-lock';
+
+/** The destination of the header's CTA button, in both its desktop and mobile form. */
+const CTA_HREF = '/contact';
 
 /**
  * True when the current route is inside a nav item's section, so "Voice AI"
@@ -62,14 +67,13 @@ export default function Header() {
   // content behind the drawer stays scrollable under your finger.
   useEffect(() => {
     document.body.classList.toggle('nav-open', open);
-    const html = document.documentElement;
-    const prevOverflow = html.style.overflow;
-    if (open) html.style.overflow = 'hidden';
-    return () => {
-      document.body.classList.remove('nav-open');
-      html.style.overflow = prevOverflow;
-    };
+    return () => document.body.classList.remove('nav-open');
   }, [open]);
+
+  // Held through the shared manager rather than by poking `style.overflow`
+  // here, so an open dialog or the intro curtain can hold it at the same time
+  // without either one clobbering the other's restore. See lib/scroll-lock.
+  useScrollLock(open);
 
   // Escape closes the drawer, matching the dialog behaviour elsewhere.
   useEffect(() => {
@@ -92,10 +96,7 @@ export default function Header() {
       <header className={`header ${scrolled ? 'is-scrolled' : ''}`}>
         <div className="container nav">
           <Link className="brand" href="/" aria-label="NiaTalks home" onClick={close}>
-            <span className="brand__mark" aria-hidden="true">
-              <img src="/assets/logo-mark.png" alt="" />
-            </span>
-            NiaTalks
+            <Logo />
           </Link>
 
           <button
@@ -106,20 +107,25 @@ export default function Header() {
             onClick={close}
           />
 
-          <nav className="nav__menu" aria-label="Primary">
-            {navLinks.map((link) => (
-              <Link
-                key={link.href}
-                className={`nav__link ${isSectionActive(pathname, link.href) ? 'is-active' : ''}`}
-                href={link.href}
-                onClick={close}
-              >
-                {link.label}
-              </Link>
-            ))}
+          <nav className="nav__menu" aria-label="Primary" data-lenis-prevent>
+            {/* "Book a Demo" is already the CTA button in this bar (and, on a
+                phone, directly below this list) — listing it as a nav link too
+                put the same words on screen twice. */}
+            {navLinks
+              .filter((link) => link.href !== CTA_HREF)
+              .map((link) => (
+                <Link
+                  key={link.href}
+                  className={`nav__link ${isSectionActive(pathname, link.href) ? 'is-active' : ''}`}
+                  href={link.href}
+                  onClick={close}
+                >
+                  {link.label}
+                </Link>
+              ))}
             <Link
               className="btn btn--primary btn--sm nav__cta-mobile"
-              href="/contact"
+              href={CTA_HREF}
               onClick={close}
               style={{ marginTop: '1rem' }}
             >
@@ -129,7 +135,7 @@ export default function Header() {
 
           <div className="nav__actions">
             <ThemeToggle />
-            <Link className="btn btn--primary btn--sm nav__cta-desktop" href="/contact">
+            <Link className="btn btn--primary btn--sm nav__cta-desktop" href={CTA_HREF}>
               Book a Demo
             </Link>
             <button

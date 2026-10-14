@@ -1,7 +1,7 @@
 import CompanyHero from '@/components/CompanyHero';
 import Marquee from '@/components/Marquee';
 import WhyChooseUs from '@/components/WhyChooseUs';
-import Testimonials from '@/components/Testimonials';
+import Reviews from '@/components/Reviews';
 import CTABand from '@/components/CTABand';
 
 /**
@@ -16,7 +16,7 @@ export default function Home() {
       <CompanyHero />
       <Marquee />
       <WhyChooseUs />
-      <Testimonials />
+      <Reviews />
       <CTABand />
     </>
   );

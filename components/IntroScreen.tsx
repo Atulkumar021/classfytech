@@ -4,6 +4,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import type { CSSProperties } from 'react';
 import { usePathname } from 'next/navigation';
 import { finishIntro, introAlreadySeen, introElapsedMs } from '@/lib/intro';
+import { createScrollLockHandle } from '@/lib/scroll-lock';
 
 /**
  * How long the sequence plays before it starts lifting. The last beats (boot
@@ -95,9 +96,13 @@ export default function IntroScreen() {
   const skipRef = useRef<HTMLButtonElement>(null);
   const timers = useRef<ReturnType<typeof setTimeout>[]>([]);
 
-  const clearScrollLock = useCallback(() => {
-    document.documentElement.style.overflow = '';
-  }, []);
+  // One handle for this component's whole lifetime. The curtain can be
+  // dismissed from four places (animation start, animation end, the skip
+  // button, effect cleanup) and several of them fire for the same dismissal,
+  // so acquire/release have to be idempotent — otherwise the extra releases
+  // would unlock the page underneath a dialog that is still open.
+  const lock = useRef(createScrollLockHandle());
+  const clearScrollLock = useCallback(() => lock.current.release(), []);
 
   /** Unmounts the overlay and lets everything waiting on it proceed. */
   const finish = useCallback(() => {
@@ -150,9 +155,8 @@ export default function IntroScreen() {
 
     // Only hold the page still while the overlay actually covers it — if we
     // mounted mid-fade the reveal is already underway.
-    const html = document.documentElement;
     if (elapsed < PLAY_MS) {
-      html.style.overflow = 'hidden';
+      lock.current.acquire();
       skipRef.current?.focus();
     }
 

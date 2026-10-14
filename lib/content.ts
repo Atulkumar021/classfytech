@@ -67,11 +67,48 @@ export interface Project {
   results?: { num: string; label: string }[];
 }
 
-export interface Testimonial {
+export interface Review {
+  /** The reviewer's own words. Kept as written — including the gripes. */
   quote: string;
   name: string;
   role: string;
+  company: string;
   initials: string;
+  /** 1-5, in half steps. Not every customer gives five, and the ones who */
+  /** don't are the reason the rest are worth reading. */
+  rating: number;
+  /** Which product this review is about, so each product page can filter. */
+  product: 'Voice AI' | 'Dialer';
+  /** ISO date. Rendered as "March 2026" — a review with no date reads as stock copy. */
+  date: string;
+}
+
+/** Shape of the computed rollup under a set of reviews. */
+export interface RatingSummary {
+  average: number;
+  count: number;
+  /** Review count per whole star, indexed 5 down to 1. */
+  distribution: { stars: number; count: number; share: number }[];
+}
+
+/**
+ * Roll a set of reviews up into the numbers shown above the list.
+ *
+ * Derived rather than hand-written on purpose: a hard-coded "4.9 from 300+
+ * happy customers" above six visible reviews is the single most obvious tell
+ * that a review section is decorative. These numbers always describe exactly
+ * the reviews on the page.
+ */
+export function summariseRatings(list: Review[]): RatingSummary {
+  const count = list.length;
+  if (!count) return { average: 0, count: 0, distribution: [] };
+  const total = list.reduce((sum, r) => sum + r.rating, 0);
+  const distribution = [5, 4, 3, 2, 1].map((stars) => {
+    // Half-steps round up, so a 4.5 counts toward its 5.
+    const n = list.filter((r) => Math.round(r.rating) === stars).length;
+    return { stars, count: n, share: n / count };
+  });
+  return { average: Math.round((total / count) * 10) / 10, count, distribution };
 }
 
 export interface Plan {
@@ -130,7 +167,8 @@ export const services: Service[] = [
   {
     icon: 'phone',
     title: 'Outbound Voice Agents',
-    description: 'Proactive calls that qualify, book and follow up — without a dialer.',
+    description:
+      'It works a list: rings the number, asks the questions you would ask, books the ones worth booking and logs the rest.',
     items: [
       'Automated Cold Calling',
       'Lead Qualification',
@@ -143,7 +181,8 @@ export const services: Service[] = [
   {
     icon: 'monitor',
     title: 'Inbound Voice Agents',
-    description: "Every call answered instantly, day or night, in the caller's language.",
+    description:
+      'Picks up on the first ring at 2am on a Sunday, in whatever language the caller opens with. Nobody waits in a queue.',
     items: [
       '24/7 Call Answering',
       'Customer Support Automation',
@@ -156,7 +195,8 @@ export const services: Service[] = [
   {
     icon: 'cpu',
     title: 'Conversational AI Engine',
-    description: 'The brain behind every call — natural, context-aware, always on-script.',
+    description:
+      'The part that listens. It holds the thread of a conversation, copes with being cut off, and sticks to what you told it to say.',
     items: [
       'Human-Like, Natural Voice',
       'Real-Time Interruption Handling',
@@ -212,37 +252,39 @@ export const features: Feature[] = [
 
 export const processSteps: ProcessStep[] = [
   {
-    title: 'Design Your Agent',
+    title: 'Tell it what the call is for',
     description:
-      'Define its goal, script and persona, and pick a natural voice in minutes with the no-code builder.',
+      'Write the goal in plain English — book a viewing, chase a renewal, answer the top ten questions. Pick a voice. No code, and you can change your mind later.',
   },
   {
-    title: 'Connect Your Data',
+    title: 'Give it your data',
     description:
-      'Sync your CRM, calendar and knowledge base so the agent always has the right context.',
+      'Hook up the CRM, the calendar, the price list. Without that an agent is just a voice; with it, it knows who is calling and what you told them last time.',
   },
   {
-    title: 'Go Live',
-    description: 'Launch an outbound campaign or activate an inbound line — instantly, at any scale.',
-  },
-  {
-    title: 'Real, Natural Conversations',
+    title: 'Put it on a line',
     description:
-      'The agent listens, understands intent and responds in real time, handling interruptions like a human.',
+      'Point a number at it for inbound, or hand it a list for outbound. Start with a small batch and listen to the recordings before you open the taps.',
   },
   {
-    title: 'Qualify, Book & Resolve',
+    title: 'It holds a real conversation',
     description:
-      'Leads are qualified, meetings booked, and support questions resolved — automatically, every call.',
+      'It waits its turn, copes with being interrupted, and answers in about half a second. People talk over it the way they talk over anyone.',
   },
   {
-    title: 'Monitor & Optimize',
+    title: 'It does the thing, not just the talking',
     description:
-      'Transcripts, sentiment scoring and live dashboards show exactly what to improve next.',
+      'The meeting lands in your calendar, the lead is scored in your CRM, the ticket is closed. A call that ends in a summary nobody reads has not saved you anything.',
   },
   {
-    title: 'Scale Without Limits',
-    description: 'Handle 10 calls or 10,000 concurrently, without adding a single person to your team.',
+    title: 'You read what actually happened',
+    description:
+      'Every call has a transcript and a sentiment score. Most of the useful work after week one is listening to the calls that went badly and fixing the script.',
+  },
+  {
+    title: 'Busy days stop being a problem',
+    description:
+      'Ten calls at once or ten thousand costs you the same effort. Nobody is on hold because three people called at the same time.',
   },
 ];
 
@@ -363,37 +405,92 @@ export const projects: Project[] = [
   },
 ];
 
-// Placeholder testimonials — replace with real customer quotes before launch.
-export const testimonials: Testimonial[] = [
+/**
+ * PLACEHOLDER REVIEWS — replace with real ones before launch.
+ *
+ * Two deliberate choices worth keeping when the real reviews arrive:
+ *
+ * 1. Not every rating is a five. A column of identical five-star reviews is
+ *    read as advertising; a four with a specific, fixable complaint is read as
+ *    evidence, and it makes the fives credible. Keep the critical ones.
+ * 2. Each quote names something concrete — a number, a workflow, a thing that
+ *    went wrong. Generic praise ("great product, highly recommend") tells a
+ *    buyer nothing and is what everyone's reviews already look like.
+ *
+ * Because these are not real, no `AggregateRating` structured data is emitted
+ * for them anywhere on the site. See the note in components/Reviews.tsx.
+ */
+export const reviews: Review[] = [
   {
     quote:
-      'Our outbound agent runs 24/7 and never misses a follow-up — it books more meetings than our old dialer ever did.',
-    name: 'Priya Sharma',
-    role: 'Sales Lead, B2B SaaS company',
-    initials: 'PS',
-  },
-  {
-    quote:
-      "Callers genuinely can't tell it's AI. Response times are instant and it hands off to a human the moment it needs to.",
-    name: 'Arjun Mehta',
-    role: 'Head of Support, D2C Retail brand',
-    initials: 'AM',
-  },
-  {
-    quote:
-      'We went live with an inbound line in days, not months. The dashboards make it obvious what to fix next.',
-    name: 'Ananya Iyer',
-    role: 'Operations Manager, Healthcare clinic chain',
-    initials: 'AI',
-  },
-  {
-    quote:
-      'The multi-language support let us launch outbound campaigns in three regions with one platform and one script.',
+      "We were losing enquiries overnight — people call about a property at 10pm and by morning they have booked with someone else. The agent picks up, asks the three questions our team would ask, and books a viewing. Last month it handled 1,400 calls and 300-odd turned into site visits.",
     name: 'Rohan Malhotra',
-    role: 'Growth Lead, Real estate platform',
+    role: 'Growth Lead',
+    company: 'Real estate marketplace, Gurugram',
     initials: 'RM',
+    rating: 5,
+    product: 'Voice AI',
+    date: '2026-08-19',
+  },
+  {
+    quote:
+      "Honestly I expected to hate it. Our customers are not young and I was sure they would hang up on a robot. Most of them do not notice. The ones who ask get handed to a person straight away, which is the part that sold me.",
+    name: 'Ananya Iyer',
+    role: 'Operations Manager',
+    company: 'Clinic chain, Bengaluru',
+    initials: 'AI',
+    rating: 5,
+    product: 'Voice AI',
+    date: '2026-07-02',
+  },
+  {
+    quote:
+      "The dialer itself is excellent — six modes, and the agents picked it up in an afternoon. Reporting is where it falls short for us. There are over a hundred reports and I still had to export to Excel to get the one view my regional heads actually want. Support says a custom report builder is coming.",
+    name: 'Vikram Desai',
+    role: 'Head of Contact Centre',
+    company: 'NBFC, Mumbai',
+    initials: 'VD',
+    rating: 4,
+    product: 'Dialer',
+    date: '2026-09-11',
+  },
+  {
+    quote:
+      "Connect rate went from 22% to 31% after we moved to predictive and let it handle the retry timing. That is the whole review really. Same list, same agents, more conversations.",
+    name: 'Priya Sharma',
+    role: 'Sales Lead',
+    company: 'B2B SaaS, Pune',
+    initials: 'PS',
+    rating: 5,
+    product: 'Dialer',
+    date: '2026-06-24',
+  },
+  {
+    quote:
+      "Setup took longer than the 'live in days' line suggests — closer to three weeks, though most of that was us getting our own data in order rather than anything on their side. Once it was running it has been steady. Nine months, no outage I have noticed.",
+    name: 'Arjun Mehta',
+    role: 'Head of Support',
+    company: 'D2C retail brand, Delhi',
+    initials: 'AM',
+    rating: 4,
+    product: 'Voice AI',
+    date: '2026-05-30',
+  },
+  {
+    quote:
+      "We run campaigns in Hindi, Marathi and English off one script. The language switching mid-call still surprises me. What I would like is better control over how formal it sounds in Hindi — it is a bit stiff for our audience.",
+    name: 'Sneha Kulkarni',
+    role: 'Campaign Manager',
+    company: 'Insurance aggregator, Nagpur',
+    initials: 'SK',
+    rating: 4,
+    product: 'Voice AI',
+    date: '2026-09-28',
   },
 ];
+
+/** Numbers under the reviews above — always derived from the list itself. */
+export const reviewSummary = summariseRatings(reviews);
 
 // Per-minute billing, tiered by monthly call volume. Enterprise stays custom.
 export const plans: Plan[] = [
@@ -445,14 +542,14 @@ export const plans: Plan[] = [
 
 export const faqs: Faq[] = [
   {
-    question: 'What exactly is Voice AI?',
+    question: 'What is this, in one sentence?',
     answer:
-      'Voice AI is an AI-powered voice agent platform that makes and receives phone calls on your behalf — sounding natural, understanding context, and taking real actions like booking meetings, answering questions, or qualifying leads.',
+      'It is a voice that answers your phone and makes your calls — it understands what the caller wants, and then does something about it: books the meeting, updates the CRM, answers the question or passes the call to you.',
   },
   {
-    question: 'How natural does the voice actually sound?',
+    question: 'Will callers know it is a machine?',
     answer:
-      'Our agents use state-of-the-art speech models for natural intonation, real-time interruption handling and sub-second response times — most callers can’t tell they’re speaking to an AI.',
+      'Some will, most do not. It replies in about half a second and handles being interrupted, which is what usually gives these things away. We would rather you judged it yourself than took our word for it — a demo call takes two minutes.',
   },
   {
     question: 'Does it handle both inbound and outbound calls?',
@@ -460,9 +557,9 @@ export const faqs: Faq[] = [
       'Yes. The same platform powers outbound campaigns (cold calling, lead qualification, reminders) and inbound lines (support, bookings, FAQs) — configure either, or both together.',
   },
   {
-    question: 'What languages are supported?',
+    question: 'Which languages does it speak?',
     answer:
-      '40+ languages and regional accents, with automatic language detection so an agent can even switch mid-conversation.',
+      'Over 40, including Hindi, Marathi, Tamil, Telugu, Bengali and Gujarati alongside English. It works out which one the caller is using and switches, so you do not need a separate line or a separate script per language.',
   },
   {
     question: 'Can it integrate with my CRM and calendar?',
@@ -470,19 +567,19 @@ export const faqs: Faq[] = [
       'Yes. Native integrations with Salesforce, HubSpot, Zoho, Google Calendar and Outlook, plus a REST API and webhooks for anything custom.',
   },
   {
-    question: 'Is call recording and consent handled compliantly?',
+    question: 'What about recording and consent?',
     answer:
-      'Yes. Configurable consent prompts, call-recording controls and data-residency options help you stay compliant with local telephony and privacy regulations.',
+      'You control what gets recorded and where it is stored, and the agent can read a consent line before anything else happens. The rules differ by state and by industry, so tell us what you are bound by and we will set it up to match rather than guess.',
   },
   {
-    question: 'What happens when the AI can’t handle a call?',
+    question: 'What happens when it gets stuck?',
     answer:
-      'It escalates instantly to a live human with the full conversation context passed along — no dead air, no repeated questions.',
+      'It hands over to a person, and passes the transcript across with the call. The thing that makes transfers infuriating is being asked everything a second time, so the agent you transfer to already has the answers.',
   },
   {
-    question: 'How do I get started?',
+    question: 'How long until we are live?',
     answer:
-      'Book a free demo. We’ll help you script your first agent, connect your data, and you can be live within days.',
+      'A simple inbound line can be answering calls in a few days. Anything that has to talk to your CRM usually takes two or three weeks, and most of that is getting your own data tidy enough to be useful. We would rather say that up front than surprise you in week two.',
   },
 ];
 
@@ -854,8 +951,39 @@ export const contactInfo = {
   // Display is spaced for readability; the two link values must stay
   // unspaced — `wa.me/` rejects spaces outright and `tel:` is unreliable
   // with them.
-  phoneDisplay: '+91 94576 36571',
-  phoneHref: '+919457636571',
-  whatsapp: '919457636571',
+  phoneDisplay: '+91 92865 61066',
+  phoneHref: '+919286561066',
+  whatsapp: '919286561066',
   address: 'New Delhi, India',
+};
+
+/**
+ * The registered company behind the NiaTalks brand.
+ *
+ * NiaTalks is the product brand; the contracting entity is the private limited
+ * company below. Keeping the two apart matters on a Pvt Ltd site: invoices,
+ * terms, the schema.org `legalName` and the footer statutory line must all name
+ * the entity, while the marketing copy stays on the brand.
+ *
+ * `cin` and `gstin` are intentionally blank. They are real statutory
+ * identifiers issued by the MCA and the GST department — publishing an invented
+ * one would be a false disclosure, so the footer simply omits whichever of
+ * these is empty. Paste the real values here and they appear automatically.
+ */
+export const companyInfo = {
+  /** Product/trading brand, used in all marketing copy. */
+  brand: 'NiaTalks',
+  /** Full registered name, used wherever the legal entity must be named. */
+  legalName: 'Classify Technologies Private Limited',
+  /** Short form for tight spaces such as the footer bottom bar. */
+  legalNameShort: 'Classify Technologies Pvt. Ltd.',
+  /** Company Identification Number from the MCA — e.g. 'U72900DL2023PTC123456'. */
+  cin: '',
+  /** GST Identification Number — e.g. '07AABCU9603R1ZX'. */
+  gstin: '',
+  /** Registered office as recorded with the Registrar of Companies. */
+  registeredOffice: 'New Delhi, Delhi 110001, India',
+  /** Jurisdiction named in the terms of service and any dispute clause. */
+  jurisdiction: 'New Delhi, India',
+  incorporatedIn: 'India',
 };

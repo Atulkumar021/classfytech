@@ -7,11 +7,11 @@ export default function CTABand() {
       <div className="container">
         <Reveal className="glass cta-band">
           <h2>
-            Ready to put a <span className="gradient-text">voice agent</span> to work?
+            Want to <span className="gradient-text">hear one</span>?
           </h2>
           <p>
-            Book a free, no-obligation demo and hear a live agent handle a real call flow for
-            your business.
+            Tell us what your calls sound like and we will build that flow and ring you with it.
+            Twenty minutes, no slides, and you will know fairly quickly whether this is for you.
           </p>
           <div className="hero__cta">
             <Link className="btn btn--primary" href="/contact">

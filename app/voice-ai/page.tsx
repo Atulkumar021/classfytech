@@ -6,7 +6,7 @@ import UseCaseGrid from '@/components/UseCaseGrid';
 import Technologies from '@/components/Technologies';
 import Pricing from '@/components/Pricing';
 import FaqSection from '@/components/FaqSection';
-import Testimonials from '@/components/Testimonials';
+import Reviews from '@/components/Reviews';
 import CTABand from '@/components/CTABand';
 import { projects, faqs } from '@/lib/content';
 import { pageMetadata } from '@/lib/seo';
@@ -59,7 +59,7 @@ export default function VoiceAiPage() {
         subtitle="The questions we hear most about running AI agents on real phone calls."
         items={faqs}
       />
-      <Testimonials />
+      <Reviews />
       <CTABand />
     </>
   );

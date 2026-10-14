@@ -905,22 +905,6 @@ body.nav-open .nav__burger span:nth-child(3) { transform: translateY(-7px) rotat
 .project__result .num { font-family: var(--font-sans); font-weight: 700; font-size: 1.15rem; color: var(--text); }
 .project__result .lbl { font-size: 0.72rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.06em; }
 
-/* ---------- Testimonials ---------- */
-.testimonials { position: relative; overflow: hidden; padding: clamp(1rem, 2vw, 1.5rem); }
-.testimonials__viewport { overflow: hidden; border-radius: var(--radius-lg); }
-.testimonials__track { display: flex; transition: transform 0.6s var(--ease); }
-.testimonial { min-width: 100%; padding: clamp(2rem, 5vw, 3.5rem); text-align: center; }
-.testimonial__stars { color: var(--text-dim); letter-spacing: 2px; margin-bottom: 1rem; font-size: 0.9rem; }
-.testimonial__quote { font-family: var(--font-sans); font-size: clamp(1.05rem, 2vw, 1.4rem); line-height: 1.5; max-width: 44ch; margin: 0 auto 1.7rem; letter-spacing: -0.02em; }
-.testimonial__person { display: flex; align-items: center; gap: 0.9rem; justify-content: center; }
-.testimonial__avatar { width: 54px; height: 54px; border-radius: 50%; display: grid; place-items: center; font-family: var(--font-sans); font-weight: 700; color: var(--text); background: var(--surface-2); border: 1px solid var(--border); }
-.testimonial__meta strong { display: block; font-family: var(--font-sans); }
-.testimonial__meta span { color: var(--text-muted); font-size: 0.88rem; }
-.testimonials__controls { display: flex; align-items: center; justify-content: center; gap: 1.5rem; margin-top: 1.5rem; }
-.testimonials__dots { display: flex; gap: 0.5rem; }
-.testimonials__dot { width: 9px; height: 9px; border-radius: 50%; border: none; background: var(--border-strong); cursor: pointer; transition: transform 0.25s, background 0.25s; }
-.testimonials__dot.is-active { background: var(--accent); }
-
 /* ---------- Pricing ---------- */
 .plan { display: flex; flex-direction: column; gap: 1.2rem; }
 .plan--featured { border-color: var(--accent); }
@@ -1929,3 +1913,856 @@ html.intro-seen .intro { display: none; }
 
 /* "Let's talk" in place of a figure on enquiry-only pricing. */
 .plan__price--enquire { font-size: 1.5rem; color: var(--text-muted); }
+
+/* =========================================================================
+   NEUMORPHISM LAYER
+   -------------------------------------------------------------------------
+   Everything above this line is the original flat/editorial system. This
+   block re-skins it as soft UI ("neumorphism") without touching a single
+   component file — it only redefines tokens and the surface primitives.
+
+   The one rule that makes neumorphism work: a control is the SAME colour as
+   the page behind it, and is separated from it only by a light source. So
+   --surface === --bg, borders go nearly to zero, and every raised thing
+   carries a paired shadow — a light one from the top-left, a dark one from
+   the bottom-right. Pressed, selected and input states invert that pair
+   inwards instead of changing colour.
+
+   Because the shadows do all the separating, the page background can no
+   longer be near-black or near-white: a light shadow is invisible on #fff and
+   a dark one is invisible on #0a0a0a. Both themes therefore move to a mid
+   tone, and the accent and text colours are re-tuned against it so every
+   pairing still clears WCAG AA (contrast ratios noted inline).
+   ========================================================================= */
+
+:root {
+    /* Softer, rounder corner language — flat UI can be crisp, soft UI cannot:
+       a tight radius kills the illusion of an extruded surface. */
+    --radius-sm: 12px;
+    --radius: 18px;
+    --radius-lg: 24px;
+    --radius-xl: 30px;
+
+    /* Offset/blur scale. Everything below derives from these, so the whole
+       UI's "depth" can be tuned from three numbers. */
+    --nm-d: 6px;
+    --nm-b: 14px;
+    --nm-d-sm: 3px;
+    --nm-b-sm: 7px;
+    --nm-d-lg: 11px;
+    --nm-b-lg: 26px;
+}
+
+/* ---------- Dark soft-UI: charcoal, lit from the top-left ---------- */
+:root,
+[data-theme='dark'] {
+    --bg: #22252b;
+    --bg-2: #202329;
+    --bg-elev: #262a31;
+    /* Identical to --bg on purpose — see the note at the top of this block. */
+    --surface: #22252b;
+    --surface-2: #262a31;
+    --surface-sunken: #1e2126;
+
+    /* On charcoal the highlight has to stay faint; a strong white edge reads
+       as a plastic bevel rather than a lit surface. */
+    --nm-light: rgba(255, 255, 255, 0.055);
+    --nm-dark: rgba(0, 0, 0, 0.5);
+
+    /* Hairlines are nearly gone. They survive only as a 1px seam that keeps
+       cards from dissolving on low-quality panels where soft shadows band. */
+    --border: rgba(255, 255, 255, 0.045);
+    --border-strong: rgba(255, 255, 255, 0.1);
+
+    --text: #eef1f6;       /* 14.9:1 on --bg */
+    --text-muted: #a7aebc; /* 7.0:1 */
+    --text-dim: #848c9b;   /* 4.6:1 */
+
+    --glass-bg: #22252b;
+    --grid-line: rgba(67, 168, 74, 0.1);
+    --shadow-lg: 14px 14px 34px rgba(0, 0, 0, 0.55), -14px -14px 34px rgba(255, 255, 255, 0.05);
+    color-scheme: dark;
+}
+
+/* ---------- Light soft-UI: the classic warm grey, lit from the top-left ---------- */
+[data-theme='light'] {
+    /* Pure white cannot carry a light shadow, so the page sits at a mid grey
+       and white becomes the highlight. */
+    --bg: #e8ebf0;
+    --bg-2: #e3e7ed;
+    --bg-elev: #eceff4;
+    --surface: #e8ebf0;
+    --surface-2: #eceff4;
+    --surface-sunken: #e2e6ec;
+
+    --nm-light: #ffffff;
+    --nm-dark: rgba(163, 177, 198, 0.62);
+
+    --border: rgba(133, 148, 171, 0.14);
+    --border-strong: rgba(133, 148, 171, 0.3);
+
+    /* The accent darkens again for this background. The previous light-theme
+       green (#2f7d36) measured 4.90:1 on #fafafa but only 4.28:1 on this
+       slightly darker grey — under the AA floor. This one measures 5.4:1 as
+       text here, and 6.5:1 against white ink when used as a button fill. */
+    --accent: #286b2d;
+    --accent-hover: #1f5624;
+    --accent-quiet: rgba(40, 107, 45, 0.12);
+    --accent-ink: #ffffff;
+
+    --text: #2b2f3a;       /* 11.5:1 on --bg */
+    --text-muted: #5b6273; /* 5.9:1 */
+    --text-dim: #6e7585;   /* 4.5:1 */
+
+    --glass-bg: #e8ebf0;
+    --grid-line: rgba(40, 107, 45, 0.12);
+    --shadow-lg: 14px 14px 34px rgba(163, 177, 198, 0.55), -14px -14px 34px #ffffff;
+    color-scheme: light;
+}
+
+/* ---------- The four shadow primitives ----------
+   Declared after both themes so they pick up whichever --nm-light/--nm-dark
+   pair is live. Raised = light top-left + dark bottom-right; pressed = the
+   same pair turned inwards. */
+:root {
+    --nm-out: calc(var(--nm-d) * -1) calc(var(--nm-d) * -1) var(--nm-b) var(--nm-light),
+              var(--nm-d) var(--nm-d) var(--nm-b) var(--nm-dark);
+    --nm-out-sm: calc(var(--nm-d-sm) * -1) calc(var(--nm-d-sm) * -1) var(--nm-b-sm) var(--nm-light),
+                 var(--nm-d-sm) var(--nm-d-sm) var(--nm-b-sm) var(--nm-dark);
+    --nm-out-lg: calc(var(--nm-d-lg) * -1) calc(var(--nm-d-lg) * -1) var(--nm-b-lg) var(--nm-light),
+                 var(--nm-d-lg) var(--nm-d-lg) var(--nm-b-lg) var(--nm-dark);
+    --nm-in: inset calc(var(--nm-d-sm) * -1) calc(var(--nm-d-sm) * -1) var(--nm-b-sm) var(--nm-light),
+             inset var(--nm-d-sm) var(--nm-d-sm) var(--nm-b-sm) var(--nm-dark);
+    --nm-in-deep: inset calc(var(--nm-d) * -1) calc(var(--nm-d) * -1) var(--nm-b) var(--nm-light),
+                  inset var(--nm-d) var(--nm-d) var(--nm-b) var(--nm-dark);
+}
+
+/* On small screens the offsets shrink, or a 6px shadow on a 320px-wide card
+   eats most of the gutter. */
+@media (max-width: 640px) {
+    :root {
+        --nm-d: 4px;
+        --nm-b: 10px;
+        --nm-d-lg: 7px;
+        --nm-b-lg: 17px;
+    }
+}
+
+/* Soft UI is shadow-heavy by nature. Where a user has asked for less motion
+   we keep the depth but drop the transitions that animate it. */
+@media (prefers-reduced-motion: reduce) {
+    .card, .btn, .icon-btn { transition: none !important; }
+}
+
+/* ---------- Page ---------- */
+/* One flat tone. The old radial wash would have shown through every card,
+   because cards are now the same colour as the page. */
+.backdrop { background: var(--bg); }
+
+/* ---------- Card primitive ---------- */
+/* `overflow: hidden` stays on .card (several components rely on it to clip
+   their own corners), which is exactly why the depth has to be an outer
+   box-shadow on the card itself rather than anything drawn inside it. */
+.card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--nm-out);
+    transition: box-shadow var(--dur) var(--ease), transform var(--dur) var(--ease);
+}
+/* Hover pushes the surface further out of the page instead of tinting it. */
+.card:hover {
+    background: var(--surface);
+    border-color: var(--border);
+    box-shadow: var(--nm-out-lg);
+    transform: translateY(-2px);
+}
+/* Links built on .card get a pressed state, since they are really buttons. */
+a.card:active {
+    transform: translateY(0);
+    box-shadow: var(--nm-in);
+}
+.glass {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-xl);
+    box-shadow: var(--nm-out);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+}
+
+/* ---------- Buttons ---------- */
+.btn {
+    border-radius: var(--radius-pill);
+    border: 1px solid var(--border);
+    box-shadow: var(--nm-out-sm);
+    transition: box-shadow 0.22s var(--ease), transform 0.22s var(--ease),
+                background 0.22s var(--ease), color 0.22s var(--ease);
+}
+.btn:hover { box-shadow: var(--nm-out); transform: translateY(-1px); }
+/* The press is the whole point of a soft-UI button: the surface sinks in. */
+.btn:active { transform: translateY(0); box-shadow: var(--nm-in); }
+.btn:disabled { box-shadow: var(--nm-in); transform: none; }
+
+.btn--primary {
+    background: var(--accent);
+    color: var(--accent-ink);
+    border-color: transparent;
+}
+/* The primary button keeps a neutral shadow pair rather than a coloured halo —
+   a green glow under a green pill is the one effect that tips soft UI into
+   looking like a toy. */
+.btn--primary:hover { background: var(--accent-hover); }
+.btn--primary:active {
+    background: var(--accent-hover);
+    box-shadow: inset 3px 3px 7px rgba(0, 0, 0, 0.3), inset -3px -3px 7px rgba(255, 255, 255, 0.16);
+}
+.btn--ghost { background: var(--surface); color: var(--text); border-color: var(--border); }
+.btn--ghost:hover { background: var(--surface); border-color: var(--border); color: var(--text); }
+
+/* ---------- Icon buttons / round controls ---------- */
+.icon-btn {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-pill);
+    box-shadow: var(--nm-out-sm);
+    transition: box-shadow 0.22s var(--ease), color 0.22s var(--ease);
+}
+.icon-btn:hover { background: var(--surface); border-color: var(--border); box-shadow: var(--nm-out); }
+.icon-btn:active { box-shadow: var(--nm-in); }
+/* Inside a contact row the icon is decoration, not a control, so it reads as
+   a shallow well rather than another raised chip competing with the card. */
+.contact__row .icon-btn { box-shadow: var(--nm-in); color: var(--accent); }
+
+/* ---------- Header, offer bar, progress ---------- */
+.header.is-scrolled {
+    background: var(--bg);
+    border-bottom: none;
+    box-shadow: 0 8px 22px -8px var(--nm-dark);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+}
+.offer-bar { background: var(--bg-2); border-bottom: none; box-shadow: var(--nm-in); }
+.progress-bar { background: var(--accent); box-shadow: none; }
+
+/* Nav links sink in when active — the soft-UI equivalent of a highlight. */
+.nav__link { border-radius: var(--radius-pill); transition: box-shadow 0.22s var(--ease), color 0.22s var(--ease); }
+.nav__link:hover,
+.nav__link.is-active,
+[data-theme='light'] .nav__link:hover,
+[data-theme='light'] .nav__link.is-active {
+    background: var(--surface);
+    color: var(--text);
+    box-shadow: var(--nm-in);
+}
+/* The underline marker is redundant once the link is physically recessed. */
+.nav__link.is-active::after { display: none; }
+.nav__burger {
+    border-radius: var(--radius-pill);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    box-shadow: var(--nm-out-sm);
+}
+body.nav-open .nav__burger { box-shadow: var(--nm-in); }
+
+.brand__mark {
+    border-radius: var(--radius-sm);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    box-shadow: var(--nm-out-sm);
+}
+
+/* ---------- Pills, chips, tags: small raised beads ---------- */
+.hero__badge,
+.hero__service-pill,
+.service__pills li,
+.tag,
+.plan__discount,
+.call-card__tag,
+.dialer-card__chip,
+.call-card__live,
+.dialer-card__status {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-pill);
+    box-shadow: var(--nm-out-sm);
+}
+.hero__service-pill { transition: box-shadow 0.22s var(--ease), transform 0.22s var(--ease); }
+.hero__service-pill:hover { background: var(--surface); box-shadow: var(--nm-out); transform: translateY(-1px); }
+.card.service:hover .service__pills li { border-color: var(--border); }
+.plan__badge { box-shadow: var(--nm-out-sm); }
+
+/* ---------- Icon tiles and numerals: raised medallions ---------- */
+.service__icon,
+.feature__icon,
+.step__num,
+.tech__dot,
+.call-card__agent-icon,
+.dialer-card__campaign-icon,
+.dialer-card__avatar,
+.hero__preview-icon {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    box-shadow: var(--nm-out-sm);
+}
+.service__icon,
+.feature__icon,
+.step__num,
+.tech__dot,
+.hero__preview-icon,
+.call-card__agent-icon,
+.dialer-card__campaign-icon {
+    border-radius: var(--radius-sm);
+}
+.dialer-card__avatar { border-radius: 50%; }
+/* The icon presses in when its card is hovered, so the card and its contents
+   move as one object rather than two. */
+.card.service:hover .service__icon { box-shadow: var(--nm-in); }
+.service__index { box-shadow: none; }
+
+/* ---------- Form controls: always recessed ---------- */
+.field input,
+.field textarea,
+.field select,
+.phone-field select,
+.phone-field input {
+    background: var(--surface-sunken);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    box-shadow: var(--nm-in);
+    transition: box-shadow 0.25s var(--ease), border-color 0.25s;
+}
+.field input:focus,
+.field textarea:focus,
+.field select:focus {
+    border-color: var(--accent);
+    /* Keeps the recess and adds the focus ring on top, rather than replacing
+       the depth with a flat ring. */
+    box-shadow: var(--nm-in), 0 0 0 3px var(--accent-quiet);
+}
+.phone-field select { border-top-right-radius: 0; border-bottom-right-radius: 0; }
+.phone-field input { border-top-left-radius: 0; border-bottom-left-radius: 0; border-left: none; }
+
+/* ---------- FAQ and plans ---------- */
+.faq__item { border-radius: var(--radius-lg); }
+.faq__item.is-open,
+.faq__item.is-open:hover { box-shadow: var(--nm-in-deep); transform: none; }
+/* The featured plan sits highest in the stack, so it gets the deepest lift
+   instead of a coloured outline. */
+.plan--featured { border-color: var(--border); box-shadow: var(--nm-out-lg); }
+.plan--featured:hover { box-shadow: var(--nm-out-lg); transform: translateY(-3px); }
+
+/* ---------- Timeline, CTA band, map, misc surfaces ---------- */
+.timeline::before { background: var(--border-strong); }
+.cta-band { box-shadow: var(--nm-out-lg); }
+.svc-cta { background: var(--surface); }
+.contact__map { border: 1px solid var(--border); border-radius: var(--radius-lg); box-shadow: var(--nm-in); }
+.tech3d,
+[data-theme='light'] .tech3d { background: var(--surface); box-shadow: var(--nm-out-sm); }
+.call-card,
+.dialer-card { border-radius: var(--radius-lg); box-shadow: var(--nm-out); }
+/* The hero's coloured bloom belongs to the old flat look; depth now comes
+   from the card's own shadow. */
+.hero__stage-glow { display: none; }
+
+/* ---------- Floating controls and overlays ---------- */
+.scroll-top {
+    border-radius: var(--radius-pill);
+    border: 1px solid var(--border);
+    box-shadow: var(--nm-out);
+}
+.scroll-top:hover { box-shadow: var(--nm-out-lg); }
+.scroll-top:active { box-shadow: var(--nm-in); transform: translateY(0) scale(0.97); }
+.demo-modal {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-lg);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+}
+.demo-modal__close { background: var(--surface); border-radius: var(--radius-pill); box-shadow: var(--nm-out-sm); }
+.demo-modal__close:hover { box-shadow: var(--nm-out); border-color: var(--border); }
+
+/* ---------- Footer ---------- */
+.footer { border-top: none; box-shadow: inset 0 9px 18px -12px var(--nm-dark); }
+.footer__bottom { border-top: 1px solid var(--border); }
+
+/* Statutory / corporate block. A Pvt Ltd site has to carry the registered
+   entity, its office and (where issued) its CIN and GSTIN — the brand name
+   alone is not the company. Set in a recessed panel so it reads as reference
+   information rather than another marketing card. */
+.footer__legal {
+    margin-top: 2rem;
+    padding: 1.15rem 1.35rem;
+    border-radius: var(--radius);
+    background: var(--surface-sunken);
+    box-shadow: var(--nm-in);
+    display: grid;
+    gap: 0.35rem;
+    font-size: 0.82rem;
+    line-height: 1.55;
+    color: var(--text-dim);
+}
+.footer__legal strong {
+    font-family: var(--font-sans);
+    font-weight: 700;
+    color: var(--text-muted);
+    letter-spacing: -0.01em;
+}
+.footer__legal dl {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem 1.6rem;
+    margin: 0;
+}
+.footer__legal dt {
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    font-size: 0.68rem;
+    font-weight: 600;
+}
+.footer__legal dd {
+    margin: 0;
+    font-variant-numeric: tabular-nums;
+    color: var(--text-muted);
+}
+.footer__legal dl > div {
+    display: flex;
+    align-items: baseline;
+    gap: 0.45rem;
+    min-width: 0;
+}
+
+/* Focus rings follow the accent now that --cyan is only an alias for it. */
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 10px; }
+
+/* ---------- Nested panels read as wells, not more raised cards ----------
+   A panel inside an already-raised card cannot also be raised: two light
+   sources stacked at the same angle is what makes soft UI turn to mush. So
+   anything that sits *within* a card — the live transcript, the lead row, the
+   3D stage — is cut into it instead. */
+.call-card,
+.dialer-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+}
+.call-card__caption,
+.dialer-card__lead,
+.tech-canvas {
+    background: var(--surface-sunken);
+    border: 1px solid var(--border);
+    box-shadow: var(--nm-in);
+}
+.call-card__speaker--caller { background: var(--surface-2); }
+
+/* =========================================================================
+   LOGO LOCKUP + MOBILE
+   ========================================================================= */
+
+/* ---------- Brand lockup ----------
+   The supplied artwork has a real alpha channel, so the white plate the old
+   mark needed (it was drawn on an opaque white ground that couldn't be keyed
+   out) is gone. The lockup carries its own wordmark, so `.brand` no longer
+   sets type — it is purely a box for the image now. */
+.brand {
+    gap: 0;
+    font-size: 0;
+    line-height: 0;
+    flex-shrink: 0;
+    /* A tap target in its own right: it is a link home. */
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+}
+.logo--lockup { display: inline-flex; align-items: center; }
+.logo__img {
+    display: block;
+    width: auto;
+    /* The one number that sizes the brand everywhere. */
+    height: var(--logo-h, 30px);
+}
+/* Exactly one of the two variants is ever displayed. Swapped on the theme
+   attribute rather than in JS so the server renders the right one and there
+   is no wrong-logo flash on first paint. */
+.logo__img--dark { display: none; }
+[data-theme='dark'] .logo__img--light { display: none; }
+[data-theme='dark'] .logo__img--dark { display: block; }
+
+.footer .brand { --logo-h: 34px; }
+/* The header shrinks when the page scrolls; the logo shrinks with it rather
+   than leaving the bar looking top-heavy. */
+.header.is-scrolled .brand { --logo-h: 26px; }
+
+.logo--mark {
+    width: var(--logo-h, 32px);
+    height: var(--logo-h, 32px);
+    object-fit: contain;
+}
+
+/* ---------- Scroll lock ----------
+   `lib/scroll-lock` pins <body> with `position: fixed` while a dialog, the
+   drawer or the intro curtain is open — the only approach that reliably holds
+   iOS Safari still. These two rules are the belt-and-braces half of that: they
+   keep the pinned body from showing a phantom scrollbar, and make sure the
+   panels that are *meant* to scroll still can. */
+html.is-scroll-locked,
+html.is-scroll-locked body { overscroll-behavior: none; }
+.demo-modal__body,
+.nav__menu {
+    /* Momentum scrolling inside the panel on iOS, and a scroll chain that
+       stops at the panel edge instead of leaking to the page behind it. */
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
+}
+
+/* =========================================================================
+   MOBILE
+   -------------------------------------------------------------------------
+   Phone-first corrections to layout that was only ever checked at desktop
+   widths. Grouped by breakpoint rather than scattered through the file so the
+   small-screen behaviour can be read in one go.
+   ========================================================================= */
+
+/* `dvh` tracks the viewport as mobile browser chrome slides in and out; `vh`
+   does not, and a `100vh` panel is taller than the screen on iOS Safari for as
+   long as the address bar is showing. The `vh` line stays first as the
+   fallback for browsers without `dvh`. */
+.demo-modal {
+    max-height: calc(100vh - 2rem);
+    max-height: calc(100dvh - 2rem);
+}
+@media (max-width: 1100px) {
+    /* Scoped to the breakpoint where .nav__menu is actually the slide-in
+       drawer. Unscoped, this made the *desktop* nav row 860px tall and blew
+       the header up to 896px — the menu is a plain static flex row up there,
+       and a viewport-height rule on it is meaningless. */
+    .nav__menu {
+        height: calc(100vh - var(--offer-bar-h));
+        height: calc(100dvh - var(--offer-bar-h));
+    }
+
+    /* Nav links are the primary navigation on a phone, so they get a proper
+       touch target rather than the desktop's compact row height. */
+    .nav__link {
+        min-height: 48px;
+        display: flex;
+        align-items: center;
+    }
+}
+
+@media (max-width: 760px) {
+    :root {
+        /* Sections were burning most of a phone screen on whitespace alone. */
+        --section-y: clamp(3rem, 11vw, 4.5rem);
+        --gutter: 1.15rem;
+    }
+
+    .brand { --logo-h: 26px; }
+    .header.is-scrolled .brand { --logo-h: 23px; }
+
+    /* Hero type was sized for a desktop measure and wrapped to five or six
+       very short lines on a narrow screen. */
+    .hero h1,
+    .hero--company h1 { font-size: clamp(1.75rem, 8.2vw, 2.4rem); }
+    .hero__sub { font-size: 0.98rem; }
+    .section__title { font-size: clamp(1.5rem, 6.6vw, 2rem); }
+    .hero { min-height: auto; }
+
+    /* Full-width CTAs: a 48%-wide button pair is a miss-tap generator. */
+    .hero__cta { flex-direction: column; align-items: stretch; }
+    .hero__cta .btn,
+    .hero__preview-actions .btn { width: 100%; }
+    .hero__preview-actions { flex-direction: column; }
+
+    .grid { gap: 1rem; }
+    .bento { grid-template-columns: 1fr; }
+    .bento .col-2,
+    .bento .col-3,
+    .bento .col-6 { grid-column: 1 / -1; }
+
+    .svc-cta { flex-direction: column; align-items: flex-start; }
+    .svc-cta .btn { width: 100%; }
+
+    /* The timeline rail and its 58px number column cost a third of the width;
+       stack instead and let the copy have the screen. */
+    .timeline::before { display: none; }
+    .step { grid-template-columns: 1fr; gap: 0.6rem; }
+    .step__num { width: 40px; height: 40px; font-size: 0.9rem; }
+    .step__body { padding-top: 0; }
+
+
+    .faq__question { padding: 1rem 1.1rem; font-size: 0.94rem; }
+    .faq__answer p { padding: 0 1.1rem 1.2rem; }
+
+    .contact__row { padding: 1rem 1.1rem; }
+    .project__body { padding: 1.2rem; }
+    .form { padding: 1.25rem; }
+
+    /* Statutory lines stack rather than running off the side. */
+    .footer__legal dl { flex-direction: column; gap: 0.3rem; }
+    .footer__legal { padding: 1rem 1.1rem; }
+
+    .section--page-top { padding-top: calc(var(--offer-bar-h) + 5.5rem); }
+}
+
+@media (max-width: 560px) {
+    /* The marquee of integration logos ran at a desktop size and dominated
+       the screen. */
+    .marquee__item { font-size: 0.92rem; }
+    .marquee__track { gap: 1.75rem; }
+
+    .tech-grid { grid-template-columns: repeat(auto-fill, minmax(96px, 1fr)); gap: 0.7rem; }
+    .tech { padding: 1rem 0.5rem; font-size: 0.8rem; }
+
+    .plan__price { font-size: 1.85rem; }
+    .cta-band { padding: 2.25rem 1.25rem; }
+
+    /* Two-up stats wrapped mid-number at this width. */
+    .project__result { gap: 1rem; }
+    .dialer-card__stats { gap: 1rem; }
+
+    .demo-modal__head { padding: 1.1rem 1.15rem 0.85rem; }
+    .demo-modal__body { padding: 0.85rem 1.15rem 1.25rem; }
+    .demo-modal__form { grid-template-columns: 1fr; }
+    .demo-modal__title { font-size: 1.1rem; }
+}
+
+/* iOS zooms the whole page in when a focused input's text is under 16px, and
+   it does not zoom back out on blur — which is exactly what "I tapped a field
+   and now the page is stuck" feels like. 16px is the threshold, so every
+   control that can take focus is pinned to it on touch-sized screens.
+   `max-width` rather than a pointer query: desktop browsers at narrow widths
+   are unaffected by the rule, and it costs nothing there. */
+@media (max-width: 760px) {
+    .field input,
+    .field textarea,
+    .field select,
+    .phone-field input,
+    .phone-field select,
+    .demo-modal__form .field input,
+    .demo-modal__form .field select,
+    .demo-modal__form .field textarea {
+        font-size: 16px;
+    }
+}
+
+/* Nothing on the page should be able to push the document sideways. The
+   marquees and the wide preview cards are the usual culprits, and a horizontal
+   overflow on a phone reads as "the page is broken" even when everything else
+   is right. */
+@media (max-width: 760px) {
+    html, body { max-width: 100%; overflow-x: hidden; }
+}
+
+/* =========================================================================
+   RATINGS & REVIEWS
+   ========================================================================= */
+
+/* ---------- Stars ----------
+   Two stacked rows of the same glyphs: a dim track and a coloured fill
+   clipped to the score. Any fraction renders correctly, so a 4.3 average
+   shows as 4.3 rather than being rounded to the nearest half-star glyph. */
+.stars {
+    position: relative;
+    display: inline-block;
+    white-space: nowrap;
+    line-height: 1;
+    letter-spacing: 0.1em;
+    /* The glyphs are tall; this keeps them optically centred beside text. */
+    vertical-align: -0.08em;
+}
+.stars--sm { font-size: 0.95rem; }
+.stars--lg { font-size: 1.45rem; }
+.stars__track { color: var(--border-strong); }
+.stars__fill {
+    position: absolute;
+    inset: 0 auto 0 0;
+    overflow: hidden;
+    color: #e2a83b;
+    /* The clip has to cut the glyphs, not reflow them. */
+    white-space: nowrap;
+}
+/* Amber reads as a rating everywhere; the brand green here would look like a
+   progress bar and would collide with the accent used for everything else. */
+[data-theme='light'] .stars__fill { color: #b9771a; }
+
+/* ---------- Summary panel ---------- */
+.rating-summary {
+    display: grid;
+    grid-template-columns: minmax(190px, 0.8fr) 1.2fr;
+    gap: clamp(1.5rem, 4vw, 3rem);
+    align-items: center;
+    margin-bottom: 2rem;
+}
+.rating-summary:hover { transform: none; box-shadow: var(--nm-out); }
+.rating-summary__score {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    text-align: center;
+}
+.rating-summary__number {
+    font-family: var(--font-sans);
+    font-size: clamp(2.8rem, 7vw, 3.6rem);
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: -0.04em;
+    font-variant-numeric: tabular-nums;
+}
+.rating-summary__count { font-size: 0.85rem; color: var(--text-dim); }
+
+.rating-summary__bars { display: grid; gap: 0.45rem; }
+.rating-bar {
+    display: grid;
+    grid-template-columns: 2.6rem 1fr 1.6rem;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 0.82rem;
+    color: var(--text-muted);
+}
+.rating-bar__label { white-space: nowrap; font-variant-numeric: tabular-nums; }
+.rating-bar__track {
+    height: 8px;
+    border-radius: var(--radius-pill);
+    background: var(--surface-sunken);
+    box-shadow: var(--nm-in);
+    overflow: hidden;
+}
+.rating-bar__fill {
+    display: block;
+    height: 100%;
+    border-radius: var(--radius-pill);
+    background: var(--accent);
+    /* A zero-width bar still shows the track, which is the honest rendering
+       of "nobody gave this rating". */
+    transition: width 0.5s var(--ease);
+}
+.rating-bar__count { text-align: right; font-variant-numeric: tabular-nums; }
+
+/* ---------- Filters ---------- */
+.review-filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+}
+.review-filter {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    min-height: 44px;
+    padding: 0.5rem 1.05rem;
+    border-radius: var(--radius-pill);
+    border: 1px solid var(--border);
+    background: var(--surface);
+    box-shadow: var(--nm-out-sm);
+    color: var(--text-muted);
+    font-family: var(--font-sans);
+    font-weight: 600;
+    font-size: 0.88rem;
+    cursor: pointer;
+    transition: box-shadow 0.22s var(--ease), color 0.22s var(--ease);
+}
+.review-filter:hover { box-shadow: var(--nm-out); color: var(--text); }
+/* Selected = pressed in. Same language as the nav's active link. */
+.review-filter.is-active {
+    box-shadow: var(--nm-in);
+    color: var(--text);
+}
+.review-filter__n {
+    font-size: 0.72rem;
+    font-variant-numeric: tabular-nums;
+    color: var(--text-dim);
+    padding: 0.1rem 0.4rem;
+    border-radius: var(--radius-pill);
+    background: var(--surface-sunken);
+}
+
+/* ---------- Review cards ---------- */
+.review-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(330px, 100%), 1fr));
+    gap: 1.25rem;
+    align-items: start;
+}
+.review {
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+    height: 100%;
+}
+.review__head { display: flex; align-items: center; gap: 0.75rem; }
+.review__avatar {
+    width: 42px;
+    height: 42px;
+    flex-shrink: 0;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    box-shadow: var(--nm-out-sm);
+    font-family: var(--font-sans);
+    font-weight: 700;
+    font-size: 0.82rem;
+    color: var(--text);
+}
+.review__who { min-width: 0; }
+.review__who strong {
+    display: block;
+    font-family: var(--font-sans);
+    font-size: 0.94rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+}
+.review__role { display: block; font-size: 0.78rem; color: var(--text-dim); line-height: 1.4; }
+.review__rating { display: flex; align-items: center; justify-content: space-between; gap: 0.75rem; }
+.review__product {
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    padding: 0.22rem 0.6rem;
+    border-radius: var(--radius-pill);
+    background: var(--surface-sunken);
+    box-shadow: var(--nm-in);
+    white-space: nowrap;
+}
+.review__quote {
+    font-size: 0.92rem;
+    line-height: 1.62;
+    color: var(--text-muted);
+    flex: 1;
+}
+.review__foot {
+    padding-top: 0.75rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.74rem;
+    color: var(--text-dim);
+}
+
+@media (max-width: 760px) {
+    .rating-summary {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+        text-align: left;
+    }
+    .rating-summary__score { align-items: flex-start; text-align: left; }
+    .review-grid { gap: 1rem; }
+    .review__quote { font-size: 0.95rem; }
+    /* Horizontal scroll on the filter row beats wrapping to three lines. */
+    .review-filters {
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        scrollbar-width: none;
+        margin-inline: calc(var(--gutter) * -1);
+        padding-inline: var(--gutter);
+    }
+    .review-filters::-webkit-scrollbar { display: none; }
+    .review-filter { flex-shrink: 0; }
+}

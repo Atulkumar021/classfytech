@@ -2,6 +2,7 @@
 
 import { useEffect } from 'react';
 import Lenis from 'lenis';
+import { registerSmoothScroller } from '@/lib/scroll-lock';
 
 /**
  * SmoothScroll — buttery momentum scrolling via Lenis, plus centralised smooth
@@ -28,6 +29,11 @@ export default function SmoothScroll() {
       touchMultiplier: 1,
     });
 
+    // The scroll lock has to be able to pause this loop; otherwise Lenis keeps
+    // writing scroll offsets to a body that is pinned, and the page jumps as
+    // soon as the lock lifts.
+    const unregister = registerSmoothScroller(lenis);
+
     let rafId = 0;
     const raf = (time: number) => {
       lenis.raf(time);
@@ -53,6 +59,7 @@ export default function SmoothScroll() {
     return () => {
       cancelAnimationFrame(rafId);
       document.removeEventListener('click', onClick);
+      unregister();
       lenis.destroy();
     };
   }, []);

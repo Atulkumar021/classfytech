@@ -9,10 +9,11 @@ export default function WhyChooseUs() {
         <Reveal className="section__head">
           <span className="eyebrow">Why Voice AI</span>
           <h2 className="section__title">
-            Built for <span className="gradient-text">scale, speed and trust</span>
+            The boring parts, <span className="gradient-text">done properly</span>
           </h2>
           <p className="section__subtitle">
-            Everything you need to put a reliable, natural-sounding voice agent to work — fast.
+            A voice that sounds good is the easy half. These are the things that decide whether
+            you are still running it in six months.
           </p>
         </Reveal>
 

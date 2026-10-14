@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { contactInfo } from '@/lib/content';
+import { companyInfo, contactInfo } from '@/lib/content';
 import { Mail, PhoneCall, WhatsApp, Send, MapPin } from '@/components/Icons';
 import Reveal from '@/components/ui/Reveal';
 
@@ -62,11 +62,11 @@ export default function Contact() {
         <Reveal className="section__head">
           <span className="eyebrow">Contact</span>
           <h1 className="section__title">
-            Book Your <span className="gradient-text">Free Demo</span>
+            Let&apos;s put an agent <span className="gradient-text">on your calls</span>
           </h1>
           <p className="section__subtitle">
-            Tell us about your use case and we&apos;ll show you a live voice agent within one
-            business day.
+            Tell us roughly what the call needs to do. We will build that flow and have an agent
+            ring you with it, usually within a working day.
           </p>
         </Reveal>
 
@@ -146,9 +146,9 @@ export default function Contact() {
                 <MapPin width={18} height={18} />
               </span>
               <span>
-                <span className="lbl">Location</span>
+                <span className="lbl">Registered office</span>
                 <br />
-                <span className="val">{contactInfo.address}</span>
+                <span className="val">{companyInfo.registeredOffice}</span>
               </span>
             </div>
             <div className="contact__map">

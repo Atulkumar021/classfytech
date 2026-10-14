@@ -9,6 +9,7 @@ import OfferBar from '@/components/OfferBar';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { INTRO_BLOCKING_SCRIPT } from '@/lib/intro';
+import { companyInfo, contactInfo } from '@/lib/content';
 import './globals.css';
 
 // NOTE: We intentionally load fonts via a plain <link> (below) rather than
@@ -54,7 +55,8 @@ export const metadata: Metadata = {
     'contact centre CRM',
     'sales automation',
   ],
-  authors: [{ name: 'NiaTalks' }],
+  authors: [{ name: companyInfo.legalName }],
+  publisher: companyInfo.legalName,
   alternates: { canonical: '/' },
   robots: {
     index: true,
@@ -88,9 +90,10 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  // Matches the default (light) theme's page background, so the mobile browser
-  // chrome doesn't sit dark above a light page.
-  themeColor: '#fafafa',
+  // Matches the default (light) theme's page background. Soft UI moved that
+  // background off near-white to a mid grey — the browser chrome has to move
+  // with it, or there's a visible seam above the page.
+  themeColor: '#e8ebf0',
   width: 'device-width',
   initialScale: 1,
 };
@@ -115,8 +118,19 @@ const siteJsonLd = {
       '@type': 'Organization',
       '@id': `${siteUrl}/#organization`,
       name: 'NiaTalks',
-      // Covers the spellings people actually search and the email domain.
-      alternateName: ['Nia Talks', 'NiaTalks AI', 'Nia'],
+      // `name` is the brand; `legalName` is the incorporated entity that
+      // actually contracts. Search engines read them as different things, and
+      // a Pvt Ltd site should state both.
+      legalName: companyInfo.legalName,
+      // Covers the spellings people actually search, the registered entity and
+      // the email domain.
+      alternateName: [
+        'Nia Talks',
+        'NiaTalks AI',
+        'Nia',
+        companyInfo.legalName,
+        companyInfo.legalNameShort,
+      ],
       url: siteUrl,
       logo: {
         '@type': 'ImageObject',
@@ -124,13 +138,27 @@ const siteJsonLd = {
         width: 512,
         height: 512,
       },
-      email: 'classifytechnologies@gmail.com',
-      telephone: '+91-9457636571',
+      email: contactInfo.email,
+      telephone: contactInfo.phoneHref,
+      foundingLocation: {
+        '@type': 'Place',
+        name: companyInfo.incorporatedIn,
+      },
       address: {
         '@type': 'PostalAddress',
+        streetAddress: companyInfo.registeredOffice,
         addressLocality: 'New Delhi',
         addressRegion: 'Delhi',
+        postalCode: '110001',
         addressCountry: 'IN',
+      },
+      contactPoint: {
+        '@type': 'ContactPoint',
+        contactType: 'sales',
+        telephone: contactInfo.phoneHref,
+        email: contactInfo.email,
+        areaServed: 'IN',
+        availableLanguage: ['en', 'hi'],
       },
       sameAs: [
         'https://twitter.com/classifytechin',

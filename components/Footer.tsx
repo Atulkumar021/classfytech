@@ -1,6 +1,7 @@
 import Link from 'next/link';
-import { contactInfo } from '@/lib/content';
+import { companyInfo, contactInfo } from '@/lib/content';
 import { Twitter, LinkedIn, GitHub } from '@/components/Icons';
+import Logo from '@/components/ui/Logo';
 
 // Each product page holds all of its sections, so these deep-link to anchors
 // on that page rather than to sub-pages.
@@ -41,11 +42,8 @@ export default function Footer() {
       <div className="container">
         <div className="footer__grid">
           <div>
-            <Link className="brand" href="/">
-              <span className="brand__mark" aria-hidden="true">
-                <img src="/assets/logo-mark.png" alt="" />
-              </span>
-              NiaTalks
+            <Link className="brand" href="/" aria-label="NiaTalks home">
+              <Logo />
             </Link>
             <p className="footer__about">
               AI that talks to your customers — voice agents for inbound and outbound calls, and an
@@ -104,8 +102,45 @@ export default function Footer() {
           </div>
         </div>
 
+        {/* Statutory block. NiaTalks is the brand people recognise, but the
+            entity that contracts, invoices and is sued is the private limited
+            company — so it is named in full here, with the registered office
+            and whichever statutory identifiers have been filled in. */}
+        <div className="footer__legal">
+          <strong>{companyInfo.legalName}</strong>
+          <span>
+            A private limited company incorporated in {companyInfo.incorporatedIn}. NiaTalks is a
+            product brand of {companyInfo.legalNameShort}
+          </span>
+          <dl>
+            <div>
+              <dt>Registered office</dt>
+              <dd>{companyInfo.registeredOffice}</dd>
+            </div>
+            {/* Rendered only once a real number is set in lib/content.ts —
+                a placeholder CIN or GSTIN on a live site is a false
+                statutory disclosure, not a styling detail. */}
+            {companyInfo.cin && (
+              <div>
+                <dt>CIN</dt>
+                <dd>{companyInfo.cin}</dd>
+              </div>
+            )}
+            {companyInfo.gstin && (
+              <div>
+                <dt>GSTIN</dt>
+                <dd>{companyInfo.gstin}</dd>
+              </div>
+            )}
+          </dl>
+        </div>
+
         <div className="footer__bottom">
-          <span>© {year} NiaTalks. All rights reserved.</span>
+          {/* No full stop after the name — `legalNameShort` already ends in
+              "Ltd." and the two together rendered as "Ltd.. All rights". */}
+          <span>
+            © {year} {companyInfo.legalNameShort} · All rights reserved.
+          </span>
           <span>Voice AI · Dialer</span>
         </div>
       </div>
