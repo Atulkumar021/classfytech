@@ -1027,6 +1027,23 @@ export const companyInfo = {
   altDomains: ['niatalks.in', 'www.niatalks.in', 'www.niatalks.com'],
 
   /**
+   * Search Console verification tokens, for the HTML-tag method only.
+   *
+   * Blank by default, and the meta tag is omitted entirely when blank — an
+   * empty `content=""` tag is worse than no tag, because Google reads it as a
+   * failed verification rather than an absent one.
+   *
+   * Note this is NOT the token from the DNS flow. Search Console issues a
+   * different value per method, and a "Domain property" (the one that asks for
+   * a TXT record) cannot be verified with a meta tag at all. Only paste a
+   * token here if it came from the "HTML tag" option of a URL-prefix property.
+   */
+  verification: {
+    google: '',
+    bing: '',
+  },
+
+  /**
    * When the page content last meaningfully changed, as YYYY-MM-DD.
    *
    * Feeds <lastmod> in the sitemap. It used to be `new Date()`, which stamped

@@ -59,6 +59,12 @@ export const metadata: Metadata = {
   authors: [{ name: companyInfo.legalName }],
   publisher: companyInfo.legalName,
   alternates: { canonical: '/' },
+  // Rendered only for whichever tokens are filled in; Next omits the key
+  // entirely when the value is undefined. See the note on companyInfo.
+  verification: {
+    ...(companyInfo.verification.google ? { google: companyInfo.verification.google } : {}),
+    ...(companyInfo.verification.bing ? { other: { 'msvalidate.01': companyInfo.verification.bing } } : {}),
+  },
   robots: {
     index: true,
     follow: true,
