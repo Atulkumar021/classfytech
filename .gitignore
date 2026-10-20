@@ -5,4 +5,9 @@
 *.tsbuildinfo
 next-env.d.ts
 .DS_Store
-.env*.local
+# Secrets. `.env*.local` alone did not cover a plain `.env`, which is what the
+# production server actually keeps its SMTP credentials in — one `git add -A`
+# there would have pushed them to a public repo.
+.env
+.env.*
+!.env.local.example

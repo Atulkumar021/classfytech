@@ -1002,14 +1002,29 @@ export const companyInfo = {
   legalNameShort: 'NiaTalks Pvt. Ltd.',
 
   /**
-   * Canonical origin, no trailing slash.
+   * The canonical origin — no trailing slash, no `www`.
    *
-   * Single source of truth: this used to be copy-pasted into layout.tsx,
-   * robots.ts, sitemap.ts and seo.ts, and a rebrand is exactly the change
-   * where one of four copies gets missed and starts emitting canonical URLs
-   * for a domain the company no longer owns.
+   * The company runs on two domains. Serving identical content on both splits
+   * the ranking signal in two and leaves Google to pick a winner on its own,
+   * so exactly one is canonical and the other redirects into it. Every
+   * canonical tag, the sitemap, robots.txt, the Open Graph URLs and the
+   * schema.org @ids are all derived from this one value.
+   *
+   * Single source of truth: it used to be copy-pasted into layout.tsx,
+   * robots.ts, sitemap.ts and seo.ts, and a domain change is precisely where
+   * one of four copies gets missed and starts advertising a URL nobody serves.
    */
   siteUrl: 'https://niatalks.com',
+
+  /**
+   * Every other hostname that reaches this site. All of them 301 to `siteUrl`
+   * — see middleware.ts.
+   *
+   * `www` is listed for both domains because, to a crawler, `www.niatalks.com`
+   * and `niatalks.com` are different sites unless one redirects to the other.
+   * Add a host here and the redirect picks it up with no other change.
+   */
+  altDomains: ['niatalks.in', 'www.niatalks.in', 'www.niatalks.com'],
 
   /**
    * When the page content last meaningfully changed, as YYYY-MM-DD.
