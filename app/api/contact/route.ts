@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import nodemailer from 'nodemailer';
+import { contactInfo } from '@/lib/content';
 
 export const runtime = 'nodejs';
 
@@ -14,6 +15,9 @@ interface ContactPayload {
   service?: string;
   message?: string;
   remark?: string;
+  /** Pricing tier the enquiry came from, e.g. "Growth — Dialer". Only set
+      when the visitor clicked through from a pricing button. */
+  plan?: string;
 }
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -63,6 +67,7 @@ export async function POST(request: Request) {
   const phone = clean(String(body.phone || ''));
   const countryCode = clean(String(body.countryCode || ''));
   const service = clean(String(body.service || ''));
+  const plan = clean(String(body.plan || ''));
   const message = String(body.message || '').trim();
   const remark = String(body.remark || '').trim();
 
@@ -91,7 +96,7 @@ export async function POST(request: Request) {
     );
   }
 
-  const to = process.env.CONTACT_TO_EMAIL || 'classifytechnologies@gmail.com';
+  const to = process.env.CONTACT_TO_EMAIL || contactInfo.email;
   const from = process.env.GMAIL_USER!;
   const subject =
     source === 'demo' ? `New demo request from ${name}` : `New contact form message from ${name}`;
@@ -101,6 +106,8 @@ export async function POST(request: Request) {
     ['Email', email],
     source === 'demo' ? ['Mobile', `${countryCode} ${phone}`.trim()] : null,
     source === 'contact' ? ['Looking for', service] : null,
+    // Only present when they came from a pricing button.
+    plan ? ['Plan', plan] : null,
     [source === 'demo' ? 'Remark' : 'Message', source === 'demo' ? remark : message],
   ].filter(Boolean) as [string, string][];
 

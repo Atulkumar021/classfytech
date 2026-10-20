@@ -1,6 +1,7 @@
 import type { Project } from '@/lib/content';
 import { projectIcons } from '@/components/Icons';
 import Reveal from '@/components/ui/Reveal';
+import SectionCTA from '@/components/ui/SectionCTA';
 
 /**
  * Use-case cards, driven by data so every product can show its own set.
@@ -82,6 +83,11 @@ export default function UseCaseGrid({
             );
           })}
         </div>
+
+        <SectionCTA
+          title="See one of these running on your own numbers"
+          text="Tell us which of these is closest to your setup and we will build that flow for the demo."
+        />
       </div>
     </section>
   );

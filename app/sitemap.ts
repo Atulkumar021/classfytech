@@ -1,6 +1,7 @@
 import type { MetadataRoute } from 'next';
+import { companyInfo } from '@/lib/content';
 
-const siteUrl = 'https://classifytechnology.in';
+const siteUrl = companyInfo.siteUrl;
 
 /**
  * Four URLs, one per distinct intent: the company, each of the two products,
@@ -15,7 +16,11 @@ const pages: { path: string; priority: number; changeFrequency: MetadataRoute.Si
 ];
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const lastModified = new Date();
+  // A fixed date from companyInfo, not `new Date()`. The old version restamped
+  // every URL on every build, so a deploy that changed nothing but a stylesheet
+  // still claimed all four pages were modified — a signal crawlers learn to
+  // discount entirely.
+  const lastModified = new Date(companyInfo.contentUpdated);
   return pages.map(({ path, priority, changeFrequency }) => ({
     url: `${siteUrl}${path}`,
     lastModified,

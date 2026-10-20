@@ -65,9 +65,13 @@ export default function Pricing() {
                   </li>
                 ))}
               </ul>
+              {/* The plan travels with the click. A bare href="/contact" on all
+                  three made the buttons identical in effect, so whichever tier
+                  someone had just talked themselves into was lost the moment
+                  they acted on it. */}
               <Link
                 className={`btn ${plan.featured ? 'btn--primary' : 'btn--ghost'} btn--block`}
-                href="/contact"
+                href={`/contact?plan=${encodeURIComponent(plan.name)}&product=Voice%20AI`}
               >
                 {plan.cta}
               </Link>

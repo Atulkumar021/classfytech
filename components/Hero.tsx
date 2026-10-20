@@ -3,7 +3,8 @@
 import Link from 'next/link';
 import Reveal from '@/components/ui/Reveal';
 import VoiceCallPreview from '@/components/VoiceCallPreview';
-import { ArrowRight, Calendar } from '@/components/Icons';
+import { ArrowRight, PhoneCall } from '@/components/Icons';
+import { contactInfo } from '@/lib/content';
 
 // Trimmed from five to three. A wall of feature pills under the CTA reads as
 // filler; three carries the same message and lets the headline breathe.
@@ -35,10 +36,13 @@ export default function Hero() {
               Book a Free Demo
               <ArrowRight />
             </Link>
-            <Link className="btn btn--ghost" href="/contact">
-              <Calendar />
-              Talk to Sales
-            </Link>
+            {/* Was a second link to /contact, which made the pair one wide
+                button with a seam down it. A phone number is an actual
+                alternative for someone who does not want a form. */}
+            <a className="btn btn--ghost" href={`tel:${contactInfo.phoneHref}`}>
+              <PhoneCall />
+              {contactInfo.phoneDisplay}
+            </a>
           </Reveal>
 
           <Reveal delay={140} className="hero__services">

@@ -1,5 +1,6 @@
 import { processSteps } from '@/lib/content';
 import Reveal from '@/components/ui/Reveal';
+import SectionCTA from '@/components/ui/SectionCTA';
 
 export default function Process() {
   return (
@@ -26,6 +27,12 @@ export default function Process() {
             </Reveal>
           ))}
         </div>
+
+        <SectionCTA
+          title="Step one takes about twenty minutes"
+          text="That is the whole first call — what the agent should do, and whether this is worth your time."
+          primaryLabel="Start with a call"
+        />
       </div>
     </section>
   );

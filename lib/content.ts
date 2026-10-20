@@ -153,14 +153,31 @@ export const heroStats: Stat[] = [
   { value: 24, suffix: '/7', label: 'Always-On Agents' },
 ];
 
-// Integration partners shown in the marquee — not client logos.
-export const clients = [
-  '☎ Twilio',
-  '⬡ Salesforce',
-  '✦ HubSpot',
-  '◆ Google Calendar',
-  '⬢ Zoho CRM',
-  '✳ WhatsApp',
+/**
+ * How the platform connects to the rest of a customer's stack.
+ *
+ * These are deliberately capabilities and standards rather than vendor logos.
+ * The previous list named Twilio, Salesforce, HubSpot, Zoho, Google Calendar
+ * and WhatsApp, which reads as "we are partnered with these" — a claim this
+ * company has no need to make and a visitor can check. It also quietly
+ * narrowed the offer: a buyer running Freshsales or Pipedrive saw three CRMs,
+ * none of them theirs, and concluded they were not covered. "Any CRM with an
+ * API" is both more honest and a bigger promise.
+ *
+ * No decorative glyph prefixes. The old list used ☎ ⬡ ✦ ◆ ⬢ ✳, and a browser
+ * renders some of those as colour emoji and the rest as monochrome text — the
+ * strip came out with two orange icons among five grey ones, differently on
+ * every platform. `.marquee__item::after` already puts a dot between entries,
+ * so the glyphs were only adding that inconsistency.
+ */
+export const integrations = [
+  'Any CRM with an API',
+  'REST API',
+  'Webhooks',
+  'SIP trunks',
+  'Calendar sync',
+  'Chat & SMS channels',
+  'CSV import & export',
 ];
 
 export const services: Service[] = [
@@ -224,12 +241,12 @@ export const services: Service[] = [
     title: 'Integrations & Infrastructure',
     description: 'Plugs into the stack you already run, at any scale.',
     items: [
-      'CRM: Salesforce, HubSpot, Zoho',
-      'Telephony: Twilio & SIP Trunks',
-      'Calendar: Google & Outlook',
-      'REST API & Webhooks',
-      'Enterprise-Grade Security',
-      'Auto-Scaling Cloud Infrastructure',
+      'Any CRM with an API',
+      'SIP trunks from any provider',
+      'Calendar sync for bookings',
+      'REST API & webhooks',
+      'Encrypted call storage',
+      'Scales with your call volume',
     ],
   },
 ];
@@ -288,28 +305,34 @@ export const processSteps: ProcessStep[] = [
   },
 ];
 
+/**
+ * What the platform is built on — an engineering stack, not a partner list.
+ *
+ * Salesforce, HubSpot, Zoho, Slack and WhatsApp were in here too, which is a
+ * category error: those are other companies' products you integrate *with*,
+ * not things you are built *on*. They also repeated the logo claim from the
+ * marquee. What is left is the kind of detail a technical buyer actually
+ * reads, and all of it is checkable against how the product behaves.
+ */
 export const technologies = [
-  { abbr: 'Tw', name: 'Twilio' },
-  { abbr: 'Ai', name: 'OpenAI' },
-  { abbr: 'Ge', name: 'Gemini' },
-  { abbr: 'Cl', name: 'Claude' },
-  { abbr: 'Wh', name: 'Whisper' },
-  { abbr: 'El', name: 'ElevenLabs' },
-  { abbr: 'Dg', name: 'Deepgram' },
   { abbr: 'Py', name: 'Python' },
   { abbr: 'No', name: 'Node.js' },
-  { abbr: 'Rd', name: 'Redis' },
   { abbr: 'Pg', name: 'PostgreSQL' },
+  { abbr: 'Rd', name: 'Redis' },
   { abbr: 'Wr', name: 'WebRTC' },
-  { abbr: 'Aw', name: 'AWS' },
-  { abbr: 'Gc', name: 'Google Cloud' },
-  { abbr: 'Sf', name: 'Salesforce' },
-  { abbr: 'Hs', name: 'HubSpot' },
-  { abbr: 'Zo', name: 'Zoho' },
-  { abbr: 'Sl', name: 'Slack' },
-  { abbr: 'Wa', name: 'WhatsApp' },
+  { abbr: 'Si', name: 'SIP' },
+  { abbr: 'Rt', name: 'RTP streaming' },
+  { abbr: 'Ws', name: 'WebSockets' },
+  { abbr: 'St', name: 'Speech-to-text' },
+  { abbr: 'Ts', name: 'Text-to-speech' },
+  { abbr: 'Ll', name: 'LLM routing' },
+  { abbr: 'Vd', name: 'Voice activity detection' },
+  { abbr: 'Qu', name: 'Queue workers' },
+  { abbr: 'Dk', name: 'Docker' },
   { abbr: 'K8', name: 'Kubernetes' },
-  { abbr: 'Gq', name: 'GraphQL' },
+  { abbr: 'Re', name: 'REST API' },
+  { abbr: 'Wh', name: 'Webhooks' },
+  { abbr: 'Ob', name: 'OAuth 2.0' },
 ];
 
 // Illustrative use cases and figures — swap in real customer case studies and
@@ -518,7 +541,7 @@ export const plans: Plan[] = [
       'Up to 5 voice agents',
       '10,000+ calls / month',
       'Inbound + outbound',
-      'CRM integrations (Salesforce, HubSpot, Zoho)',
+      'CRM sync over API',
       'Live dashboards & sentiment analysis',
       'Priority support',
     ],
@@ -564,7 +587,7 @@ export const faqs: Faq[] = [
   {
     question: 'Can it integrate with my CRM and calendar?',
     answer:
-      'Yes. Native integrations with Salesforce, HubSpot, Zoho, Google Calendar and Outlook, plus a REST API and webhooks for anything custom.',
+      'If it has an API, yes. Calendars, CRMs and helpdesks all work the same way — the agent reads what it needs before the call and writes back after it. Tell us what you run and we will confirm before you commit to anything.',
   },
   {
     question: 'What about recording and consent?',
@@ -813,7 +836,7 @@ export const dialerPlans: EnquiryPlan[] = [
       'Call logs and disposition reports',
       'Email support',
     ],
-    cta: 'Talk to Sales',
+    cta: 'Start with Starter',
   },
   {
     name: 'Growth',
@@ -826,7 +849,7 @@ export const dialerPlans: EnquiryPlan[] = [
       'Queues, skill routing and IVR',
       'Priority support',
     ],
-    cta: 'Talk to Sales',
+    cta: 'Choose Growth',
     featured: true,
   },
   {
@@ -947,14 +970,14 @@ export const dialerFaqs: Faq[] = [
 ];
 
 export const contactInfo = {
-  email: 'classifytechnologies@gmail.com',
+  email: 'info@niatalks.com',
   // Display is spaced for readability; the two link values must stay
   // unspaced — `wa.me/` rejects spaces outright and `tel:` is unreliable
   // with them.
   phoneDisplay: '+91 92865 61066',
   phoneHref: '+919286561066',
   whatsapp: '919286561066',
-  address: 'New Delhi, India',
+  address: 'Moradabad, Uttar Pradesh, India',
 };
 
 /**
@@ -974,16 +997,70 @@ export const companyInfo = {
   /** Product/trading brand, used in all marketing copy. */
   brand: 'NiaTalks',
   /** Full registered name, used wherever the legal entity must be named. */
-  legalName: 'Classify Technologies Private Limited',
+  legalName: 'NiaTalks Private Limited',
   /** Short form for tight spaces such as the footer bottom bar. */
-  legalNameShort: 'Classify Technologies Pvt. Ltd.',
-  /** Company Identification Number from the MCA — e.g. 'U72900DL2023PTC123456'. */
+  legalNameShort: 'NiaTalks Pvt. Ltd.',
+
+  /**
+   * Canonical origin, no trailing slash.
+   *
+   * Single source of truth: this used to be copy-pasted into layout.tsx,
+   * robots.ts, sitemap.ts and seo.ts, and a rebrand is exactly the change
+   * where one of four copies gets missed and starts emitting canonical URLs
+   * for a domain the company no longer owns.
+   */
+  siteUrl: 'https://niatalks.com',
+
+  /**
+   * When the page content last meaningfully changed, as YYYY-MM-DD.
+   *
+   * Feeds <lastmod> in the sitemap. It used to be `new Date()`, which stamped
+   * every page as modified on every deploy — a CSS tweak then told crawlers
+   * all four pages were fresh. Bump this by hand when the copy actually
+   * changes and the signal means something again.
+   */
+  contentUpdated: '2026-10-20',
+
+  /** Company Identification Number from the MCA — e.g. 'U72900UP2024PTC123456'. */
   cin: '',
-  /** GST Identification Number — e.g. '07AABCU9603R1ZX'. */
+  /** GST Identification Number — e.g. '09AABCU9603R1ZX'. */
   gstin: '',
-  /** Registered office as recorded with the Registrar of Companies. */
-  registeredOffice: 'New Delhi, Delhi 110001, India',
+
+  /** Registered office, formatted for display. */
+  registeredOffice: 'Samrat Ashok Nagar, Moradabad, Uttar Pradesh 244001, India',
+  /**
+   * The same address in parts, for schema.org PostalAddress. Search engines
+   * read these fields individually, so a single display string is not enough
+   * for a local-business result to resolve.
+   */
+  address: {
+    street: 'Samrat Ashok Nagar',
+    locality: 'Moradabad',
+    region: 'Uttar Pradesh',
+    postalCode: '244001',
+    country: 'IN',
+  },
+  /** Map pin for the contact page. */
+  geo: { lat: 28.8386, lon: 78.7733 },
+
   /** Jurisdiction named in the terms of service and any dispute clause. */
-  jurisdiction: 'New Delhi, India',
+  jurisdiction: 'Moradabad, Uttar Pradesh, India',
   incorporatedIn: 'India',
+
+  /**
+   * Social profiles. Blank on purpose.
+   *
+   * The handles previously here (twitter.com/classifytechin,
+   * linkedin.com/company/classify-technology, github.com/classifytechnology)
+   * belong to the old Classify Technologies brand. Shipping them under the
+   * NiaTalks name would point visitors — and schema.org `sameAs`, which is how
+   * search engines decide which accounts *are* this company — at another
+   * entity. The footer renders only the ones filled in, and `sameAs` only
+   * includes those, so leaving a blank is safe; guessing a URL is not.
+   */
+  social: {
+    twitter: '',
+    linkedin: '',
+    github: '',
+  },
 };

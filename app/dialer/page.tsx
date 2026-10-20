@@ -15,7 +15,7 @@ import {
   dialerPlans,
   dialerFaqs,
 } from '@/lib/content';
-import { pageMetadata } from '@/lib/seo';
+import { pageMetadata, breadcrumbJsonLd, jsonLdProps } from '@/lib/seo';
 
 export const metadata = pageMetadata({
   title: 'Dialer — Call Centre Software with Predictive Dialing & CRM',
@@ -40,6 +40,12 @@ export const metadata = pageMetadata({
 export default function DialerPage() {
   return (
     <>
+      {/* Breadcrumb trail, so a result shows "niatalks.com > Dialer"
+          rather than a bare URL. */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={jsonLdProps(breadcrumbJsonLd('Dialer', '/dialer'))}
+      />
       <ProductHero
         eyebrow="Dialer"
         title="Every call, every channel, "
@@ -87,6 +93,7 @@ export default function DialerPage() {
         accent="call volume"
         subtitle="Three tiers covering a small sales team through to a full contact centre. Tell us where you sit and we'll put a number on it."
         plans={dialerPlans}
+        product="Dialer"
       />
 
       <FaqSection

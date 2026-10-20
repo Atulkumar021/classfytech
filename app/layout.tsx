@@ -8,6 +8,7 @@ import IntroScreen from '@/components/IntroScreen';
 import OfferBar from '@/components/OfferBar';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
+import MobileActionBar from '@/components/MobileActionBar';
 import { INTRO_BLOCKING_SCRIPT } from '@/lib/intro';
 import { companyInfo, contactInfo } from '@/lib/content';
 import './globals.css';
@@ -19,7 +20,7 @@ import './globals.css';
 // the system stack gracefully if Google Fonts is unreachable. Font-family names
 // are wired to the CSS variables in globals.css.
 
-const siteUrl = 'https://classifytechnology.in';
+const siteUrl = companyInfo.siteUrl;
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
@@ -115,7 +116,12 @@ const siteJsonLd = {
   '@context': 'https://schema.org',
   '@graph': [
     {
-      '@type': 'Organization',
+      // Multi-typed on purpose. `Organization` is what publishes the site and
+      // provides the products; `ProfessionalService` is a LocalBusiness
+      // subtype, and without it a company that trades from one registered
+      // address in Moradabad gives Google nothing to place geographically.
+      // One node rather than two, so there is no second competing entity.
+      '@type': ['Organization', 'ProfessionalService'],
       '@id': `${siteUrl}/#organization`,
       name: 'NiaTalks',
       // `name` is the brand; `legalName` is the incorporated entity that
@@ -144,14 +150,26 @@ const siteJsonLd = {
         '@type': 'Place',
         name: companyInfo.incorporatedIn,
       },
+      // Driven off the structured parts rather than the display string:
+      // search engines match these fields individually, and a whole address
+      // crammed into `streetAddress` resolves to nothing.
       address: {
         '@type': 'PostalAddress',
-        streetAddress: companyInfo.registeredOffice,
-        addressLocality: 'New Delhi',
-        addressRegion: 'Delhi',
-        postalCode: '110001',
-        addressCountry: 'IN',
+        streetAddress: companyInfo.address.street,
+        addressLocality: companyInfo.address.locality,
+        addressRegion: companyInfo.address.region,
+        postalCode: companyInfo.address.postalCode,
+        addressCountry: companyInfo.address.country,
       },
+      // Coordinates of the registered office, so the business can resolve on
+      // a map. Same source as the contact page's pin.
+      geo: {
+        '@type': 'GeoCoordinates',
+        latitude: companyInfo.geo.lat,
+        longitude: companyInfo.geo.lon,
+      },
+      areaServed: { '@type': 'Country', name: 'India' },
+      knowsLanguage: ['en', 'hi'],
       contactPoint: {
         '@type': 'ContactPoint',
         contactType: 'sales',
@@ -160,11 +178,10 @@ const siteJsonLd = {
         areaServed: 'IN',
         availableLanguage: ['en', 'hi'],
       },
-      sameAs: [
-        'https://twitter.com/classifytechin',
-        'https://www.linkedin.com/company/classify-technology',
-        'https://github.com/classifytechnology',
-      ],
+      // `sameAs` is how a search engine decides which accounts *are* this
+      // company, so an unset handle is simply omitted. Filling one in at
+      // companyInfo.social puts it back here automatically.
+      sameAs: Object.values(companyInfo.social).filter(Boolean),
     },
     {
       '@type': 'WebSite',
@@ -232,6 +249,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <Header />
           <main id="main">{children}</main>
           <Footer />
+          <MobileActionBar />
           <ScrollToTop />
           <DemoModal />
         </Providers>

@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
+import { companyInfo } from '@/lib/content';
 
-const siteUrl = 'https://classifytechnology.in';
+const siteUrl = companyInfo.siteUrl;
 
 /**
  * Builds a page's metadata, including Open Graph / Twitter previews.
@@ -15,6 +16,29 @@ const siteUrl = 'https://classifytechnology.in';
  * inheriting it everywhere told search engines the Dialer page was about
  * voice agents too. Omit it and the page simply inherits the layout's.
  */
+/**
+ * BreadcrumbList for an inner page.
+ *
+ * Every page here is one level below the homepage, so the trail is always
+ * Home > This Page. Google uses it to replace the bare URL in a result with a
+ * readable path.
+ */
+export function breadcrumbJsonLd(name: string, path: string) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: siteUrl },
+      { '@type': 'ListItem', position: 2, name, item: `${siteUrl}${path}` },
+    ],
+  };
+}
+
+/** Serialises a schema.org object into a <script> tag's props. */
+export function jsonLdProps(data: unknown) {
+  return { __html: JSON.stringify(data) };
+}
+
 export function pageMetadata({
   title,
   description,

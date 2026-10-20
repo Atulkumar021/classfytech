@@ -1,12 +1,18 @@
 import Link from 'next/link';
 import { PhoneCall } from '@/components/Icons';
+import { contactInfo } from '@/lib/content';
 
-const message = 'See it in action — book a free live demo of your Voice AI agent';
+// Two messages alternating, so the number is on screen for anyone who would
+// rather just ring than fill in a form.
+const messages = [
+  'See it in action — book a free live demo of your Voice AI agent',
+  `Prefer to talk? Call us on ${contactInfo.phoneDisplay}`,
+];
 
 // Repeated enough times that the track is always wider than the viewport,
 // so the CSS translateX(-50%) loop (shared with the client Marquee) never
 // shows a gap, even on ultra-wide screens.
-const items = Array.from({ length: 8 }, () => message);
+const items = Array.from({ length: 4 }, () => messages).flat();
 const loop = [...items, ...items];
 
 /**

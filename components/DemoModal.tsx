@@ -13,8 +13,8 @@ type Status = { message: string; state: 'idle' | 'error' | 'pending' | 'success'
 const OPEN_DELAY_MS = 900;
 
 // India first and pre-selected — it's the primary market (₹ pricing, a +91
-// contact number, Delhi-based), so defaulting to +1 made most visitors change
-// it on every submission.
+// contact number, and the company is registered in Uttar Pradesh), so
+// defaulting to +1 made most visitors change it on every submission.
 const COUNTRY_CODES = [
   { code: '+91', flag: '🇮🇳' },
   { code: '+971', flag: '🇦🇪' },

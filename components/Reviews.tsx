@@ -4,6 +4,7 @@ import { useMemo, useState } from 'react';
 import { reviews, summariseRatings, type Review } from '@/lib/content';
 import Stars from '@/components/ui/Stars';
 import Reveal from '@/components/ui/Reveal';
+import SectionCTA from '@/components/ui/SectionCTA';
 
 /**
  * Ratings and reviews.
@@ -142,6 +143,15 @@ export default function Reviews() {
             </Reveal>
           ))}
         </div>
+
+        {/* Straight after the social proof, while the four-star review about
+            setup taking three weeks is still fresh — so the offer is to hear
+            it rather than to buy. */}
+        <SectionCTA
+          title="Hear one yourself before you decide"
+          text="No slides. We build your call flow and the agent rings you with it."
+          primaryLabel="Book a demo call"
+        />
 
         {REVIEWS_ARE_REAL && (
           <script

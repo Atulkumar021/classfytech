@@ -34,7 +34,22 @@ const columns = [
   },
 ];
 
+/**
+ * Social icons, in display order. An entry only renders when its URL is set in
+ * companyInfo.social — see the note at that definition.
+ */
+const SOCIAL_LINKS = [
+  { key: 'linkedin', label: 'LinkedIn', Icon: LinkedIn },
+  { key: 'twitter', label: 'Twitter', Icon: Twitter },
+  { key: 'github', label: 'GitHub', Icon: GitHub },
+] as const;
+
 export default function Footer() {
+  const socials = SOCIAL_LINKS.map((s) => ({
+    ...s,
+    href: companyInfo.social[s.key],
+  })).filter((s) => Boolean(s.href));
+
   const year = new Date().getFullYear();
 
   return (
@@ -49,35 +64,27 @@ export default function Footer() {
               AI that talks to your customers — voice agents for inbound and outbound calls, and an
               outbound dialer that gives your calling team one screen for every conversation.
             </p>
-            <div className="footer__socials">
-              <a
-                className="icon-btn"
-                href="https://twitter.com/classifytechin"
-                aria-label="NiaTalks on Twitter"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <Twitter width={18} height={18} />
-              </a>
-              <a
-                className="icon-btn"
-                href="https://www.linkedin.com/company/classify-technology"
-                aria-label="NiaTalks on LinkedIn"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <LinkedIn width={18} height={18} />
-              </a>
-              <a
-                className="icon-btn"
-                href="https://github.com/classifytechnology"
-                aria-label="NiaTalks on GitHub"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <GitHub width={18} height={18} />
-              </a>
-            </div>
+            {/* Only the profiles that are actually set. The handles that used
+                to be hard-coded here were the old Classify Technologies ones —
+                under the NiaTalks name they would have sent visitors to a
+                different company. Add the real URLs in companyInfo.social and
+                each icon reappears on its own. */}
+            {socials.length > 0 && (
+              <div className="footer__socials">
+                {socials.map(({ key, href, label, Icon }) => (
+                  <a
+                    key={key}
+                    className="icon-btn"
+                    href={href}
+                    aria-label={`${companyInfo.brand} on ${label}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <Icon width={18} height={18} />
+                  </a>
+                ))}
+              </div>
+            )}
           </div>
 
           {columns.map((col) => (
@@ -98,6 +105,10 @@ export default function Footer() {
             <a href={`https://wa.me/${contactInfo.whatsapp}`} target="_blank" rel="noopener noreferrer">
               WhatsApp
             </a>
+            {/* The short form. The full registered address is in the statutory
+                block below; repeating it verbatim here would just be the same
+                four lines twice in one footer. */}
+            <span className="footer__where">{contactInfo.address}</span>
             <Link href="/contact">Book a demo</Link>
           </div>
         </div>
@@ -108,9 +119,15 @@ export default function Footer() {
             and whichever statutory identifiers have been filled in. */}
         <div className="footer__legal">
           <strong>{companyInfo.legalName}</strong>
+          {/* The "X is a product brand of Y" clause only says anything when the
+              two names differ. Now that the brand and the registered company
+              are both NiaTalks, it read as "NiaTalks is a product brand of
+              NiaTalks Pvt. Ltd." — so it is conditional. */}
           <span>
-            A private limited company incorporated in {companyInfo.incorporatedIn}. NiaTalks is a
-            product brand of {companyInfo.legalNameShort}
+            A private limited company incorporated in {companyInfo.incorporatedIn}
+            {companyInfo.legalName.startsWith(companyInfo.brand)
+              ? '.'
+              : `. ${companyInfo.brand} is a product brand of ${companyInfo.legalNameShort}`}
           </span>
           <dl>
             <div>

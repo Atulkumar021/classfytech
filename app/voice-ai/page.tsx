@@ -9,7 +9,7 @@ import FaqSection from '@/components/FaqSection';
 import Reviews from '@/components/Reviews';
 import CTABand from '@/components/CTABand';
 import { projects, faqs } from '@/lib/content';
-import { pageMetadata } from '@/lib/seo';
+import { pageMetadata, breadcrumbJsonLd, jsonLdProps } from '@/lib/seo';
 
 export const metadata = pageMetadata({
   title: 'Voice AI — AI Voice Agents for Inbound & Outbound Calls',
@@ -39,6 +39,12 @@ export const metadata = pageMetadata({
 export default function VoiceAiPage() {
   return (
     <>
+      {/* Breadcrumb trail, so a result shows "niatalks.com > Voice AI"
+          rather than a bare URL. */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={jsonLdProps(breadcrumbJsonLd('Voice AI', '/voice-ai'))}
+      />
       <Hero />
       <Marquee />
       <Services />

@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import type { Faq } from '@/lib/content';
 import Reveal from '@/components/ui/Reveal';
+import SectionCTA from '@/components/ui/SectionCTA';
 
 /**
  * Accordion FAQ, driven by data so each product answers its own questions.
@@ -73,6 +74,16 @@ export default function FaqSection({
             );
           })}
         </Reveal>
+
+        {/* The end of an FAQ is the point where someone has either run out of
+            objections or found one we did not answer. Both want the same
+            thing: a person. */}
+        <SectionCTA
+          title="Still got a question we have not answered?"
+          text="Ask it on a call — we would rather talk it through than guess what you need."
+          primaryLabel="Ask us"
+          secondary="whatsapp"
+        />
       </div>
     </section>
   );

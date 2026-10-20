@@ -52,7 +52,12 @@
 
     --container: 1220px;
     --gutter: clamp(1.25rem, 4vw, 2.5rem);
-    --section-y: clamp(4.5rem, 10vw, 9rem);
+    /* Halved. Each section applies this top AND bottom, so the gap between
+       two of them is double — at the old 9rem that measured 272px of empty
+       page between every section on a desktop screen, which read as the page
+       having stopped. 4rem gives a 128px gap: still a clear break, without the
+       reader wondering whether there is more below. */
+    --section-y: clamp(2.5rem, 4.5vw, 4rem);
     --offer-bar-h: 2.5rem;
 
     --ease: cubic-bezier(0.22, 1, 0.36, 1);
@@ -230,7 +235,9 @@ html.lenis body { height: auto; }
    rhythm; a consistent left edge gives the eye something to travel down. */
 /* Sized in rem, not ch: `ch` resolves against the head's inherited body size,
    which made the much larger title wrap after only a few words. */
-.section__head { max-width: 46rem; margin-bottom: clamp(2.75rem, 5vw, 4.25rem); }
+/* Trimmed with the section padding — a 68px drop under every heading was
+   part of the same looseness. */
+.section__head { max-width: 46rem; margin-bottom: clamp(1.75rem, 3vw, 2.75rem); }
 .section__head.center { margin-inline: auto; text-align: center; }
 .section__title {
     font-size: clamp(1.75rem, 3.6vw, 2.6rem);
@@ -459,7 +466,13 @@ body.nav-open .nav__burger span:nth-child(3) { transform: translateY(-7px) rotat
 /* ---------- Hero (premium two-column) ---------- */
 .hero {
     position: relative;
-    min-height: 100vh;
+    /* Capped rather than a flat 100vh. The content is vertically centred, so
+       on a tall window the surplus became slack *below* it — that was most of
+       the 294px measured between the hero and the next section, and on a large
+       monitor it only got worse. The cap keeps the hero dominant on the first
+       screen without paying for height nothing fills. It cannot clip anything:
+       min-height only ever adds, so taller content still grows the box. */
+    min-height: min(100vh, 48rem);
     display: flex;
     align-items: center;
     /* Kept deliberately tight — a tall hero + a tall stage used to add up to
@@ -983,7 +996,21 @@ body.nav-open .nav__burger span:nth-child(3) { transform: translateY(-7px) rotat
 
 /* ---------- Footer ---------- */
 .footer { padding-block: clamp(3rem, 6vw, 4.5rem) 2rem; border-top: 1px solid var(--border); margin-top: var(--section-y); }
-.footer__grid { display: grid; grid-template-columns: 1.6fr repeat(3, 1fr); gap: 2rem; margin-bottom: 2.5rem; }
+/* Five tracks for five blocks: the brand, the three link columns, and "Get in
+   touch". It said repeat(3, …) — four tracks for five children — so the last
+   one wrapped onto a second row and sat underneath the brand instead of
+   beside the other columns.
+   The repeat count is `columns.length + 1` from Footer.tsx; adding a link
+   column there means adding a track here, or the same wrap comes back.
+   `minmax(0, 1fr)` rather than plain `1fr` so a long link ("Voice AI pricing")
+   cannot push its track wider than its share — a grid track's default minimum
+   is its content, not zero. */
+.footer__grid {
+    display: grid;
+    grid-template-columns: 1.6fr repeat(4, minmax(0, 1fr));
+    gap: 2rem;
+    margin-bottom: 2.5rem;
+}
 .footer__about { max-width: 34ch; color: var(--text-muted); font-size: 0.93rem; margin-top: 1rem; }
 .footer__col h4 { font-size: 0.82rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-dim); margin-bottom: 1rem; }
 .footer__col a { display: block; color: var(--text-muted); padding: 0.35rem 0; font-size: 0.93rem; transition: color 0.2s, transform 0.2s; }
@@ -2215,6 +2242,20 @@ body.nav-open .nav__burger { box-shadow: var(--nm-in); }
     border-radius: var(--radius-sm);
 }
 .dialer-card__avatar { border-radius: 50%; }
+
+/* Ink for the three tiles whose background moved to --surface above.
+   They were drawn as white-on-green (.step__num) or an icon on the green
+   accent fill, so they carried `color: var(--accent-ink)` — the ink chosen to
+   sit ON the accent. Once the fill became the page surface, that ink was
+   #ffffff on #e8ebf0 in the light theme and #06170a on #22252b in the dark
+   one: roughly 1.1:1 either way, which is why the step numbers read as blank
+   tiles. Inverted in both directions, so neither theme escaped it.
+   The number takes the body text colour, which flips with the theme — dark on
+   light, light on dark. The two icon tiles take the accent, matching every
+   other icon tile on the page. */
+.step__num { color: var(--text); }
+.call-card__agent-icon,
+.dialer-card__campaign-icon { color: var(--accent); }
 /* The icon presses in when its card is hovered, so the card and its contents
    move as one object rather than two. */
 .card.service:hover .service__icon { box-shadow: var(--nm-in); }
@@ -2456,7 +2497,9 @@ html.is-scroll-locked body { overscroll-behavior: none; }
 @media (max-width: 760px) {
     :root {
         /* Sections were burning most of a phone screen on whitespace alone. */
-        --section-y: clamp(3rem, 11vw, 4.5rem);
+        /* Phones were already tighter than desktop (96px gaps), so this
+           comes down less — to about 64px. */
+        --section-y: clamp(2rem, 6vw, 2.75rem);
         --gutter: 1.15rem;
     }
 
@@ -2685,10 +2728,25 @@ html.is-scroll-locked body { overscroll-behavior: none; }
 /* ---------- Review cards ---------- */
 .review-grid {
     display: grid;
+    /* `1fr` tracks already made every card the same width. */
     grid-template-columns: repeat(auto-fill, minmax(min(330px, 100%), 1fr));
     gap: 1.25rem;
-    align-items: start;
+    /* Was `align-items: start`, which let each card shrink to its own text —
+       so a short review sat in a short box next to a tall one and the row
+       looked ragged. `stretch` equalises the cards within a row; the
+       `grid-auto-rows: 1fr` below equalises the rows with each other, so every
+       card on the page ends up the same height whatever its length. */
+    align-items: stretch;
+    grid-auto-rows: 1fr;
 }
+/* Each card is wrapped in a Reveal <div>, so the stretch lands on the wrapper
+   and has to be passed through to the card inside it — without this the
+   wrapper is full height and the card still hugs its text. */
+.review-grid > * {
+    display: flex;
+    min-width: 0;
+}
+.review-grid > * > .review { flex: 1; }
 .review {
     display: flex;
     flex-direction: column;
@@ -2765,4 +2823,174 @@ html.is-scroll-locked body { overscroll-behavior: none; }
     }
     .review-filters::-webkit-scrollbar { display: none; }
     .review-filter { flex-shrink: 0; }
+}
+
+/* The short locality line in the footer's contact column. Not a link, so it
+   needs the column's link metrics applied by hand to sit in the same rhythm. */
+.footer__where {
+    display: block;
+    padding: 0.35rem 0;
+    font-size: 0.93rem;
+    color: var(--text-dim);
+}
+
+/* Matches the bbox aspect computed in Contact.tsx — if these two disagree,
+   OpenStreetMap letterboxes the map inside the frame.
+
+   `width: 100%` and `min-height: 0` are both load-bearing. The original rule
+   set `min-height: 200px`, and with an aspect-ratio alongside it the browser
+   solved the box the other way round — deriving the WIDTH from that minimum
+   (200 x 16/9 = 355px) instead of the height from the available width. The map
+   rendered as a 355px tile in a 590px column. */
+.contact__map {
+    aspect-ratio: 16 / 9;
+    width: 100%;
+    min-height: 0;
+}
+.contact__map iframe { min-height: 0; height: 100%; }
+
+/* =========================================================================
+   CALLS TO ACTION
+   ========================================================================= */
+
+/* ---------- Inline section prompt ----------
+   Recessed, not raised. `.cta-band` at the foot of each page is the loud one;
+   if these matched it, a page would read as four identical banners and get
+   scrolled past wholesale. A well in the page surface reads as an aside. */
+.section-cta {
+    margin-top: clamp(2rem, 4vw, 3rem);
+    padding: clamp(1.1rem, 2.5vw, 1.5rem) clamp(1.25rem, 3vw, 1.9rem);
+    border-radius: var(--radius-lg);
+    background: var(--surface-sunken);
+    box-shadow: var(--nm-in);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: clamp(1rem, 3vw, 2rem);
+    flex-wrap: wrap;
+}
+.section-cta__text { display: grid; gap: 0.2rem; min-width: 0; }
+.section-cta__text strong {
+    font-family: var(--font-sans);
+    font-weight: 700;
+    font-size: clamp(1rem, 1.8vw, 1.12rem);
+    letter-spacing: -0.015em;
+    color: var(--text);
+}
+.section-cta__text span {
+    font-size: 0.89rem;
+    line-height: 1.55;
+    color: var(--text-muted);
+    max-width: 56ch;
+}
+.section-cta__actions { display: flex; gap: 0.6rem; flex-wrap: wrap; flex-shrink: 0; }
+/* The buttons sit in a well, so they need their raised shadow to read as
+   pressable rather than as part of the recess. */
+.section-cta__actions .btn { box-shadow: var(--nm-out-sm); }
+.section-cta__actions .btn:hover { box-shadow: var(--nm-out); }
+.section-cta__actions .btn:active { box-shadow: var(--nm-in); }
+/* The phone number is the label here; stop it breaking across lines. */
+.section-cta__actions .btn { white-space: nowrap; }
+
+@media (max-width: 760px) {
+    .section-cta { flex-direction: column; align-items: stretch; text-align: left; }
+    .section-cta__actions { flex-direction: column; }
+    .section-cta__actions .btn { width: 100%; }
+}
+
+/* ---------- Sticky mobile call/demo bar ---------- */
+/* Hidden by default: this is a phone affordance, and on a desktop the header
+   CTA is always in view anyway. */
+.action-bar { display: none; }
+
+@media (max-width: 760px) {
+    .action-bar {
+        position: fixed;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 95;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 0.6rem;
+        padding: 0.65rem var(--gutter);
+        /* Clears the iOS home indicator, and is 0 everywhere else. */
+        padding-bottom: calc(0.65rem + env(safe-area-inset-bottom, 0px));
+        background: var(--bg);
+        box-shadow: 0 -10px 26px -12px var(--nm-dark);
+    }
+
+    .action-bar__btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.45rem;
+        /* Comfortably past the 44px minimum — this is the main conversion
+           control on a phone and it is pressed with a thumb, in a hurry. */
+        min-height: 50px;
+        padding: 0.7rem 0.9rem;
+        border-radius: var(--radius-pill);
+        font-family: var(--font-sans);
+        font-weight: 700;
+        font-size: 0.92rem;
+        white-space: nowrap;
+        transition: box-shadow 0.2s var(--ease), transform 0.2s var(--ease);
+    }
+    .action-bar__btn:active { transform: translateY(1px); box-shadow: var(--nm-in); }
+
+    /* Call is the primary action for this business, so it takes the accent
+       fill and the demo link is the quieter of the two. */
+    .action-bar__btn--call {
+        background: var(--accent);
+        color: var(--accent-ink);
+        box-shadow: var(--nm-out-sm);
+    }
+    .action-bar__btn--demo {
+        background: var(--surface);
+        color: var(--text);
+        border: 1px solid var(--border);
+        box-shadow: var(--nm-out-sm);
+    }
+
+    /* Room for the bar so it never sits on top of the last footer line. */
+    body { padding-bottom: 4.9rem; }
+
+    /* The scroll-top button would otherwise land behind the bar. */
+    .scroll-top { bottom: calc(5.6rem + env(safe-area-inset-bottom, 0px)); }
+
+    /* While a dialog or the nav drawer is open the page is pinned and dimmed —
+       a bar floating above the backdrop would be both wrong and tappable.
+       `is-scroll-locked` is set by lib/scroll-lock. */
+    html.is-scroll-locked .action-bar { display: none; }
+}
+
+/* The band centres its heading and copy, so the button row has to centre too.
+   It inherits `.hero__cta`, which is left-aligned for the heroes. */
+.cta-band .hero__cta { justify-content: center; }
+
+/* Confirms which pricing tier the visitor clicked through from. Recessed, so
+   it reads as context the form already knows rather than another field. */
+.form__plan {
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 0.2rem 0.55rem;
+    margin-bottom: 0.3rem;
+    padding: 0.7rem 0.95rem;
+    border-radius: var(--radius-sm);
+    background: var(--surface-sunken);
+    box-shadow: var(--nm-in);
+}
+.form__plan-label {
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+}
+.form__plan strong {
+    font-family: var(--font-sans);
+    font-weight: 700;
+    font-size: 0.95rem;
+    color: var(--text);
 }

@@ -1,11 +1,11 @@
-import { clients } from '@/lib/content';
+import { integrations } from '@/lib/content';
 
 /**
  * Infinite logo marquee. The client list is duplicated so the CSS translateX
  * animation loops seamlessly (the track scrolls exactly one copy width).
  */
 export default function Marquee() {
-  const loop = [...clients, ...clients];
+  const loop = [...integrations, ...integrations];
   return (
     <div className="section" style={{ paddingBlock: 'clamp(2rem,4vw,3rem)' }}>
       <div className="container">
@@ -19,7 +19,7 @@ export default function Marquee() {
             marginBottom: '1.5rem',
           }}
         >
-          Works with the tools your team already uses
+          Connects to whatever you already run
         </p>
         <div className="marquee">
           <div className="marquee__track">

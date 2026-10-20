@@ -1,5 +1,6 @@
 import type { ProcessStep } from '@/lib/content';
 import Reveal from '@/components/ui/Reveal';
+import SectionCTA from '@/components/ui/SectionCTA';
 
 /**
  * Numbered "how it works" timeline, driven by data. Reuses the same
@@ -42,6 +43,12 @@ export default function StepList({
             </div>
           ))}
         </Reveal>
+
+        <SectionCTA
+          title="Want to see this on your own campaign?"
+          text="Bring a list and a script — we will set the first campaign up with you on the call."
+          primaryLabel="Set it up with us"
+        />
       </div>
     </section>
   );

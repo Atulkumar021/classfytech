@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import type { ReactNode } from 'react';
-import { ArrowRight, Calendar } from '@/components/Icons';
+import { ArrowRight, PhoneCall } from '@/components/Icons';
+import { contactInfo } from '@/lib/content';
 import Reveal from '@/components/ui/Reveal';
 
 /**
@@ -50,10 +51,13 @@ export default function ProductHero({
               Book a Free Demo
               <ArrowRight />
             </Link>
-            <Link className="btn btn--ghost" href="/contact">
-              <Calendar />
-              Talk to Sales
-            </Link>
+            {/* Was a second link to /contact, which made the pair one wide
+                button with a seam down it. A phone number is an actual
+                alternative for someone who does not want a form. */}
+            <a className="btn btn--ghost" href={`tel:${contactInfo.phoneHref}`}>
+              <PhoneCall />
+              {contactInfo.phoneDisplay}
+            </a>
           </Reveal>
 
           {chips && chips.length > 0 && (
